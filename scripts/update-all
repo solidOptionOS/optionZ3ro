@@ -1,0 +1,29 @@
+#!/bin/bash
+echo "Udpating with Apt-Get and Aptitude "
+sudo apt-get update
+sudo aptitude update
+echo "Upgrading with Aptitude "
+sudo aptitude upgrade -y
+echo "Upgrading Distro with Aptitude "
+sudo aptitude dist-upgrade -y
+echo "Fixing missing or broken packages with Aptitude "
+sudo aptitude -f install
+echo "Upgrading with Apt-Get "
+sudo apt-get upgrade -y
+echo "Upgrading Distro with Apt-Get "
+sudo apt-get dist-upgrade -y
+echo "Fixing missing or broken packages with Apt-Get "
+sudo apt-get install -f
+echo "Removing old or obsolete packages "
+sudo apt-get autoremove
+echo "Cleaning Apt-Get Archives "
+sudo apt-get clean
+echo "Updating Database "
+sudo updatedb
+echo "Updating initframs "
+sudo update-initframs -uv
+echo "Updating Grub "
+sudo update-grub
+echo "Updating Grub2 "
+sudo update-grub2
+echo "Update Complete "
