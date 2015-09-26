@@ -1,11 +1,12 @@
 #!/bin/bash
-cd GobiSerial
+## NEEDS WORK
+cd ~/Downloads/GobiSerial
 make
 make install
 echo "Enableing Debug Messages: "
 sudo modprobe GobiSerial debug=1
 echo "Network driver installation: "
-cd GobiNet
+cd ~/Dowloads/GobiNet
 make
 make install
 echo "Enabling Network Debug Messages: "
