@@ -53,6 +53,6 @@ echo -e $RED"###############################################"$ENDCOLOR
 echo -e $RED"#              task complete!!                #"$ENDCOLOR
 echo -e $RED"###############################################"$ENDCOLOR
 echo ""
-echo "Have A Solid Day"
+echo -e $GREEN"Have A Solid Day"$ENDCOLOR
 echo ""
 exit
