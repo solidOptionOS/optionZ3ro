@@ -48,4 +48,11 @@ echo -e $BLUE"Changing user $NEWUSER default shell to /bin/bash"$ENDCOLOR
 usermod -s /bin/bash $NEWUSER
 sleep 1
 echo -e $BLUE"User $NEWUSER created with password $PASS."$ENDCOLOR
+echo ""
+echo -e $RED"###############################################"$ENDCOLOR
+echo -e $RED"#              task complete!!                #"$ENDCOLOR
+echo -e $RED"###############################################"$ENDCOLOR
+echo ""
+echo "Have A Solid Day"
+echo ""
 exit
