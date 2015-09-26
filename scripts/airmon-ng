@@ -1,5 +1,5 @@
 #!/bin/sh
-
+## this is the original older version of airmon-ng that you can use to create multiple monitor interfacees (i.e. mon)
 USERID=""
 IFACE=""
 KISMET=/etc/kismet/kismet.conf
