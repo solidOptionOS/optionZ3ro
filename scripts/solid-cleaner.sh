@@ -23,7 +23,7 @@ echo -e $GREEN"Thanks and credit to the team at blackhatsec.org/"$ENDCOLOR;
 echo -e $GREEN"for creating CBS Cleaner - the basis for this script"$ENDCOLOR;
 echo -e $GREEN"This modificatin of CBS Cleaner by h3x at solidoptionos.com"$ENDCOLOR;
 echo -e $RED"#################################################################"$ENDCOLOR;
-echo -e $YELLOW"Starting Cleaning Function | festival --tts 
+echo Starting Cleaning Function | festival --tts 
  
 if [ $USER != root ]; then
 echo -e $RED"Sorry, you must run this from as root."$ENDCOLOR
