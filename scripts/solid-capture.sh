@@ -11,11 +11,20 @@ BLUE="\033[1;34m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
-## Paths
+## Paths - UPDATE TO FIT YOUR SYSTEM
+## Default for persistence usb mounted
 PERSISTENCEPATH="/media/root/persistence"
 SCRIPTSPATH="$PERSISTENCEPATH/scripts"
 CAPTUREPATH="$PERSISTENCEPATH/captures"
+## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
 AIRMON="$SCRIPTSPATH/airmon-ng"
+
+## Default for Installed System with folder scripts in home.
+#PERSISTENCEPATH="~/"
+#SCRIPTSPATH="$PERSISTENCEPATH/scripts"
+#CAPTUREPATH="$PERSISTENCEPATH/captures"
+## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
+#AIRMON="$SCRIPTSPATH/airmon-ng"
 
 echo -e $BLUE"#################################################################"$ENDCOLOR;
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
