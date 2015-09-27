@@ -97,7 +97,7 @@ subjectAltName          = @alt_names
 DNS.0                   = mydnsdomain.com
 DNS.1                   = alt.mydnsdomain.com" >> myCA/signed.cnf
 
-export OPENSSL_CONF=myCA/signed.cnf 
+export OPENSSL_CONF=~/myCA/signed.cnf 
 echo -e $BLUE"Generating the Server Certificate and Key... "$ENDCOLOR;
 openssl req -newkey rsa:1024 -keyout tempkey.pem -keyform PEM -out tempreq.pem -outform PEM
 
