@@ -11,18 +11,18 @@ BLUE="\033[1;34m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
-echo -e $RED"#################################################################"$ENDCOLOR; 
+echo -e $BLUE"#################################################################"$ENDCOLOR; 
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
 echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
 echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
 echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
 echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
-echo -e $RED"#################################################################"$ENDCOLOR;
-echo -e $YELLOW"Setup Certification Authority"$ENDCOLOR;
+echo -e $BLUE"#################################################################"$ENDCOLOR;
+echo -e $YELLOW"Setup Client and Server Certificate"$ENDCOLOR;
 ## Make changes to suit your needs 
 
 echo -e $BLUE"Initializing Certifcation Authority Environment... "$ENDCOLOR;
-cd && mkdir -pv myCA/ 
+cd && mkdir -pv ~/myCA/ 
 echo -e $BLUE"Initializing Certificate Database: "$ENDCOLOR;
 echo '01' > serial  && touch index.txt
 echo -e $BLUE"Initializing CA Configuration"$ENDCOLOR;
@@ -30,12 +30,12 @@ echo -e $BLUE"Initializing CA Configuration"$ENDCOLOR;
 echo "[ ca ]
 default_ca      = local_ca
 [ local_ca ]
-dir             = myCA
-certificate     = myCA/cacert.pem
-database        = myCA/index.txt
-new_certs_dir   = myCA/signedcerts
-private_key     = myCA/private/cakey.pem
-serial          = myCA/serial
+dir             = ~/myCA
+certificate     = ~/myCA/cacert.pem
+database        = ~/myCA/index.txt
+new_certs_dir   = ~/myCA/signedcerts
+private_key     = ~/myCA/private/cakey.pem
+serial          = ~/myCA/serial
 default_crl_days        = 365
 default_days            = 1825
 default_md              = sha1
@@ -53,7 +53,7 @@ organizationalUnitName  = supplied
 basicConstraints        = CA:false
 [ req ]
 default_bits    = 2048
-default_keyfile = myCA/private/cakey.pem
+default_keyfile = ~/myCA/private/cakey.pem
 default_md      = sha1
 prompt                  = no
 distinguished_name      = root_ca_distinguished_name
@@ -62,13 +62,13 @@ x509_extensions         = root_ca_extensions
 commonName              = MyOwn Root Certificate Authority
 stateOrProvinceName     = NC
 countryName             = US
-emailAddress            = root@tradeshowhell.com
-organizationName        = Trade Show Hell
+emailAddress            = root@mydnsdomain.com
+organizationName        = My DNS Domain
 organizationalUnitName  = IT Department
 [ root_ca_extensions ]
-basicConstraints        = CA:true" >> myCA/caconfig.cnf
+basicConstraints        = CA:true" >> ~/myCA/caconfig.cnf
 
-export OPENSSL_CONF=myCA/caconfig.cnf 
+export OPENSSL_CONF=~/myCA/caconfig.cnf 
 echo -e $BLUE"Generating CA Certificate and Key... "$ENDCOLOR;
 openssl req -x509 -newkey rsa:2048 -out cacert.pem -outform PEM -days 1825
  
@@ -83,10 +83,10 @@ prompt                  = no
 distinguished_name      = server_distinguished_name
 req_extensions          = v3_req
 [ server_distinguished_name ]
-commonName              = tradeshowhell.com
+commonName              = mydnsdomain.com
 stateOrProvinceName     = NC
 countryName             = US
-emailAddress            = root@tradeshowhell.com
+emailAddress            = root@mydnsdomain.com
 organizationName        = My Organization Name
 organizationalUnitName  = Subunit of My Large Organization
 [ v3_req ]
@@ -94,8 +94,8 @@ basicConstraints        = CA:FALSE
 keyUsage                = nonRepudiation, digitalSignature, keyEncipherment
 subjectAltName          = @alt_names
 [ alt_names ]
-DNS.0                   = tradeshowhell.com
-DNS.1                   = alt.tradeshowhell.com" >> myCA/signed.cnf
+DNS.0                   = mydnsdomain.com
+DNS.1                   = alt.mydnsdomain.com" >> myCA/signed.cnf
 
 export OPENSSL_CONF=myCA/signed.cnf 
 echo -e $BLUE"Generating the Server Certificate and Key... "$ENDCOLOR;
@@ -141,12 +141,10 @@ sudo dpkg-reconfigure ca-certificates
 echo -e $BLUE "Updating CA Certificates Database"$ENDCOLOR;
 sudo update-ca-certificates
 
-echo -e $GREEN "Completed Successfully Imported Certificate into the System CA Certificates Database. "$ENDCOLOR;
 echo ""
-echo ""
-echo -e $RED"###############################################"$ENDCOLOR
-echo -e $RED"#              task complete!!                #"$ENDCOLOR
-echo -e $RED"###############################################"$ENDCOLOR
+echo -e $BLUE"##########################################################################################"$ENDCOLOR
+echo -e $YELLOW"# Completed Successfully. Imported Certificate into the System CA Certificates Database. #"$ENDCOLOR
+echo -e $BLUE"##########################################################################################"$ENDCOLOR
 echo ""
 echo -e $GREEN"Have A Solid Day"$ENDCOLOR
 echo ""
