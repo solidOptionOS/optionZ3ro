@@ -13,18 +13,18 @@ ENDCOLOR="\033[0m"
 
 ## Paths - UPDATE TO FIT YOUR SYSTEM
 ## Default for persistence usb mounted
-PERSISTENCEPATH="/media/root/persistence"
-SCRIPTSPATH="$PERSISTENCEPATH/scripts"
-CAPTUREPATH="$PERSISTENCEPATH/captures"
-## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
-AIRMON="$SCRIPTSPATH/airmon-ng"
-
-## Default for Installed System with folder scripts in home.
-#PERSISTENCEPATH="~/"
+#PERSISTENCEPATH="/media/root/persistence"
 #SCRIPTSPATH="$PERSISTENCEPATH/scripts"
 #CAPTUREPATH="$PERSISTENCEPATH/captures"
 ## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
 #AIRMON="$SCRIPTSPATH/airmon-ng"
+
+## Default for Installed System with folder scripts in home.
+PERSISTENCEPATH="/root"
+SCRIPTSPATH="$PERSISTENCEPATH/scripts"
+CAPTUREPATH="$PERSISTENCEPATH/captures"
+## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
+AIRMON="$SCRIPTSPATH/airmon-ng"
 
 echo -e $BLUE"#################################################################"$ENDCOLOR;
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
@@ -49,6 +49,13 @@ sleep 1
 
 echo -e $BLUE"Let's get started. "$ENDCOLOR;
 sleep 1
+
+echo -e #BLUE"Creating folders and paths..."$ENDCOLOR;
+sleep 0.5
+mkdir /root/scripts
+sleep 0.5
+mkdir /root/captures
+sleep 0.5
 
 echo -e $BLUE"First, let's get our interface prepped. "$ENDCOLOR;
 sleep 0.5
@@ -128,7 +135,8 @@ sleep 1
 
 echo -e $YELLOW"Specify additional Channel(s)> "$ENDCOLOR;
 read addchan
-CHANOPT="-c $addchan,$attachan"
+addchanopt="$addchan,"
+CHANOPT="-c $addchanopt$attachan"
 sleep 1
 
 else
@@ -162,11 +170,11 @@ now="$(date +'%d.%m.%Y')"
 echo -e $BLUE"REC:LOG > Saving capture to $CAPTUREPAH/$now.dump "$ENDCOLOR;
 sleep 3
 
-echo -e $BLUE"Solid-Capture: Running... "$ENDCOLOR;
+echo -e $BLUE"Solid-Capture: Compiling sequence... "$ENDCOLOR;
 sleep 1
 
-echo -e $RED"Trace: sudo airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
-sleep 5
+echo -e $RED"Sequence complete. sudo airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
+sleep 3
 
 sudo airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
 sleep 3
@@ -180,7 +188,7 @@ echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
 echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
 echo -e $BLUE"###############################################"$ENDCOLOR
 echo ""
-echo "Have A Solid Day"
+echo -e $YELLOW"Have A Solid Day"$ENDCOLOR;
 echo ""
 exit
 fi
@@ -192,13 +200,13 @@ sleep 3
 ### mm/dd/yyyy ####
 now="$(date +'%d.%m.%Y')"
 
-echo -e $BLUE"REC: Saving capture. $CAPTUREPATH/$now.dump "$ENDCOLOR;
+echo -e $BLUE"REC:LOG > Saving capture at $CAPTUREPATH/$now.dump "$ENDCOLOR;
 sleep 3
 
-echo -e $BLUE"Trace: Running. "$ENDCOLOR;
+echo -e $BLUE"Solid-Capture: Compiling sequence... "$ENDCOLOR;
 sleep 1
 
-echo -e $RED"Trace: sudo airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
+echo -e $RED"Sequence complete. sudo airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
 sleep 5
 
 sudo airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
@@ -209,7 +217,7 @@ echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
 echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
 echo -e $BLUE"###############################################"$ENDCOLOR
 echo ""
-echo "Have A Solid Day"
+echo -e $YELLOW"Have A Solid Day"$ENDCOLOR;
 echo ""
 exit
 fi
