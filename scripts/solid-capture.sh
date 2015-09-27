@@ -11,20 +11,17 @@ BLUE="\033[1;34m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
-## Paths - UPDATE TO FIT YOUR SYSTEM
-## Default for persistence usb mounted
-#PERSISTENCEPATH="/media/root/persistence"
-#SCRIPTSPATH="$PERSISTENCEPATH/scripts"
-#CAPTUREPATH="$PERSISTENCEPATH/captures"
-## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
-#AIRMON="$SCRIPTSPATH/airmon-ng"
-
-## Default for Installed System with folder scripts in home.
+## Paths
 PERSISTENCEPATH="/root"
-SCRIPTSPATH="$PERSISTENCEPATH/scripts"
-CAPTUREPATH="$PERSISTENCEPATH/captures"
-## Location of original airmon-ng file (available on solidOptionOS/optionZ3ro github repo)
-AIRMON="$SCRIPTSPATH/airmon-ng"
+SCRIPTSPATH="/root/scripts"
+CAPTUREPATH="/root/captures"
+
+## Preferred Options
+SETOPTIONS=" --showack --band abg --wps -aMU --cswitch 1 --berlin 180 --update 2"
+
+## Date
+### mm/dd/yyyy ####
+now="$(date +'%d.%m.%Y')"
 
 echo -e $BLUE"#################################################################"$ENDCOLOR;
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
@@ -50,56 +47,55 @@ sleep 1
 echo -e $BLUE"Let's get started. "$ENDCOLOR;
 sleep 1
 
-echo -e #BLUE"Creating folders and paths..."$ENDCOLOR;
-sleep 0.5
-mkdir /root/scripts
-sleep 0.5
+echo -e $BLUE"First, Let's create a captures folder in /root "$ENDCOLOR;
 mkdir /root/captures
 sleep 0.5
 
-echo -e $BLUE"First, let's get our interface prepped. "$ENDCOLOR;
+echo -e $BLUE"Next, let's prepare our interface. "$ENDCOLOR;
 sleep 0.5
-
-echo -e $YELLOW"Interface>: "$ENDCOLOR;
+iwconfig
+sleep 0.5
+echo ""
+echo -e $YELLOW"Select the interface you wish to use: [ex. wlan0] "$ENDCOLOR;
 read INTERFACE
 sleep 1
 
 echo -e $BLUE"Checking to see if Airmon-ng is good to go "$ENDCOLOR;
 sleep 0.5
 
-$AIRMON
+airmon-ng
 sleep 1
 
-$AIRMON check kill
+airmon-ng check kill
 sleep 1
 
-## Uncomment to enable. Only if installed
-#echo -e $BLUE"Updating Airodump-ng IEEE Data "$ENDCOLOR;
-#airodump-ng-oui-update
-#sleep 0.5
+## Uncomment to enable.
+# echo -e $BLUE"Updating Airodump-ng IEEE Data "$ENDCOLOR;
+# airodump-ng-oui-update
+# sleep 0.5
 
-echo -e $GREEN"Complete.  Good to go. "$ENDCOLOR;
+echo -e $BLUE"Complete.  Good to go. "$ENDCOLOR;
 sleep 1
 
 echo -e $BLUE"Starting Airmon-ng for $INTERFACE "$ENDCOLOR;
 sleep 0.5
 
-$AIRMON start $INTERFACE
+airmon-ng start $INTERFACE
 sleep 2
 
-echo -e $YELLOW"New monitor interface:> "$ENDCOLOR;
+echo -e $YELLOW"Enter the name of the interface created: [ex. mon0] "$ENDCOLOR;
 read MON0
 sleep 0.5
 
-echo -e $BLUE"Taking down $MON0 "$ENDCOLOR;
+echo -e $BLUE"Let's stay anonymous.  Configuring $MON0 "$ENDCOLOR;
 sudo ifconfig $MON0 down
 sleep 1
 
-echo -e $BLUE"Changing MAC Address "$ENDCOLOR;
+echo -e $BLUE"Setting new MAC Address "$ENDCOLOR;
 sudo macchanger $MON0 -bra
 sleep 1
 
-echo -e $BLUE"Configuring $MON0 with iw "$ENDCOLOR;
+echo -e $BLUE"Configuring $MON0 for iw compatibility "$ENDCOLOR;
 sudo iw dev $MON0 set type monitor
 sleep 1
 
@@ -107,7 +103,7 @@ echo -e $BLUE"Setting $MON0 to promisc mode "$ENDCOLOR;
 sudo ifconfig $MON0 promisc
 sleep 1
 
-echo -e $BLUE"Bringing $MON0 back up "$ENDCOLOR;
+echo -e $BLUE"Okay.  We are ready to bring $MON0 back up "$ENDCOLOR;
 sudo ifconfig $MON0 up
 sleep 1
 
@@ -124,23 +120,16 @@ read specchannel
 
 if [[ $specchannel = Y || $specchannel = y ]] ; then
 
-echo -e $YELLOW"Use Preferred Channel(s)>: [y | n] "$ENDCOLOR;
+echo -e $YELLOW"Use Preferred Channel(s): y/n [channels 1,6,9,11] "$ENDCOLOR;
 read prefchan
 
 if [[ $prefchan = y || $prefchan = Y ]] ; then
 
 echo -e $BLUE"Selecting Preferred Channels: 1,6,9,11 "$ENCOLOR;
 attachan="1,6,9,11"
-sleep 1
-
-echo -e $YELLOW"Specify additional Channel(s)> "$ENDCOLOR;
-read addchan
-addchanopt="$addchan,"
-CHANOPT="-c $addchanopt$attachan"
-sleep 1
 
 else
-echo -e $YELLOW"Specify Channel(s)> "$ENDCOLOR;
+echo -e $YELLOW"Specify Channel(s): "$ENDCOLOR;
 read specchan
 CHANOPT="-c $specchan"
 sleep 1
@@ -152,72 +141,119 @@ CHANOPTS=" "
 sleep 0.5
 fi
 
-echo -e $YELLOW"Specify Opts>: [enter 'p' for preferred] "$ENDCOLOR;
+echo -e $YELLOW"Specify Options: [enter '-p' for preferred or '--help'] "$ENDCOLOR;
 read OPTIONS
-if [[ $OPTIONS = p || $OPTIONS = P ]] ; then
-echo -e $BLUE"Preferred options selected> --showack --band abg --wps -aMU --cswitch 1 --berlin 180 --update 2 "$ENDCOLOR;
-sleep 1
+while [ -n "$OPTIONS" ] ; do
+        case "$OPTIONS" in
+                --help)
+                        echo -e "
+  Options:
+      --ivs                 : Save only captured IVs
+      --gpsd                : Use GPSd
+      --write      <prefix> : Dump file prefix
+      -w                    : same as --write
+      --beacons             : Record all beacons in dump file
+      --update       <secs> : Display update delay in seconds
+      --showack             : Prints ack/cts/rts statistics
+      -h                    : Hides known stations for --showack
+      -f            <msecs> : Time in ms between hopping channels
+      --berlin       <secs> : Time before removing the AP/client
+                              from the screen when no more packets
+                              are received (Default: 120 seconds)
+      -r             <file> : Read packets from that file
+      -x            <msecs> : Active Scanning Simulation
+      --manufacturer        : Display manufacturer from IEEE OUI list
+      --uptime              : Display AP Uptime from Beacon Timestamp
+      --wps                 : Display WPS information (if any)
+      --output-format
+                  <formats> : Output format. Possible values:
+                              pcap, ivs, csv, gps, kismet, netxml
+      --ignore-negative-one : Removes the message that says
+                              fixed channel <interface>: -1
+      --write-interval
+                  <seconds> : Output file(s) write interval in seconds
 
-SETOPTIONS=" --showack --band abg --wps -aMU --cswitch 1 --berlin 180 --update 2"
-sleep 1
+  Filter options:
+      --encrypt   <suite>   : Filter APs by cipher suite
+      --netmask <netmask>   : Filter APs by mask
+      --bssid     <bssid>   : Filter APs by BSSID
+      --essid     <essid>   : Filter APs by ESSID
+      --essid-regex <regex> : Filter APs by ESSID using a regular
+                              expression
+      -a                    : Filter unassociated clients
 
-echo -e $BLUE"Omniscience opt: received. "$ENDCOLOR;
-sleep 3
+  By default, airodump-ng hop on 2.4GHz channels.
+  You can make it capture on other/specific channel(s) by using:
+      --channel <channels>  : Capture on specific channels
+      --band <abg>          : Band on which airodump-ng should hop
+      -C    <frequencies>   : Uses these frequencies in MHz to hop
+      --cswitch  <method>   : Set channel switching method
+                    0       : FIFO (default)
+                    1       : Round Robin
+                    2       : Hop on last
+      -s                    : same as --cswitch
 
-### mm/dd/yyyy ####
-now="$(date +'%d.%m.%Y')"
+      --help                : Displays this usage screen
 
-echo -e $BLUE"REC:LOG > Saving capture to $CAPTUREPAH/$now.dump "$ENDCOLOR;
-sleep 3
+  Preferred options, these are just my personal options...
+    -p : includes options '--showack --band abg --wps -aMU --cswitch 1 --berlin 180 --update 2'"
 
-echo -e $BLUE"Solid-Capture: Compiling sequence... "$ENDCOLOR;
-sleep 1
+                        ;;
+                -p)
+                        echo -e $BLUE"Options received: $SETOPTIONS "$ENDCOLOR;
+                        sleep 2
 
-echo -e $RED"Sequence complete. sudo airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
-sleep 3
+                        echo -e $BLUE"REC:LOG > Saving capture to $CAPTUREPAH/$now.dump "$ENDCOLOR;
+                        sleep 2
 
-sudo airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
-sleep 3
+                        echo -e $BLUE"Compiling sequence... "$ENDCOLOR;
+                        sleep 0.5
 
-## todo
-## echo -e $YELLOW"Would you like to decrypt the capture with Airdecap? "$ENDCOLOR;
-## todo
+                        echo -e $RED"Running sequence: airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
+                        sleep 2
 
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
-echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo ""
-echo -e $YELLOW"Have A Solid Day"$ENDCOLOR;
-echo ""
-exit
-fi
+                        airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
+                        sleep 3
 
-else
-echo -e $YELLOW"Omniscience opt: received. "$ENDCOLOR;
-sleep 3
+                        ## todo
+                        ## echo -e $YELLOW"Would you like to decrypt the capture with Airdecap? "$ENDCOLOR;
+                        ## todo
 
-### mm/dd/yyyy ####
-now="$(date +'%d.%m.%Y')"
+                        echo -e $BLUE"###############################################"$ENDCOLOR
+                        echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
+                        echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
+                        echo -e $BLUE"###############################################"$ENDCOLOR
+                        echo ""
+                        echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
+                        echo ""
+                        exit 0
+                        ;;
 
-echo -e $BLUE"REC:LOG > Saving capture at $CAPTUREPATH/$now.dump "$ENDCOLOR;
-sleep 3
+                *)      echo -e $BLUE"Options received: $OPTIONS "$ENDCOLOR;
+                        sleep 2
 
-echo -e $BLUE"Solid-Capture: Compiling sequence... "$ENDCOLOR;
-sleep 1
+                        echo -e $BLUE"REC:LOG > Saving capture to $CAPTUREPATH/$now.dump "$ENDCOLOR;
+                        sleep 2
 
-echo -e $RED"Sequence complete. sudo airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
-sleep 5
+                        echo -e $BLUE"Compiling sequence... "$ENDCOLOR;
+                        sleep 0.5
 
-sudo airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
-sleep 3
+                        echo -e $RED"Running sequence: airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
+                        sleep 2
+                        
+                        airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
+                        sleep 3
 
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
-echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo ""
-echo -e $YELLOW"Have A Solid Day"$ENDCOLOR;
-echo ""
-exit
-fi
+                        echo -e $BLUE"###############################################"$ENDCOLOR
+                        echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
+                        echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
+                        echo -e $BLUE"###############################################"$ENDCOLOR
+                        echo ""
+                        echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
+                        echo ""
+                        exit 0
+                        ;;
+        esac
+
+        shift # Get next argument
+done
