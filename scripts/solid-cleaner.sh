@@ -12,16 +12,16 @@ RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
 echo -e $RED"#################################################################"$ENDCOLOR; 
-echo -e $GREEN"SolidOptionOS Cleaner"$ENDCOLOR;
+echo -e $YELLOW"SolidOptionOS Cleaner"$ENDCOLOR;
 echo -e $RED"#################################################################"$ENDCOLOR; 
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
 echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
 echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
 echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
 echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
-echo -e $GREEN"Thanks and credit to the team at blackhatsec.org/"$ENDCOLOR; 
-echo -e $GREEN"for creating CBS Cleaner - the basis for this script"$ENDCOLOR;
-echo -e $GREEN"This modificatin of CBS Cleaner by h3x at solidoptionos.com"$ENDCOLOR;
+echo -e $BLUE"Thanks and credit to the team at blackhatsec.org/"$ENDCOLOR; 
+echo -e $BLUE"for creating CBS Cleaner - the basis for this script"$ENDCOLOR;
+echo -e $BLUE"This modificatin of CBS Cleaner by h3x at solidoptionos.com"$ENDCOLOR;
 echo -e $RED"#################################################################"$ENDCOLOR;
 echo ""
 echo -e $BLUE"Checking for root..."$ENDCOLOR;
@@ -43,7 +43,7 @@ echo -e $BLUE"Cleaning var/temp..."$ENDCOLOR;
 sleep 0.5
 cd /var/tmp/
 sleep 0.5
-rm -rf -i /var/tmp/
+rm -i /var/tmp/* --force
 sleep 0.5
 echo -e $YELLOW"Would you like to attempt to repair/fix any broken packages? y/n"$ENDCOLOR;
 read fix
@@ -57,7 +57,7 @@ fi
 echo ""
 echo ""
 echo -e $BLUE"Cleaning /var/log/..."$ENDCOLOR
-rm -rf -i -v /var/log/
+rm -i -v /var/log/* --force
 rm -i -v /var/cache/* --force
 
 echo "" 
