@@ -62,18 +62,22 @@ eval "$(rbenv init -)" >> ~/.bashrc
 #exec $SHELL
 echo -e $BLUE"Cloning Ruby-Build into ~/.rbenv/plugins/ruby-build"$ENDCOLOR
 sleep 0.5
-sudo mkdir ~/.rbenv/plugins/ruby-build && cd ~/.rbenv/plugins/ruby-build/
+
+cd ~/.rbenv/plugins/
 
 git clone git://github.com/sstephenson/ruby-build.git
+cd ~/.rbenv/plugins/ruby-build/
 
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" >> ~/.bashrc
 
 # sudo plugin so we can run Metasploit as root with "" 
 echo -e $BLUE"Cloning RBENV-SUDO into ~/.rbenv/plugins/rbenv-sudo"$ENDCOLOR
-sleep 0.5
-sudo mkdir ~/.rbenv/plugins/rbenv-sudo && cd ~/.rbenv/plugins/rbenv-sudo
+sleep 1
+cd ~/.rbenv/plugins/
 
 git clone git://github.com/dcarley/rbenv-sudo.git
+sleep 1
+cd rbenv-sudo
 
 #exec $SHELL
 echo -e $YELLOW"Creating Global Bundler Environment"$ENDCOLOR
