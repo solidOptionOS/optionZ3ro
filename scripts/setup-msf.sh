@@ -62,10 +62,14 @@ eval "$(rbenv init -)" >> ~/.bashrc
 #exec $SHELL
 echo -e $BLUE"Cloning Ruby-Build into ~/.rbenv/plugins/ruby-build"$ENDCOLOR
 sleep 0.5
-
+mkdir ~/.rbenv/plugins
+sleep 1
 cd ~/.rbenv/plugins/
 
 git clone git://github.com/sstephenson/ruby-build.git
+
+sleep 1
+
 cd ~/.rbenv/plugins/ruby-build/
 
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" >> ~/.bashrc
