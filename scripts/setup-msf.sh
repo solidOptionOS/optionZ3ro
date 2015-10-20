@@ -221,6 +221,7 @@ sleep 2
 echo -e $YELLOW"Creating YAML Configuration"$ENDCOLOR
 sleep 0.5
 # msf database.yml config 
+
 msfdatabaseconfig='production:
 adapter: postgresql
 database: msf
@@ -230,9 +231,10 @@ host: 127.0.0.1
 port: 5432
 pool: 5
 timeout: 5'
+
 sudo touch /opt/metasploit-framework/config/database.yml
 
-echo "$msfdatabaseconfig" >> /opt/metasploit-framework/config/database.yml
+echo $msfdatabaseconfig >> /opt/metasploit-framework/config/database.yml
 
 echo -e $BLUE"Exporting MSF Database Config to $USER profile"$ENDCOLOR 
 sleep 0.5
@@ -250,21 +252,19 @@ echo -e $YELLOW"Ruby Environment, Metasploit-Framework, Omnibus, and Postgres SQ
 sleep 1 
 echo -e $YELLOW"Use 'msfconsole' to initiate the Metasploit-Framework Console.  ENJOY"$ENDCOLOR
 sleep 0.5
-echo -$YELLOW"Start now? [y/n]"$ENDCOLOR
-read startmsfconsole
-if [[ $startmsfconsole = Y || $startmsfconsole = y ]] ; then
-
-echo -e $YELLOW"Initializing MSF CONSOLE"$ENDCOLOR
-sleep 1
-msfconsole
-else
-echo -e $YELLOW"Ok. Maybe another time."$ENDCOLOR
-sleep 3
 echo -e $BLUE"###############################################"$ENDCOLOR
 echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
 echo -e $BLUE"###############################################"$ENDCOLOR
-echo ""
-echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
-echo ""
+echo " "
+echo -e $YELLOW"Have A Solid Day "$ENDCOLOR
+sleep 1
+echo -e $YELLOW"Start now? [y/n]"$ENDCOLOR
+read startmsfconsole
+if [[ $startmsfconsole = Y || $startmsfconsole = y ]] ; then
+echo -e $YELLOW"Initializing MSF CONSOLE"$ENDCOLOR
+sleep 1
+msfconsole
+
+else
 exit 0
 fi
