@@ -27,7 +27,7 @@ echo -e $BLUE"#################################################################"
 
 echo ""
 sleep 0.5
-echo -e $BLUE"Checking for root access.. "$ENDCOLOR
+echo -e $YELLOW"Checking for root access.. "$ENDCOLOR
 sleep 0.5
 if [ $USER != root ]; then
 echo -e $RED"[RBENV]:Error: must be root"$ENDCOLOR
@@ -36,19 +36,25 @@ exit 0
 fi
 sleep 1
 
-echo -e $BLUE"SHELL IS ONLY THE BEGINNING "$ENDCOLOR
+echo -e $YELLOW"SHELL IS ONLY THE BEGINNING "$ENDCOLOR
 sleep 1
-echo -e $BLUE"Installing necessary packages.." $ENDCOLOR
+echo -e $YELLOW"Installing necessary packages.." $ENDCOLOR
 
 sudo apt-get install metasploit-framework build-essential libreadline-dev libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev curl zlib1g-dev
 
-echo -e $BLUE"Installing Ruby"$ENDCOLOR
+echo -e $YELLOW"Installing Ruby"$ENDCOLOR
 sleep 0.5
-
-sudo mkdir .rbenv && cd ~/.rbenv
-
+cd ~/
+sleep 1
+sudo mkdir .rbenv 
+sleep 1
+cd ~/.rbenv
+echo -e $BLUE"Cloning .rbenv into ~/.rbenv"$ENDCOLOR
+sleep 1
 git clone git://github.com/sstephenson/rbenv.git
-
+sleep 1
+echo -e $YELLOW"Updating PATH"$ENDCOLOR
+sleep 1
 export PATH="$HOME/.rbenv/bin:$PATH" >> ~/.bashrc
 
 eval "$(rbenv init -)" >> ~/.bashrc
@@ -70,13 +76,13 @@ sudo mkdir ~/.rbenv/plugins/rbenv-sudo && cd ~/.rbenv/plugins/rbenv-sudo
 git clone git://github.com/dcarley/rbenv-sudo.git
 
 #exec $SHELL
-echo -e $BLUE"Creating Global Bundler Environment"$ENDCOLOR
+echo -e $YELLOW"Creating Global Bundler Environment"$ENDCOLOR
 sleep 0.5
 rbenv install 2.1.7
 rbenv global 2.1.7
 ruby -v
 
-echo -e $BLUE"NMAP Installation and MSF Configuration"$ENDCOLOR
+echo -e $YELLOW"NMAP Installation and MSF Configuration"$ENDCOLOR
 sleep 0.5
 
 sudo mkdir ~/Development 
@@ -88,49 +94,44 @@ svn co https://svn.nmap.org/nmap
 
 cd nmap
 
-echo -e $BLUE"Configuring NMAP"$ENDCOLOR
+echo -e $YELLOW"Configuring NMAP"$ENDCOLOR
 sleep 0.5
 ./configure
-echo -e $BLUE"Building NMAP"$ENDCOLOR
+echo -e $YELLOW"Building NMAP"$ENDCOLOR
 sleep 0.5
 make
-echo -e $BLUE"Installing NMAP"$ENDCOLOR
+echo -e $YELLOW"Installing NMAP"$ENDCOLOR
 sleep 0.5
 sudo make install
 make clean
 
-echo -e $BLUE"Configuring Postgre SQL Server"$ENDCOLOR
+echo -e $YELLOW"Configuring Postgre SQL Server"$ENDCOLOR
 sleep 0.5
 #sudo -s
 echo -e $BLUE"Restarting postgresql"$ENDCOLOR
 sleep 0.5
 sudo /etc/init.d/postgresql restart
 sleep 0.5
-echo -e $BLUE"Appending appropriate groups to $USER"$ENDCOLOR
+echo -e $YELLOW"Appending appropriate groups to $USER"$ENDCOLOR
 sleep 0.5
 usermod -aG sudo $USER
 usermod -aG adm $USER
 usermod -aG postgres $USER
 echo -e $BLUE"Entering POSTGRES Environment"$ENDCOLOR
 sleep 0.5
-echo -e $BLUE"Creating POSTGRES user 'msf'"$ENDCOLOR
-#sudo -u postgres psql -c '\createuser msf -P -S -R -D' | $PASSWORD
+echo -e $YELLOW"Creating POSTGRES user 'msf'"$ENDCOLOR
 echo "sudo -u postgres psql -c '\createuser msf -P -S -R -D' | $MSFPASSWORD "
 echo "exit"
 echo "sudo -u postgres psql -c '\createdb -O msf msf'"
 echo "exit"
-#sleep 0.5
-#echo -e $BLUE"Creating MSF Database for Administrative User 'msf'"$ENDCOLOR
-#sleep 0.5
-#createdb -O msf msf
-#exit
 
-echo -e $BLUE"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
+
+echo -e $YELLOW"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
 sleep 1
 cd /opt
 sleep 0.5
 
-echo -e $BLUE"Cloning newest metasploit-framework into /optmetasploit-framework"$ENDCOLOR
+echo -e $YELLOW"Cloning newest metasploit-framework into /optmetasploit-framework"$ENDCOLOR
 sleep 0.5
 sudo git clone https://github.com/rapid7/metasploit-framework.git
 
@@ -139,41 +140,46 @@ sudo git clone https://github.com/rapid7/metasploit-framework.git
 #sudo chown -R `whoami` /opt/metasploit-framework
 cd /opt/metasploit-framework
 
-echo -e $BLUE"Installing gem bundler for msf console.."$ENDCOLOR
+echo -e $YELLOW"Installing gem bundler for msf console.."$ENDCOLOR
 sleep 0.5
 gem install bundler
 bundle install
 
 sudo bash -c 'for MSF in $(ls msf*); do ln -s /opt/metasploit-framework/$MSF /usr/local/bin/$MSF;done'
 
-echo -e $BLUE"Installing Armitage"$ENDCOLOR
-sleep 0.5
+echo -e $YELLOW"Installing Armitage"$ENDCOLOR
+sleep 1
 curl -# -o /tmp/armitage.tgz http://www.fastandeasyhacking.com/download/armitage-latest.tgz
 sudo tar -xvzf /tmp/armitage.tgz -C /opt
 sudo ln -s /opt/armitage/armitage /usr/local/bin/armitage
 sudo ln -s /opt/armitage/teamserver /usr/local/bin/teamserver
 sudo sh -c "echo java -jar /opt/armitage/armitage.jar \$\* > /opt/armitage/armitage"
 sudo perl -pi -e 's/armitage.jar/\/opt\/armitage\/armitage.jar/g' /opt/armitage/teamserver
-echo -e $BLUE"YAML Configuration Creation"$ENDCOLOR
-sleep 0.5
-echo 'production:
+sleep 1
+echo -e $YELLOW"Create YAML Configuration"$ENDCOLOR
+sleep 1
+MSFDATABASECONFIG="production:
  adapter: postgresql
  database: msf
  username: msf
- password: $
+ password: toor
  host: 127.0.0.1
  port: 5432
  pool: 75
- timeout: 5' >> sudo vi /opt/metasploit-framework/config/database.yml
+ timeout: 5"
+ 
+$MSFDATABASECONFIG >> sudo vi /opt/metasploit-framework/config/database.yml
 
 echo -e $BLUE"Exporting MSF Database Config to $USER profile"$ENDCOLOR 
 sleep 0.5
 sudo sh -c "echo export MSF_DATABASE_CONFIG=/opt/metasploit-framework/config/database.yml >> /etc/profile"
+sleep 1
 echo -e $BLUE"Sourcing profile and .bashrc"$ENDCOLOR
-sleep 0.5
+sleep 1
 source /etc/profile
+sleep 1
 source ~/.bashrc
-
-echo -e $BLUE"Initializing MSF CONSOLE"$ENDCOLOR
+sleep 1
+echo -e $YELLOW"Initializing MSF CONSOLE"$ENDCOLOR
 sleep 1
 msfconsole
