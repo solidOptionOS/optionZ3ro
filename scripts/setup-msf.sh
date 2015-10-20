@@ -145,7 +145,7 @@ sudo ln -s /opt/armitage/teamserver /usr/local/bin/teamserver
 sudo sh -c "echo java -jar /opt/armitage/armitage.jar \$\* > /opt/armitage/armitage"
 sudo perl -pi -e 's/armitage.jar/\/opt\/armitage\/armitage.jar/g' /opt/armitage/teamserver
 echo -e $BLUE"YAML Configuration Creation"$ENDCOLOR
-echo "production:
+echo 'production:
  adapter: postgresql
  database: msf
  username: msf
@@ -153,7 +153,7 @@ echo "production:
  host: 127.0.0.1
  port: 5432
  pool: 75
- timeout: 5" >> sudo vi /opt/metasploit-framework/config/database.yml
+ timeout: 5' >> sudo vi /opt/metasploit-framework/config/database.yml
 
 echo -e $BLUE"Exporting MSF Database Config to $USER profile"$ENDCOLOR 
 sleep 0.5
