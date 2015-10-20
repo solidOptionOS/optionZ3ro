@@ -11,14 +11,6 @@ BLUE="\033[1;34m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
-## Paths
-PERSISTENCEPATH="/root"
-SCRIPTSPATH="/root/scripts"
-CAPTUREPATH="/root/captures"
-
-## Preferred Options
-SETOPTIONS=" --showack --band abg --wps -aMU --cswitch 1 --berlin 180 --update 2"
-
 ## Date
 ### mm/dd/yyyy ####
 now="$(date +'%d.%m.%Y')"
@@ -30,7 +22,7 @@ echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$
 echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
 echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
 echo -e $BLUE"#################################################################"$ENDCOLOR;
-echo -e $YELLOW"# Created by kloption at SolidOptionOS.  All rights reserved. 2015 #"$ENDCOLOR;
+echo -e $YELLOW"# Created by kloption at SolidOptionOS. All rights reserved 2015 #"$ENDCOLOR;
 echo -e $BLUE"#################################################################"$ENDCOLOR;
 
 echo ""
