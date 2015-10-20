@@ -24,7 +24,8 @@ echo -e $YELLOW"                         /_/                                  "$
 echo -e $BLUE"#################################################################"$ENDCOLOR;
 echo -e $YELLOW"# Created by kloption at SolidOptionOS. All rights reserved 2015 #"$ENDCOLOR;
 echo -e $BLUE"#################################################################"$ENDCOLOR;
-
+cd ~/
+pwd
 echo ""
 sleep 0.5
 echo -e $YELLOW"Checking for root access.. "$ENDCOLOR
@@ -36,61 +37,68 @@ exit 0
 fi
 sleep 1
 
-echo -e $YELLOW"SHELL IS ONLY THE BEGINNING "$ENDCOLOR
+echo -e $YELLOW"The SHELL is only the BEGINNING! "$ENDCOLOR
 sleep 1
-echo -e $YELLOW"Installing necessary packages.." $ENDCOLOR
+echo -e $YELLOW"Initiating Complete Ruby Environment, Metasploit-Framework, Omnibus, Postgres SQL Server, and Dependencies"$ENDCOLOR
+sleep 2
 
-sudo apt-get install metasploit-framework build-essential libreadline-dev libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev curl zlib1g-dev
+echo -e $BLUE"Installing necessary packages.." $ENDCOLOR
 
-echo -e $YELLOW"Installing Ruby"$ENDCOLOR
+sudo apt-get install --reinstall -y metasploit-framework build-essential libreadline-dev libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev curl zlib1g-dev
+sleep 1
+echo -e $YELLOW"Installing Ruby Environment"$ENDCOLOR
 sleep 0.5
 cd ~/
 sleep 1
-sudo mkdir .rbenv 
+mkdir ~/rbenv 
 sleep 1
-cd ~/.rbenv
-echo -e $BLUE"Cloning .rbenv into ~/.rbenv"$ENDCOLOR
+cd ~/rbenv
+echo -e $BLUE"Cloning newest rbenv into ~/rbenv"$ENDCOLOR
 sleep 1
 git clone git://github.com/sstephenson/rbenv.git
 sleep 1
-echo -e $YELLOW"Updating PATH"$ENDCOLOR
+echo -e $BLUE"Updating PATH.."$ENDCOLOR
 sleep 1
-export PATH="$HOME/.rbenv/bin:$PATH" >> ~/.bashrc
+export PATH="$HOME/rbenv/bin:$PATH" >> ~/.bashrc
 
 eval "$(rbenv init -)" >> ~/.bashrc
 
-#exec $SHELL
-echo -e $BLUE"Cloning Ruby-Build into ~/.rbenv/plugins/ruby-build"$ENDCOLOR
+echo -e $BLUE"Cloning newest ruby-build into ~/rbenv/plugins/ruby-build"$ENDCOLOR
 sleep 0.5
-mkdir ~/.rbenv/plugins
+mkdir ~/rbenv/plugins
 sleep 1
-cd ~/.rbenv/plugins/
+cd ~/rbenv/plugins
 
 git clone git://github.com/sstephenson/ruby-build.git
 
 sleep 1
 
-cd ~/.rbenv/plugins/ruby-build/
+cd ruby-build/
 
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH" >> ~/.bashrc
+export PATH="$HOME/rbenv/plugins/ruby-build/bin:$PATH" >> ~/.bashrc
 
-# sudo plugin so we can run Metasploit as root with "" 
-echo -e $BLUE"Cloning RBENV-SUDO into ~/.rbenv/plugins/rbenv-sudo"$ENDCOLOR
+echo -e $BLUE"Cloning newest rbenv-sudo into ~/rbenv/plugins/rbenv-sudo"$ENDCOLOR
 sleep 1
-cd ~/.rbenv/plugins/
-
+cd ~/rbenv/plugins/
+sleep 1
 git clone git://github.com/dcarley/rbenv-sudo.git
 sleep 1
 cd rbenv-sudo
 
-#exec $SHELL
-echo -e $YELLOW"Creating Global Bundler Environment"$ENDCOLOR
+echo -e $BLUE"Creating Global Bundler Environment"$ENDCOLOR
 sleep 0.5
+cd ~/rbenv
+pwd
+sleep 1
 rbenv install 2.1.7
 rbenv global 2.1.7
 ruby -v
+sleep 1
 
-echo -e $YELLOW"NMAP Installation and MSF Configuration"$ENDCOLOR
+echo -e $YELLOW"SUCCESS! Ruby Environment Installed."$ENDCOLOR
+sleep 2
+
+echo -e $YELLOW"Installing NMAP"$ENDCOLOR
 sleep 0.5
 
 sudo mkdir ~/Development 
@@ -102,16 +110,18 @@ svn co https://svn.nmap.org/nmap
 
 cd nmap
 
-echo -e $YELLOW"Configuring NMAP"$ENDCOLOR
+echo -e $BLUE"Configuring package"$ENDCOLOR
 sleep 0.5
 ./configure
-echo -e $YELLOW"Building NMAP"$ENDCOLOR
+echo -e $BLUE"Building package"$ENDCOLOR
 sleep 0.5
 make
-echo -e $YELLOW"Installing NMAP"$ENDCOLOR
+echo -e $BLUE"Installing package"$ENDCOLOR
 sleep 0.5
 sudo make install
 make clean
+echo -e $YELLOW"SUCCESS! NMAP Installation Complete"$ENDCOLOR
+sleep 2
 
 echo -e $YELLOW"Configuring Postgre SQL Server"$ENDCOLOR
 sleep 0.5
@@ -119,41 +129,83 @@ sleep 0.5
 echo -e $BLUE"Restarting postgresql"$ENDCOLOR
 sleep 0.5
 sudo /etc/init.d/postgresql restart
-sleep 0.5
-echo -e $YELLOW"Appending appropriate groups to $USER"$ENDCOLOR
-sleep 0.5
-usermod -aG sudo $USER
-usermod -aG adm $USER
-usermod -aG postgres $USER
-echo -e $BLUE"Entering POSTGRES Environment"$ENDCOLOR
-sleep 0.5
-echo -e $YELLOW"Creating POSTGRES user 'msf'"$ENDCOLOR
-echo "sudo -u postgres psql -c '\createuser msf -P -S -R -D' | $MSFPASSWORD "
-echo "exit"
-echo "sudo -u postgres psql -c '\createdb -O msf msf'"
-echo "exit"
-
-
-echo -e $YELLOW"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
 sleep 1
+echo -e $BLUE"Creating POSTGRES admin user 'msf'"$ENDCOLOR
+sleep 1
+#echo -e $YELLOW"Enter new POSTGRES admin username: [default='msf'] "$ENDCOLOR
+MSFUSER='msf'
+echo "createuser -U postgres $MSFUSER -S -R -D -P" 
+sleep 1
+echo -e $BLUE"Appending appropriate groups to $MSFUSER"$ENDCOLOR
+sleep 1
+echo "usermod -aG sudo $MSFUSER"
+sleep 0.5
+echo "usermod -aG adm $MSFUSER"
+sleep 0.5
+echo "usermod -aG root $MSFUSER"
+sleep 0.5
+echo "usermod -aG postgres $MSFUSER"
+sleep 1
+echo -e $YELLOW"SUCCESS! $MSFUSER Created."$ENDCOLOR
+sleep 1
+echo -e $BLUE"Creating New Postgres database 'msf'"$ENDCOLOR
+sleep 1
+echo "createdb -U postgres -0 $MSFUSER msf"
+sleep 1
+echo -e $YELLOW"SUCCESS! New Postgres Database 'msf' created with administrative user $MSFUSER"$ENDCOLOR
+sleep 1
+echo -e $YELLOW"SUCCESS! Postgres SQL Server Configuration Complete"$ENDCOLOR
+sleep 2
+
+echo -e $YELLOW"Installing Metasploit-Framework"$ENDCOLOR
+sleep 1
+echo -e $BLUE"Installing necessary packages"$ENDCOLOR
+sleep 0.5
+sudo apt-get -y install build-essential git ruby bundler ruby-dev bison flex autoconf automake
+sleep 1
+echo -e $BLUE"Setting up build directories you can write to"$ENDCOLOR
+sleep 0.5
+sudo mkdir -p /var/cache/omnibus
+sudo mkdir -p /opt/metasploit-framework
+sudo chown `whoami` /var/cache/omnibus
+sudo chown `whoami` /opt/metasploit-framework
 cd /opt
 sleep 0.5
 
-echo -e $YELLOW"Cloning newest metasploit-framework into /optmetasploit-framework"$ENDCOLOR
+echo -e $BLUE"Cloning newest metasploit-framework into /opt/metasploit-framework"$ENDCOLOR
 sleep 0.5
-sudo git clone https://github.com/rapid7/metasploit-framework.git
-
-#echo -e $BLUE"CHMOD -R whoami"$ENDCOLOR
-#sleep 0.5
-#sudo chown -R `whoami` /opt/metasploit-framework
+git clone https://github.com/rapid7/metasploit-framework.git
+sleep 1
 cd /opt/metasploit-framework
 
-echo -e $YELLOW"Installing gem bundler for msf console.."$ENDCOLOR
+echo -e $BLUE"Installing gem bundler for msf console.."$ENDCOLOR
 sleep 0.5
 gem install bundler
 bundle install
+sleep 1
+bash -c 'for MSF in $(ls msf*); do ln -s /opt/metasploit-framework/$MSF /usr/local/bin/$MSF;done'
+sleep 1
+echo -e $YELLOW"SUCCESS! Metasploit Framework Installation Complete"$ENDCOLOR
+sleep 2
 
-sudo bash -c 'for MSF in $(ls msf*); do ln -s /opt/metasploit-framework/$MSF /usr/local/bin/$MSF;done'
+echo -e $YELLOW"Installing Metasploit-Omnibus"$ENDCOLOR
+sleep 1
+echo -e $BLUE"Cloning newest metasploit-omnibus builder"$ENDCOLOR
+sleep 0.5
+cd /opt/metasploit-framework
+git clone https://github.com/rapid7/metasploit-omnibus.git
+sleep 1
+cd metasploit-omnibus
+echo -e $BLUE"Installing omnibus' dependencies"$ENDCOLOR
+sleep 0.5
+bundle install --binstubs
+sleep 1
+echo -e $BLUE"Building the omnibus metasploit package"$ENDCOLOR
+sleep 0.5
+bin/omnibus build metasploit-framework
+sleep 1
+echo -e $YELLOW"SUCCESS! Omnibus Installation Complete"$ENDCOLOR
+sleep 2
 
 echo -e $YELLOW"Installing Armitage"$ENDCOLOR
 sleep 1
@@ -164,19 +216,23 @@ sudo ln -s /opt/armitage/teamserver /usr/local/bin/teamserver
 sudo sh -c "echo java -jar /opt/armitage/armitage.jar \$\* > /opt/armitage/armitage"
 sudo perl -pi -e 's/armitage.jar/\/opt\/armitage\/armitage.jar/g' /opt/armitage/teamserver
 sleep 1
-echo -e $YELLOW"Create YAML Configuration"$ENDCOLOR
-sleep 1
-MSFDATABASECONFIG="production:
- adapter: postgresql
- database: msf
- username: msf
- password: toor
- host: 127.0.0.1
- port: 5432
- pool: 75
- timeout: 5"
- 
-$MSFDATABASECONFIG >> sudo vi /opt/metasploit-framework/config/database.yml
+echo -e $YELLOW"SUCCESS! Armitage Installation Complete"$ENDCOLOR
+sleep 2
+echo -e $YELLOW"Creating YAML Configuration"$ENDCOLOR
+sleep 0.5
+# msf database.yml config 
+msfdatabaseconfig='production:
+adapter: postgresql
+database: msf
+username: msf
+password: toor
+host: 127.0.0.1
+port: 5432
+pool: 5
+timeout: 5'
+sudo touch /opt/metasploit-framework/config/database.yml
+
+echo "$msfdatabaseconfig" >> /opt/metasploit-framework/config/database.yml
 
 echo -e $BLUE"Exporting MSF Database Config to $USER profile"$ENDCOLOR 
 sleep 0.5
@@ -188,6 +244,25 @@ source /etc/profile
 sleep 1
 source ~/.bashrc
 sleep 1
+echo -e $YELLOW"SUCCESS! Installation is complete."$ENDCOLOR
+sleep 1 
+echo -e $YELLOW"Ruby Environment, Metasploit-Framework, Omnibus, and Postgres SQL Server is setup and ready to go."$ENDCOLOR
+sleep 1 
+echo -e $YELLOW"Use 'msfconsole' to initiate the Metasploit-Framework Console.  ENJOY"$ENDCOLOR
+sleep 0.5
+echo -$YELLOW"Start now? [y/n]"$ENDCOLOR
+read startmsfconsole
+if [[ $startmsfconsole = Y || $startmsfconsole = y ]] ; then
+
 echo -e $YELLOW"Initializing MSF CONSOLE"$ENDCOLOR
 sleep 1
 msfconsole
+else
+echo -e $YELLOW"Ok. Maybe another time."$ENDCOLOR
+sleep 3
+echo -e $BLUE"###############################################"$ENDCOLOR
+echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
+echo -e $BLUE"###############################################"$ENDCOLOR
+echo ""
+echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
+echo ""
