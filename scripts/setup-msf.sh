@@ -113,16 +113,17 @@ usermod -aG adm $USER
 usermod -aG postgres $USER
 echo -e $BLUE"Entering POSTGRES Environment"$ENDCOLOR
 sleep 0.5
-su postgres
 echo -e $BLUE"Creating POSTGRES user 'msf'"$ENDCOLOR
-sleep 0.5
-createuser msf -P -S -R -D | $PASSWORD
-read MSFPASSWORD;
-sleep 0.5
-echo -e $BLUE"Creating MSF Database for Administrative User 'msf'"$ENDCOLOR
-sleep 0.5
-createdb -O msf msf
-exit
+#sudo -u postgres psql -c '\createuser msf -P -S -R -D' | $PASSWORD
+echo "sudo -u postgres psql -c '\createuser msf -P -S -R -D' | $MSFPASSWORD "
+echo "exit"
+echo "sudo -u postgres psql -c '\createdb -O msf msf'"
+echo "exit"
+#sleep 0.5
+#echo -e $BLUE"Creating MSF Database for Administrative User 'msf'"$ENDCOLOR
+#sleep 0.5
+#createdb -O msf msf
+#exit
 
 echo -e $BLUE"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
 sleep 1
@@ -159,7 +160,7 @@ echo 'production:
  adapter: postgresql
  database: msf
  username: msf
- password: $MSFPASSWORD
+ password: $
  host: 127.0.0.1
  port: 5432
  pool: 75
