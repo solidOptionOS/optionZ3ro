@@ -266,3 +266,5 @@ echo -e $BLUE"###############################################"$ENDCOLOR
 echo ""
 echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
 echo ""
+exit 0
+fi

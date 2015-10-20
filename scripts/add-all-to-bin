@@ -78,7 +78,7 @@ cp /tmp/scripts/* /sbin
 echo -e $YELLOW"Done."$ENDCOLOR
 exit 0
 
-if [[ $addtobin != /usr/local/bin | $addtobin != /usr/local/sbin | $addtobin != /usr/bin | $addtobin != /usr/sbin | $addtobin != /bin | $addtobin != /sbin | $addtobin != all ]] ; then
+if [[ $addtobin != /usr/local/bin || $addtobin != /usr/local/sbin || $addtobin != /usr/bin || $addtobin != /usr/sbin || $addtobin != /bin || $addtobin != /sbin || $addtobin != all ]] ; then
 echo -e $YELLOW"Ok. Maybe some other time."$ENDCOLOR
 exit 0
 fi
