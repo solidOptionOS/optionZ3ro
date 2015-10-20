@@ -100,7 +100,7 @@ make clean
 
 echo -e $BLUE"Configuring Postgre SQL Server"$ENDCOLOR
 sleep 0.5
-sudo -s
+#sudo -s
 
 echo -e $BLUE"Appending appropriate groups to $USER"$ENDCOLOR
 sleep 0.5
