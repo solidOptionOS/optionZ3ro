@@ -44,13 +44,13 @@ exit 0
 fi
 sleep 1
 
-echo -e $BLUE"SHELL IS ONLY THE BEGINNING "$ENDCOLOR;
+echo -e $BLUE"SHELL IS ONLY THE BEGINNING "$ENDCOLOR
 sleep 1
-echo -e $BLUE"Installing necessary packages.. $ENDCOLOR;
+echo -e $BLUE"Installing necessary packages.." $ENDCOLOR
 
-sudo apt-get install metasploit-framework build-essential libreadline-dev libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev curl zlib1g-dev" | $SHELL
+sudo apt-get install metasploit-framework build-essential libreadline-dev libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev curl zlib1g-dev
 
-echo -e $BLUE"Installing Ruby"$ENDCOLOR;
+echo -e $BLUE"Installing Ruby"$ENDCOLOR
 sleep 0.5
 
 sudo mkdir .rbenv && cd ~/.rbenv
@@ -61,7 +61,7 @@ export PATH="$HOME/.rbenv/bin:$PATH" >> ~/.bashrc
 
 eval "$(rbenv init -)" >> ~/.bashrc
 
-exec $SHELL
+#exec $SHELL
 echo -e $BLUE"Cloning Ruby-Build into ~/.rbenv/plugins/ruby-build"$ENDCOLOR
 sleep 0.5
 sudo mkdir ~/.rbenv/plugins/ruby-build && cd ~/.rbenv/plugins/ruby-build/
@@ -77,7 +77,7 @@ sudo mkdir ~/.rbenv/plugins/rbenv-sudo && cd ~/.rbenv/plugins/rbenv-sudo
 
 git clone git://github.com/dcarley/rbenv-sudo.git
 
-exec $SHELL
+#exec $SHELL
 echo -e $BLUE"Creating Global Bundler Environment"$ENDCOLOR
 sleep 0.5
 rbenv install 2.1.7
@@ -130,7 +130,7 @@ createdb -O msf msf
 exit
 exit
 
-echo -e $BLUE"Installation and Configuration METASPLOIT FRAMEWORK"$ENCOLOR
+echo -e $BLUE"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
 sleep 1
 cd /opt
 sudo git clone https://github.com/rapid7/metasploit-framework.git
