@@ -79,7 +79,8 @@ ruby -v
 echo -e $BLUE"NMAP Installation and MSF Configuration"$ENDCOLOR
 sleep 0.5
 
-sudo mkdir ~/Development && cd ~/Development
+sudo mkdir ~/Development 
+cd ~/Development
 
 echo -e $BLUE"Updating Latest NMAP from svn.nmap.org/nmap"$ENDCOLOR
 sleep 0.5
@@ -101,20 +102,22 @@ make clean
 echo -e $BLUE"Configuring Postgre SQL Server"$ENDCOLOR
 sleep 0.5
 #sudo -s
-
+echo -e $BLUE"Restarting postgresql"$ENDCOLOR
+sleep 0.5
+sudo /etc/init.d/postgresql restart
+sleep 0.5
 echo -e $BLUE"Appending appropriate groups to $USER"$ENDCOLOR
 sleep 0.5
-su usermod -aG sudo $USER
-su usermod -aG root $USER
-su usermod -aG adm $USER
-su usermod -aG postgres $USER
+usermod -aG sudo $USER
+usermod -aG adm $USER
+usermod -aG postgres $USER
 echo -e $BLUE"Entering POSTGRES Environment"$ENDCOLOR
 sleep 0.5
-su -c postgres
+postgres
 echo -e $BLUE"Creating POSTGRES user 'msf'"$ENDCOLOR
 sleep 0.5
 createuser msf -P -S -R -D | $PASSWORD
-read MSFPASSWORD
+read MSFPASSWORD;
 sleep 0.5
 echo -e $BLUE"Creating MSF Database for Administrative User 'msf'"$ENDCOLOR
 sleep 0.5
@@ -125,9 +128,16 @@ exit
 echo -e $BLUE"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
 sleep 1
 cd /opt
+sleep 0.5
+
+echo -e $BLUE"Cloning newest metasploit-framework into /optmetasploit-framework"$ENDCOLOR
+sleep 0.5
 sudo git clone https://github.com/rapid7/metasploit-framework.git
+
+echo -e $BLUE"CHMOD -R whoami"$ENDCOLOR
+sleep 0.5
 sudo chown -R `whoami` /opt/metasploit-framework
-cd metasploit-framework
+cd /opt/metasploit-framework
 
 echo -e $BLUE"Installing gem bundler for msf console.."$ENDCOLOR
 sleep 0.5
@@ -145,6 +155,7 @@ sudo ln -s /opt/armitage/teamserver /usr/local/bin/teamserver
 sudo sh -c "echo java -jar /opt/armitage/armitage.jar \$\* > /opt/armitage/armitage"
 sudo perl -pi -e 's/armitage.jar/\/opt\/armitage\/armitage.jar/g' /opt/armitage/teamserver
 echo -e $BLUE"YAML Configuration Creation"$ENDCOLOR
+sleep 0.5
 echo 'production:
  adapter: postgresql
  database: msf
