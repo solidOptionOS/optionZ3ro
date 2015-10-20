@@ -17,7 +17,7 @@ SCRIPTSPATH="/root/scripts"
 CAPTUREPATH="/root/captures"
 
 ## Preferred Options
-SETOPTIONS=" --showack --band abg --wps -aMU --cswitch 1 --berlin 180 --update 2"
+SETOPTIONS=" --showack --band abg --wps -aMU --cswitch 1"
 
 ## Date
 ### mm/dd/yyyy ####
@@ -38,8 +38,8 @@ sleep 0.5
 echo -e $BLUE"Checking for root access.. "$ENDCOLOR
 sleep 0.5
 if [ $USER != root ]; then
-echo -e $RED"[OMNISCIENCE]:Error: must be root"$ENDCOLOR
-echo -e $BLUE"[OMNISCIENCE]:Exiting..."$ENDCOLOR
+echo -e $RED"[h3x]:Error: must be root"$ENDCOLOR
+echo -e $BLUE"[h3x]:Exiting..."$ENDCOLOR
 exit 0
 fi
 sleep 1
@@ -120,13 +120,13 @@ read specchannel
 
 if [[ $specchannel = Y || $specchannel = y ]] ; then
 
-echo -e $YELLOW"Use Preferred Channel(s): y/n [channels 1,6,9,11] "$ENDCOLOR;
+echo -e $YELLOW"Use Preferred Channel(s): y/n [channels 1,6,11] "$ENDCOLOR;
 read prefchan
 
 if [[ $prefchan = y || $prefchan = Y ]] ; then
 
 echo -e $BLUE"Selecting Preferred Channels: 1,6,9,11 "$ENCOLOR;
-attachan="1,6,9,11"
+attachan="1,6,11"
 
 else
 echo -e $YELLOW"Specify Channel(s): "$ENDCOLOR;
@@ -221,7 +221,6 @@ while [ -n "$OPTIONS" ] ; do
 
                         echo -e $BLUE"###############################################"$ENDCOLOR
                         echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
-                        echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
                         echo -e $BLUE"###############################################"$ENDCOLOR
                         echo ""
                         echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
@@ -246,7 +245,6 @@ while [ -n "$OPTIONS" ] ; do
 
                         echo -e $BLUE"###############################################"$ENDCOLOR
                         echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
-                        echo -e $YELLOW"#                 Did you listen?             #"$ENDCOLOR
                         echo -e $BLUE"###############################################"$ENDCOLOR
                         echo ""
                         echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
