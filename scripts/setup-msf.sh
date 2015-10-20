@@ -113,7 +113,7 @@ usermod -aG adm $USER
 usermod -aG postgres $USER
 echo -e $BLUE"Entering POSTGRES Environment"$ENDCOLOR
 sleep 0.5
-postgres
+su postgres
 echo -e $BLUE"Creating POSTGRES user 'msf'"$ENDCOLOR
 sleep 0.5
 createuser msf -P -S -R -D | $PASSWORD
@@ -122,7 +122,6 @@ sleep 0.5
 echo -e $BLUE"Creating MSF Database for Administrative User 'msf'"$ENDCOLOR
 sleep 0.5
 createdb -O msf msf
-exit
 exit
 
 echo -e $BLUE"Installation and Configuration METASPLOIT FRAMEWORK"$ENDCOLOR
@@ -134,9 +133,9 @@ echo -e $BLUE"Cloning newest metasploit-framework into /optmetasploit-framework"
 sleep 0.5
 sudo git clone https://github.com/rapid7/metasploit-framework.git
 
-echo -e $BLUE"CHMOD -R whoami"$ENDCOLOR
-sleep 0.5
-sudo chown -R `whoami` /opt/metasploit-framework
+#echo -e $BLUE"CHMOD -R whoami"$ENDCOLOR
+#sleep 0.5
+#sudo chown -R `whoami` /opt/metasploit-framework
 cd /opt/metasploit-framework
 
 echo -e $BLUE"Installing gem bundler for msf console.."$ENDCOLOR
