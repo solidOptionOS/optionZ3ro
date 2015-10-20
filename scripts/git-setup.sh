@@ -18,49 +18,78 @@ echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$
 echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
 echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
 echo -e $BLUE"#################################################################"$ENDCOLOR;
-echo "su"
+echo -e $YELLOW"Let's setup your github config"$ENDCOLOR
+sleep 1
+echo -e $YELLOW"Enter your github username: "$ENDCOLOR
+read githubusername
+sleep 1
+echo -e $BLUE"Registering global user.name.."$ENDCOLOR
+sleep 0.5
+git config --global user.name "$githubusername"
+sleep 1
+echo -e $YELLOW"Enter your github email address: "$ENDCOLOR
+read githubemailaddress
+sleep 1
+echo -e $BLUE"Registering global email.address.."$ENDCOLOR
+sleep 0.5
+git config --global user.email $githubemailaddress
+sleep 1
+echo -e $BLUE"Which push.default config would you like to use? ['simple' or 'matching' ]"$ENDCOLOR
+read defaultpush
+sleep 0.5
+echo -e $YELLOW"Registering push.default $defaultpush."$ENDCOLOR
+sleep 0.5
+git config --global push.default $defaultpush
+sleep 1
 echo -e $YELLOW"Checking for SSH keys"$ENDCOLOR
 ls -al /root/.ssh
 ## Lists the files in your .ssh directory, if they exist
 sleep 1
-echo -e $BLUE"Generating public/private rsa key pair."$ENDCOLOR
-echo ""
-echo -e $YELLOW"Enter username associated with rsa key pair: "$ENDCOLOR
-read githubusername
+echo -e $BLUE"Now we will generate a public/private rsa key pair"$ENDCOLOR
+sleep 0.5
 ssh-keygen -t rsa -b 4096 -C $githubusername@github.com
 ## Creates a new ssh key, using the email as a label
 sleep 1 
-echo -e $BLUE"Starting ssh-agent in the background."$ENDCOLOR
+echo -e $BLUE"Starting ssh-agent"$ENDCOLOR
 eval "$(ssh-agent -s)"
 sleep 1
 echo -e $BLUE"Adding new SSH key to the ssh-agent"$ENDCOLOR
 sleep 1
 ssh-add -l
-sleep 2
-echo -e $YELLOW"Copying id_rsa.pub key to clipboard. "$ENDCOLOR
-
 sleep 1
-cat /root/.ssh/id_rsa.pub | xclip -i
+echo -e $YELLOW"Copying id_rsa.pub key to clipboard. "$ENDCOLOR
+sleep 0.5
+cat ~/.ssh/id_rsa.pub | xclip -i
 sleep 1 
-#echo -e $BLUE"Jumping to ~/.ssh/"$ENDCOLOR
-#cd ~/.ssh/ && ls -al
-#sleep 1 
-
-echo -e $YELLOW"Register SSH key to git account."$ENDCOLOR
-echo ""
-echo -e $YELLOW"Copy your rsa pub key to the clipboard and add it to Github -> Profile -> Setings "$ENDCOLOR
+echo -e $YELLOW"Now, copy your id_rsa.pub key to Github -> Profile -> Settings -> SSH Keys "$ENDCOLOR
 sleep 5
-echo -e $YELLOW"Ready? "$ENDCOLOR
+echo -e $YELLOW"When you have completed this step, enter 'y': "$ENDCOLOR
 read readytogo
 
 if [[ $readytogo = y || $readytogo = Y ]] ; then
 
 echo -e $BLUE"Okay, let's test the connection. "$ENDCOLOR
-echo "ssh -vT $githubusername@github.com"
+sleep 2
+ssh -vT $githubusername@github.com
 sleep 1
+echo -e $BLUE"If you have authenticated, then you have successfully set up your SSH Key!"$ENDCOLOR
+sleep 0.5
+echo -e $YELLOW"Did you successfully authenticate? [y/n]"$ENDCOLOR
+read successyes
+if [[ $successyes = y || $successyes = Y ]] ; then
+echo -e $YELLOW"SUCCESS! You are now setup and ready to start using git!"$ENDCOLOR
+exit
 else
-echo -e $BLUE"Please enter 'y' or 'Y' when ready."$ENDCOLOR 
+echo -e $BLUE"That's ok.  Let's try a different method. Login to Github and create a personal access token via -> Profile -> Settings -> Personal Access tokens"$ENDCOLOR
+sleep 1
+echo -e $YELLOW"Enter the token here: "$ENDCOLOR
+read privategithubtoken
+echo -e $BLUE"Ok, got it. Let's import that token."$ENDCOLOR
+sleep 1
+curl -u $githubusername:$privategithubtoken https://api.github.com/user
+sleep 1
+echo -e $YELLOW"SUCCESS! You are now setup and ready to start using git!"$ENDCOLOR
+else
 exit
 fi
-echo -e $BLUE"If you have authenticated, then you have successfully set up your SSH Key!"$ENDCOLOR
-
+fi
