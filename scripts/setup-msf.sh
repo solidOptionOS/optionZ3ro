@@ -52,11 +52,11 @@ cd ~/
 sleep 1
 mkdir ~/rbenv 
 sleep 1
-cd ~/rbenv
 echo -e $BLUE"Cloning newest rbenv into ~/rbenv"$ENDCOLOR
 sleep 1
 git clone git://github.com/sstephenson/rbenv.git
 sleep 1
+cd rbenv
 echo -e $BLUE"Updating PATH.."$ENDCOLOR
 sleep 1
 export PATH="$HOME/rbenv/bin:$PATH" >> ~/.bashrc
@@ -73,7 +73,7 @@ git clone git://github.com/sstephenson/ruby-build.git
 
 sleep 1
 
-cd ruby-build/
+cd ruby-build
 
 export PATH="$HOME/rbenv/plugins/ruby-build/bin:$PATH" >> ~/.bashrc
 
@@ -83,7 +83,7 @@ cd ~/rbenv/plugins/
 sleep 1
 git clone git://github.com/dcarley/rbenv-sudo.git
 sleep 1
-cd rbenv-sudo
+#cd rbenv-sudo
 
 echo -e $BLUE"Creating Global Bundler Environment"$ENDCOLOR
 sleep 0.5
@@ -161,7 +161,7 @@ echo -e $YELLOW"Installing Metasploit-Framework"$ENDCOLOR
 sleep 1
 echo -e $BLUE"Installing necessary packages"$ENDCOLOR
 sleep 0.5
-sudo apt-get -y install build-essential git ruby bundler ruby-dev bison flex autoconf automake
+sudo apt-get -y install --reinstall build-essential git ruby bundler ruby-dev bison flex autoconf automake
 sleep 1
 echo -e $BLUE"Setting up build directories you can write to"$ENDCOLOR
 sleep 0.5
@@ -229,10 +229,10 @@ username: msf
 password: toor
 host: 127.0.0.1
 port: 5432
-pool: 5
+pool: 75
 timeout: 5'
 
-sudo touch /opt/metasploit-framework/config/database.yml
+#sudo touch /opt/metasploit-framework/config/database.yml
 
 echo $msfdatabaseconfig >> /opt/metasploit-framework/config/database.yml
 
@@ -252,14 +252,14 @@ echo -e $YELLOW"Ruby Environment, Metasploit-Framework, Omnibus, and Postgres SQ
 sleep 1 
 echo -e $YELLOW"Use 'msfconsole' to initiate the Metasploit-Framework Console.  ENJOY"$ENDCOLOR
 sleep 0.5
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo " "
-echo -e $YELLOW"Have A Solid Day "$ENDCOLOR
+echo -e $BLUE"###############################################"$ENDCOLOR;
+echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR;
+echo -e $BLUE"###############################################"$ENDCOLOR;
+echo -e $YELLOW"Have A Solid Day "$ENDCOLOR;
 sleep 1
-echo -e $YELLOW"Start now? [y/n]"$ENDCOLOR
+echo -e $YELLOW"Start now?: [y/n]"$ENDCOLOR
 read startmsfconsole
+
 if [[ $startmsfconsole = Y || $startmsfconsole = y ]] ; then
 echo -e $YELLOW"Initializing MSF CONSOLE"$ENDCOLOR
 sleep 1
