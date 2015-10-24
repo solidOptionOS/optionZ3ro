@@ -41,32 +41,32 @@ echo ""
 cd ~/ 
 echo -e $BLUE"Cloning katoolin repository .. "$ENDCOLOR;
 sleep 0.5
-git clone https://github.com/LionSec/katoolin.git  && cp katoolin/katoolin.py /usr/bin/katoolin
+git clone https://github.com/LionSec/katoolin.git  && sudo cp katoolin/katoolin.py /usr/bin/katoolin
 echo ""
 sleep 0.5
 echo -e $YELLOW"Setting Katoolin as executable. Installing in /usr/bin.."$ENDCOLOR;
-chmod +x  /usr/bin/katoolin
+sudo chmod +x  /usr/bin/katoolin
 echo ""
-echo -e $GREEN"Katoolin Installed Successfully!"ENDCOLOR;
+echo -e $GREEN"Katoolin Installed Successfully!"$ENDCOLOR;
 sleep 1
 echo ""
-echo -e $YELLOW"Run Katoolin Now? "ENDCOLOR;
+echo -e $YELLOW"Run Katoolin Now? "$ENDCOLOR;
 read RUNKATOOLIN
 if [[ $RUNKATOOLIN = 'y' || $RUNKATOOLIN = 'Y' ]] ; then
 
 katoolin
 
 echo ""
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo -e $YELLOW"# Thank you for Pledging your Soul to Katoolu #"$ENDCOLOR
-echo -e $BLUE"###############################################"$ENDCOLOR
+echo -e $BLUE"###############################################"$ENDCOLOR;
+echo -e $YELLOW"# Thank you for Pledging your Soul to Katoolu #"$ENDCOLOR;
+echo -e $BLUE"###############################################"$ENDCOLOR;
 echo ""
 exit
 else
 echo ""
-echo -e $BLUE"###############################################"$ENDCOLOR
-echo -e $YELLOW"# Run Katoolin with 'katoolin'  Have a solid Day #"$ENDCOLOR
-echo -e $BLUE"###############################################"$ENDCOLOR
+echo -e $BLUE"###############################################"$ENDCOLOR;
+echo -e $YELLOW"# Run Katoolin with 'katoolin'  Have a solid Day #"$ENDCOLOR;
+echo -e $BLUE"###############################################"$ENDCOLOR;
 echo ""
 exit
 fi
