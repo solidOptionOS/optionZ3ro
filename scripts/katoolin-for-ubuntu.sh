@@ -35,6 +35,7 @@ echo -e $BLUE"#                                       /  / Mint, and Debian"$END
 echo -e $BLUE"#                                      /__/"$ENDCOLOR;
 echo -e $BLUE"#                                "$ENDCOLOR;
 echo ""
+
 echo -e $YELLOW"Install Kali-Tools with Katoolin."$ENDCOLOR
 sleep 1
 echo ""
@@ -53,20 +54,53 @@ echo ""
 echo -e $YELLOW"Run Katoolin Now? "$ENDCOLOR;
 read RUNKATOOLIN
 if [[ $RUNKATOOLIN = 'y' || $RUNKATOOLIN = 'Y' ]] ; then
-
-katoolin
-
+echo -e $RED"################################################################"$ENDCOLOR;
+echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
+echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
+echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
+echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
+echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
+echo -e $RED"#################################################################"$ENDCOLOR;
+echo -e $BLUE"#                                 ||                            #"$ENDCOLOR;
+echo -e $BLUE"#                                 ||_________________________/'|#"$ENDCOLOR;
+echo -e $BLUE"#                                _| O======/                   |#"$ENDCOLOR;
+echo -e $BLUE"#                               |_|              ============  |#"$ENDCOLOR;
+echo -e $BLUE"#                                 | __   ______________________|#"$ENDCOLOR;
+echo -e $BLUE"#                                 |_/ )  (     |___||     O-   /#"$ENDCOLOR;
+echo -e $BLUE"#                                     (  )    /  / |_________/  #"$ENDCOLOR;
+echo -e $BLUE"#                                     (  )   /  /    | ) |   |  #"$ENDCOLOR;
+echo -e $BLUE"#                                     (__)  /  /     \___|__(   #"$ENDCOLOR;
+echo -e $BLUE"#                                          /  / Katoolin:)   \  #"$ENDCOLOR;
+echo -e $BLUE"#                                         /  / Kali-Tools )   \ #"$ENDCOLOR;
+echo -e $BLUE"#                                        /  / for Ubuntu,  )___\#"$ENDCOLOR;
+echo -e $BLUE"#                                       /  / Mint, and Debian   #"$ENDCOLOR;
+echo -e $BLUE"#                                      /__/                     #"$ENDCOLOR;
+echo -e $BLUE"#                                                               #"$ENDCOLOR;
+echo -e $RED"#################################################################"$ENDCOLOR;
 echo ""
-echo -e $BLUE"###############################################"$ENDCOLOR;
-echo -e $YELLOW"# Thank you for Pledging your Soul to Katoolu #"$ENDCOLOR;
-echo -e $BLUE"###############################################"$ENDCOLOR;
+sudo katoolin
+echo ""
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW" __            __  .__                  .__                  "$ENDCOLOR;
+echo -e $YELLOW"|  | _______ _/  |_|  |__   ____   ____ |  |   ____   ____   "$ENDCOLOR;
+echo -e $YELLOW"|  |/ /\__  \\   __\  |  \ /  _ \ /  _ \|  |  /  _ \ /  _ \  "$ENDCOLOR;
+echo -e $YELLOW"|    <  / __ \|  | |   Y  (  <_> |  <_> )  |_(  <_> |  <_> ) "$ENDCOLOR;
+echo -e $YELLOW"|__|_ \(____  /__| |___|  /\____/ \____/|____/\____/ \____/  "$ENDCOLOR;
+echo -e $YELLOW"     \/     \/          \/                                   "$ENDCOLOR;
+echo -e $YELLOW"       Thank you for Pledging Your Soul to Kathooloo         "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR;
 echo ""
 exit
 else
 echo ""
-echo -e $BLUE"###############################################"$ENDCOLOR;
-echo -e $YELLOW"# Run Katoolin with 'katoolin'  Have a solid Day #"$ENDCOLOR;
-echo -e $BLUE"###############################################"$ENDCOLOR;
-echo ""
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW" __            __  .__                  .__                  "$ENDCOLOR;
+echo -e $YELLOW"|  | _______ _/  |_|  |__   ____   ____ |  |   ____   ____   "$ENDCOLOR;
+echo -e $YELLOW"|  |/ /\__  \\   __\  |  \ /  _ \ /  _ \|  |  /  _ \ /  _ \  "$ENDCOLOR;
+echo -e $YELLOW"|    <  / __ \|  | |   Y  (  <_> |  <_> )  |_(  <_> |  <_> ) "$ENDCOLOR;
+echo -e $YELLOW"|__|_ \(____  /__| |___|  /\____/ \____/|____/\____/ \____/  "$ENDCOLOR;
+echo -e $YELLOW"     \/     \/          \/                                   "$ENDCOLOR;
+echo -e $YELLOW"       Thank you for Pledging Your Soul to Kathooloo         "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR;
 exit
 fi
