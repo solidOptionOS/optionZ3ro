@@ -19,52 +19,110 @@ echo -e $YELLOW"                         /_/                                  "$
 echo -e $RED"#################################################################"$ENDCOLOR;
 echo -e $YELLOW"Solid-Update"$ENDCOLOR;
 echo ""
-echo -e $BLUE"Udpating with Apt-Get and Aptitude "$ENDCOLOR;
-sudo apt-get update
-sudo aptitude update
-echo -e $BLUE"Upgrading with Aptitude "$ENDCOLOR;
+echo -e $BLUE"Cleaning and purging first "$ENDCOLOR;
+sudo apt-get clean && sudo apt-get autoclean
+sleep 0.1
+sudo rm -rf -i /var/cache/apt/archive/
+sleep 0.1
+echo ""
+echo -e $BLUE"Updating Package Cache "$ENDCOLOR;
 sleep 0.5
-sudo aptitude upgrade -y
-echo -e $BLUE"Upgrading Distro with Aptitude "$ENDCOLOR;
+sudo apt-get update && sudo aptitude update 
 sleep 0.5
-sudo aptitude dist-upgrade -y
-echo -e $BLUE"Fixing missing or broken packages with Aptitude "$ENDCOLOR;
+echo ""
+echo -e $BLUE"Installing apt-file "$ENDCOLOR;
+sleep 0.1
+sudo apt-get install apt-file -y
 sleep 0.5
-sudo aptitude -f install
-echo -e $BLUE"Upgrading with Apt-Get "$ENDCOLOR;
+echo -e $BLUE"Updaring apt-file "$ENDCOLOR;
+echo -e $BLUE"This may take a while depending on your system "$ENDCOLOR;
+sleep 0.1
+sudo apt-file update
 sleep 0.5
-sudo apt-get upgrade -y
-echo -e $BLUE"Upgrading Distro with Apt-Get "$ENDCOLOR;
+echo ""
+echo -ei $BLUE"Upgrading your packages "$ENDCOLOR;
+sleep 0.1
+sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo aptitude upgrade -y && sudo aptitude dist-upgrade -y
 sleep 0.5
-sudo apt-get dist-upgrade -y
-echo -e $BLUE"Fixing missing or broken packages with Apt-Get "$ENDCOLOR;
+sudo apt-get autoremove $$ sudo apt-get autoclean
 sleep 0.5
-sudo apt-get install -f
-echo -e $BLUE"Removing old or obsolete packages "$ENDCOLOR;
+echo ""
+echo -e $YELLOW"Would you like to try and repair any broken packages? {y/n} "$ENDCOLOR;
+read fixornot
+if [[ $fixornot = 'y' || $fixornot = 'Y' ]] ; then
+echo ""
+echo -e $BLUE" OK. Attempting to repair broken packages "$ENDCOLOR;
+sleep 0.1
+sudo apt-get update --fix-missing && sudo apt-get upgrade --fix-broken -y
 sleep 0.5
-sudo apt-get autoremove
-echo -e $BLUE"Cleaning Apt-Get Archives "$ENDCOLOR;
+echo ""
+sudo apt-get -f install && sudo aptitude -f install 
 sleep 0.5
-sudo apt-get clean
-echo -e $BLUE"Updating Database "$ENDCOLOR;
-sleep 0.5
+echo ""
+else 
+echo -e $BLUE"Updating database, initramfs, and grub "$ENDCOLOR;
+sleep 0.1
+echo ""
 sudo updatedb
-echo -e $BLUE"Updating initframs "$ENDCOLOR;
-sleep 0.5
-sudo update-initframs -uv
-echo -e $BLUE"Updating Grub "$ENDCOLOR;
-sleep 0.5
-sudo update-grub
-echo -e $BLUE"Updating Grub2 "$ENDCOLOR;
-sleep 0.5
-sudo update-grub2
-echo -e $BLUE"Update Complete "$ENDCOLOR;
+skeep 0.5
+echo ""
+sudo update-initramfs -uv
 sleep 0.5
 echo ""
+sudo update-grub && sudo update-grub2
+sleep 0.5
 echo ""
-echo -e $RED"###############################################"$ENDCOLOR
-echo -e $RED"#              task complete!!                #"$ENDCOLOR
-echo -e $RED"###############################################"$ENDCOLOR
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo -e $YELLOW"#    Solid Update Complete.     #"$ENDCOLOR;
+echo -e $BLUE"#################################"$ENDCOLOR;
 echo ""
-echo -e $YELLOW"Have A Solid Day"$ENDCOLOR;
+exit
+fi
+
+echo -e $YELLOW"Are you still having problems? {y/n}"$ENDCOLOR;
+read moproblems
+if [[ $moproblems = 'y' || $moproblems = 'Y' ]] ; then
+sleep 0.1
 echo ""
+echo -e $BLUE"Attempting fix with --full-resolver "$ENDCOLOR;
+echo -e $BLUE"This may take a while... seriously..."$ENDCOLOR;
+sleep 0.1
+echo ""
+sudo aptititude --full-resolver 
+sleep 0.5
+echo ""
+echo -e $BLUE"Updating database, initramfs, and grub "$ENDCOLOR;
+sleep 0.1
+echo ""
+sudo updatedb
+skeep 0.5
+echo ""
+sudo update-initramfs -uv
+sleep 0.5
+echo ""
+sudo update-grub && sudo update-grub2
+sleep 0.5
+echo ""
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo -e $YELLOW"#    Solid Update Complete.     #"$ENDCOLOR;
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo ""
+exit
+
+else
+echo ""
+sudo updatedb
+skeep 0.5
+echo ""
+sudo update-initramfs -uv
+sleep 0.5
+echo ""
+sudo update-grub && sudo update-grub2
+sleep 0.5
+echo ""
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo -e $YELLOW"#    Solid Update Complete.     #"$ENDCOLOR;
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo ""
+exit
+fi
