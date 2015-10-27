@@ -62,18 +62,18 @@ rm -i -v /var/cache/* --force
 
 echo "" 
 echo -e $BLUE"Cleaning /var/cache/..."$ENDCOLOR
-sudo rm -v /var/cache/apt/archives/*.deb  
+rm -v /var/cache/apt/archives/*.deb  
 sleep 0.5
-sudo rm -v /var/log/*.gz  -f
+rm -v /var/log/*.gz  -f
 sleep 0.5
-sudo rm -rf ~/root/.local/share/Trash/*
+rm -rf ~/root/.local/share/Trash/*
 sleep 0.5
 echo -e $BLUE"Cleaning old kernels..."$ENDCOLOR
-sudo aptitude purge $OLDKERNELS
+aptitude purge $OLDKERNELS
 sleep 0.5
 echo ""
 echo -e $BLUE"Fixing broken packages..."$ENDCOLOR
-sudo apt-get check ; sudo apt-get -f install
+apt-get check ; apt-get -f install
 sleep 0.5
 echo -e $BLUE"Cleaning trash archives..."$ENDCOLOR
 sleep 0.5
@@ -82,26 +82,26 @@ sleep 0.5
 rm -rf /root/.local/share/Trash/*/** &> /dev/null
 sleep 0.5
 echo -e $BLUE"[Aptitude]Cleaning..."$ENDCOLOR
-sudo aptitude clean
+aptitude clean
 sleep 0.5
 echo -e $BLUE"[Apt-Get]Removing obsolete packages and cleaning..."$ENDCOLOR
-sudo apt-get autoremove && sudo apt-get autoclean && sudo apt-get purge && sudo apt-get clean
+apt-get autoremove && apt-get autoclean && apt-get purge && apt-get clean
 sleep 0.5
 echo ""
 echo ""
 echo -e $BLUE"[Aptitude]:Cleaning leftover configs..."$ENDCOLOR 
-sudo aptitude purge $OLDCONF
-dpkg -l | grep '^rc' | awk '{print $2}' | sudo xargs dpkg --purge
+aptitude purge $OLDCONF
+dpkg -l | grep '^rc' | awk '{print $2}' | xargs dpkg --purge
 sleep 0.5
 echo ""
 echo ""
 echo -e $BLUE"[Aptitude]:Cleaning apt cache again..."$ENDCOLOR
-sudo aptitude clean
+aptitude clean
 sleep 0.5
 echo ""
 echo ""
 echo -e $BLUE"[Aptitude]:Removing old config files again..."$ENDCOLOR
-sudo aptitude purge $OLDCONF
+aptitude purge $OLDCONF
 sleep 0.5
 apt-get autoremove
 sleep 0.5
