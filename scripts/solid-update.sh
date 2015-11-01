@@ -42,17 +42,17 @@ sleep 0.5
 echo ""
 echo -e $BLUE"Upgrading your packages "$ENDCOLOR;
 sleep 0.1
-apt-get upgrade -y && apt-get dist-upgrade -y && aptitude upgrade -y && aptitude dist-upgrade -y
+apt-get upgrade && apt-get dist-upgrade && aptitude upgrade && aptitude dist-upgrade
 sleep 0.5
 echo -e $BLUE"Removing old packages "$ENDCOLOR;
-apt-get autoremove $$ apt-get autoclean
+apt-get autoremove && apt-get autoclean
 sleep 0.5
 echo ""
 echo -e $YELLOW"Would you like to try and repair any broken packages? {y/n} "$ENDCOLOR;
 read fixornot
 if [[ $fixornot = 'y' || $fixornot = 'Y' ]] ; then
 echo ""
-echo -e $BLUE" OK. Attempting to repair broken packages "$ENDCOLOR;
+echo -e $BLUE"OK. Attempting to repair broken packages "$ENDCOLOR;
 sleep 0.1
 apt-get update --fix-missing && apt-get upgrade --fix-broken -y
 sleep 0.5
