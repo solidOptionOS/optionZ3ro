@@ -22,7 +22,7 @@ echo ""
 echo -e $BLUE"Cleaning and purging first "$ENDCOLOR;
 apt-get autoremove && apt-get clean && apt-get autoclean
 sleep 0.1
-rm -rf /var/cache/apt/archives/
+rm -rf -i /var/cache/apt/archives/
 sleep 0.1
 echo ""
 echo -e $BLUE"Updating Package Cache "$ENDCOLOR;
@@ -42,7 +42,7 @@ sleep 0.5
 echo ""
 echo -e $BLUE"Upgrading your packages "$ENDCOLOR;
 sleep 0.1
-apt-get upgrade -y sudo apt-get dist-upgrade -y && aptitude upgrade -y aptitude dist-upgrade -y
+apt-get upgrade -y && apt-get dist-upgrade -y && aptitude upgrade -y && aptitude dist-upgrade -y
 sleep 0.5
 echo -e $BLUE"Removing old packages "$ENDCOLOR;
 apt-get autoremove $$ apt-get autoclean
