@@ -45,7 +45,7 @@ usermod -aG sudo $NEWUSER
 usermod -aG adm $NEWUSER
 sleep 1
 echo -e $BLUE"Changing user $NEWUSER default shell to /bin/bash"$ENDCOLOR
-usermod -s /bin/bash $NEWUSER
+chsh -s /bin/bash $NEWUSER
 sleep 1
 echo ""
 echo -e $RED"#########################################################"$ENDCOLOR
