@@ -64,10 +64,10 @@ chmod +x *
 ls -al
 echo -e $BLUE"Ok, now we are ready to move them."$ENDCOLOR
 sleep 1
-echo -e $YELLOW"Would you like to add all of the scripts to: ['/usr/local/bin', '/usr/local/sbin', '/usr/bin', '/usr/sbin', '/bin', '/sbin', or 'all']?: "$ENDCOLOR
+echo -e $YELLOW"Would you like to add all of the scripts to: '/usr/local/bin'. "$ENDCOLOR;
 read addtobin
-if [[ $addtobin = all ]] ; then
-echo -e $BLUE"Ok. Adding all scripts to all locations"$ENDCOLOR 
+if [[ $addtobin = y || $addtobin = Y]] ; then
+echo -e $BLUE"Ok. Adding all scripts to '/usr/local/bin'.."$ENDCOLOR 
 sleep 1
 cp /tmp/scripts/* /usr/local/bin
 cp /tmp/scripts/* /usr/local/sbin
@@ -78,20 +78,8 @@ cp /tmp/scripts/* /sbin
 echo -e $YELLOW"Done."$ENDCOLOR
 exit 0
 
-if [[ $addtobin != /usr/local/bin || $addtobin != /usr/local/sbin || $addtobin != /usr/bin || $addtobin != /usr/sbin || $addtobin != /bin || $addtobin != /sbin || $addtobin != all ]] ; then
+else
+
 echo -e $YELLOW"Ok. Maybe some other time."$ENDCOLOR
 exit 0
 fi
-
-else
-echo -e $BLUE"Ok. Adding all scripts to $addtobin"$ENDCOLOR
-sleep 0.5
-cp /tmp/scripts/* $addtobin
-sleep 1
-echo -e $YELLOW"Done."$ENDCOLOR
-exit 0
-fi
-
-
-
-
