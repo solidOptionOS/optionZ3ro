@@ -76,8 +76,10 @@ read SOURCEBASHRC
 
 if [[ $SOURCEBASHRC = 'y' || $SOURCEBASHRC = 'Y' ]] ; then
 
-clear && source ~/.bashrc
-
+clear
+sleep 1
+source ~/.bashrc
+sleep 1
 echo -e $BLUE"###############################################################"$ENDCOLOR;
 echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
 echo -e $BLUE"###############################################################"$ENDCOLOR
