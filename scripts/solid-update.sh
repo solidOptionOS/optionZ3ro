@@ -89,7 +89,7 @@ echo -e $BLUE"Attempting fix with --full-resolver "$ENDCOLOR;
 echo -e $BLUE"This may take a while... seriously..."$ENDCOLOR;
 sleep 0.1
 echo ""
-aptititude install --full-resolver 
+aptitude install --full-resolver 
 sleep 0.5
 echo ""
 echo -e $BLUE"Updating database, initramfs, and grub "$ENDCOLOR;
