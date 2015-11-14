@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ~/
 mkdir backup
 cd backup
 git clone https://github.com/derv82/wifite.git
