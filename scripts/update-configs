@@ -29,13 +29,13 @@ if [[ $COPYBASHRC = 'y' || $COPYBASHRC = 'Y' ]] ; then
 echo -e $BLUE"Making a backup first. "$ENDCOLOR;
 echo ""
 sleep 1
-echo cp ~/.bashrc ~/.bashrc.bak
+cp ~/.bashrc ~/.bashrc.bak
 sleep 1
 echo ""
 echo -e $BLUE"Copying.. "$ENDCOLOR;
 echo ""
 sleep 1
-echo cp ../configs/bashrc ~/.bashrc
+cp ../configs/bashrc ~/.bashrc
 sleep 1
 echo -e $GREEN"Bashrc copied successfully!"$ENDCOLOR;
 echo ""
@@ -73,13 +73,13 @@ if [[ $COPYHTOPRC = 'y' || $COPYHTOPRC = 'Y' ]] ; then
 echo -e $BLUE"Making a backup first."$ENDCOLOR;
 echo ""
 sleep 1
-echo cp ~/.config/htop/htoprc ~/.config/htop/htoprc.bak
+cp ~/.config/htop/htoprc ~/.config/htop/htoprc.bak
 sleep 1
 echo ""
 echo -e $BLUE"Copying.."$ENDCOLOR;
 echo ""
 sleep 1
-echo cp ../configs/htoprc ~/.config/htop/htoprc
+cp ../configs/htoprc ~/.config/htop/htoprc
 sleep 1
 echo -e $GREEN"Htoprc copied successfully!"$ENDCOLOR;
 echo ""

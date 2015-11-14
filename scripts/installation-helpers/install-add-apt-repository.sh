@@ -10,7 +10,7 @@ apt-file search add-apt-repository
 sleep 1
 echo "Modifying add-apt-repository with ~/optionZ3ro/scripts/add-apt-repository in /usr/sbin.."
 sleep 1
-cp /home/solid/optionZ3ro/scripts/add-apt-repository /usr/sbin/add-apt-repository
+cp /root/optionZ3ro/scripts/add-apt-repository /usr/sbin/add-apt-repository
 sleep 0.5 
 echo "Changing permissions and ownership.. "
 sleep 1
