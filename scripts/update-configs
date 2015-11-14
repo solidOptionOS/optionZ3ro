@@ -39,13 +39,23 @@ echo cp ../configs/bashrc ~/.bashrc
 sleep 1
 echo -e $GREEN"Bashrc copied successfully!"$ENDCOLOR;
 echo ""
+
+else
+
+echo -e $BLUE"Okay. Maybe some other time."$ENDCOLOR;
+sleep 1
+fi
+
 sleep 1
 echo -e $YELLOW"Source bashrc now?"$ENDCOLOR;
 read SOURCEBASHRC
 
 if [[ $SOURCEBASHRC = 'y' || $SOURCEBASHRC = 'Y' ]] ; then
 
-clear && source ~/.bashrc
+clear
+sleep 1
+source ~/.bashrc
+sleep 1
 
 else
 
@@ -80,6 +90,7 @@ else
 echo -e $BLUE"Okay. Maybe some other time. "$ENDCOLOR;
 sleep 1
 fi
+
 echo ""
 echo -e $BLUE"###############################################################"$ENDCOLOR;
 echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
