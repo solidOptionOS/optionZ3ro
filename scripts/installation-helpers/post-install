@@ -69,10 +69,11 @@ echo -e $BLUE"Would you like to install custom themes and icons? [y/n]"$ENDCOLOR
 read CUSTOMTHEMES
 
 if [[ $CUSTOMTHEMES = 'y' || $CUSTOMTHEMES = 'Y' ]] ; then
-
+echo ""
 /usr/sbin/add-apt-repository ppa:noobslab/themes
+echo""
 /usr/sbin/add-apt-repository ppa:alecive/antigone
-
+echo ""
 else
 
 echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
