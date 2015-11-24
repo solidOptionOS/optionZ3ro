@@ -50,6 +50,7 @@ apt-get install python-software-properties apt-file -y
 echo ""
 echo -e $BLUE"Running apt-file update.."$ENDCOLOR;
 apt-file update
+echo ""
 echo -e $BLUE"Using apt-file search to find add-apt-repository"$ENDCOLOR;
 sleep 1
 apt-file search add-apt-repository
@@ -57,16 +58,17 @@ echo ""
 echo -e $BLUE"Modifying add-apt-repository with ~/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
 cp /root/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
 sleep 0.5
+echo ""
 echo -e $BLUE"Changing permissions and ownership.."$ENDCOLOR;
 chmod o+x /usr/sbin/add-apt-repository
 chown root:root /usr/sbin/add-apt-repository
 echo ""
 echo -e $GREEN"Add-Apt-Repository Added Successfully."$ENDCOLOR;
 echo ""
-echo -e $BLUE"Would you like to install custom themes and icons? "$ENDCOLOR;
+echo -e $BLUE"Would you like to install custom themes and icons? [y/n]"$ENDCOLOR;
 read CUSTOMTHEMES
 
-if [[ $CUSTOMTHEMES = 'y' | $CUSTOMTHEMES = 'Y' ]] ; then
+if [[ $CUSTOMTHEMES = 'y' || $CUSTOMTHEMES = 'Y' ]] ; then
 
 /usr/sbin/add-apt-repository ppa:noobslab/themes
 /usr/sbin/add-apt-repository ppa:alecive/antigone
@@ -79,13 +81,13 @@ fi
 
 echo -e $BLUE"Installing preferred extras.."$ENDCOLOR;
 sleep 1
-apt-get install ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common firefox gtk-recordmydesktop recordmydesktop remmia htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
+apt-get install ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
 echo ""
 
 echo -e $YELLOW"Would you like to install screenfetch? "$ENDCOLOR;
 read INSTALLSCREENFETCH
 
-if [[ $INSTALLSCREENFETCH = 'y' | $INSTALLSCREENFETCH = 'Y' ]] ; then
+if [[ $INSTALLSCREENFETCH = 'y' || $INSTALLSCREENFETCH = 'Y' ]] ; then
 
 echo -e $YELLOW"Installing and setting up screenfetch.."$ENDCOLOR
 sleep 1
@@ -111,7 +113,7 @@ echo ""
 echo -e $YELLOW"Woud you like to install Java SE? "$ENDCOLOR;
 read INSTALLJAVA
 
-if [[ $INSTALLJAVA = 'y' | $INSTALLJAVA = 'Y' ]] ; then
+if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
 
 echo -e $YELLOW"Installing Java SE x64 version"$ENDCOLOR;
 echo ""
@@ -142,7 +144,7 @@ fi
 echo -e $YELLOW"Would you like to download and install SolidOptionOS artwork? [y/n]"$ENDCOLOR;
 read ARTWORK
 
-if [[ $ARTWORK = 'y' | $ARTWORK = 'Y' ]] ; then
+if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 
 cd ~/Pictures
 echo -e $BLUE"Downloading artwork for SolidOptionOS server.."$ENDCOLOR;
@@ -153,6 +155,7 @@ echo -e $BLUE"Extracting.."$ENDCOLOR;
 unzip pics.zip
 rm -rf __MACOSX/
 chmod 777 *
+echo ""
 echo -e $BLUE"Backing up originals.."$ENDCOLOR;
 sleep 0.5
 mkdir /usr/share/images/desktop-base/backup
@@ -163,10 +166,28 @@ cp ~/Pictures/* /usr/share/images/desktop-base/
 mkdir /usr/share/gnome-shell/theme/backup
 mv /usr/share/gnome-shell/theme/KaliLogin.png /usr/share/gnome-shell/theme/backup/KaliLogin.png.bak
 cp ~/Pictures/login-background.png /usr/share/gnome-shell/theme/KaliLogin.png
+echo ""
 
 else
 
 echo -e $BLUE"Okay. Maybe some other time."$ENDCOLOR;
+echo ""
+
+fi
+
+echo -e $BLUE"Would you like to add screenfetch and custom alias to your bashrc? [y/n]"$ENDCOLOR;
+read BASHRC
+
+if [[ $BASHRC = 'y' || $BASHRC = 'Y' ]] ; then
+
+echo "screenfetch" >> ~/.bashrc
+echo "alias ll='ls -Al'" >> ~/.bashrc
+echo "alias goto-scripts='cd /root/optionZ3ro/scripts'" >> ~/.bashrc
+echo "alias update-all='./root/optionZ3ro/scripts/solid-update" >> ~/.bashrc
+
+else
+
+echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
 
 fi
 
