@@ -77,12 +77,25 @@ echo ""
 else
 
 echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
-
+echo ""
 fi
 
+echo -e $BLUE"Configuring airmon-ng.."$ENDCOLOR;
+sleep 1
+echo ""
+echo -e $BLUE"Backing up airmon-ng.."$ENDCOLOR;
+sleep 0.5
+mv /usr/sbin/airmon-ng /usr/sbin/airmon-ng-bak 
+echo ""
+echo -e $BLUE"Modifying airmon-ng with asset.."$ENDCOLOR;
+echo ""
+cp ~/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+echo -e $GREEN"Airmon-ng successfully configured!"$ENDCOLOR;
+echo ""
+sleep 0.5
 echo -e $BLUE"Installing preferred extras.."$ENDCOLOR;
 sleep 1
-apt-get install ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
+apt-get install --reinstall ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
 echo ""
 
 echo -e $YELLOW"Would you like to install screenfetch? "$ENDCOLOR;
@@ -191,6 +204,35 @@ else
 echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
 
 fi
+echo "Do you want to install linux-kernel-4.2.3?: "
+read INSTALLKERNEL
+if [[ $INSTALLKERNEL = 'y' || $INSTALLKERNEL = 'Y' ]] ; then
+cd ~/
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-headers-4.2.3-040203_4.2.3-040203.201510030832_all.deb
+sleep 0.5
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-headers-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb
+sleep 0.5
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-image-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb
+sleep 1
+sudo dpkg -i linux-headers-4.2.3*.deb linux-image-4.2.3*.deb
+sleep 1
+
+echo ""else
+exit 0
+fi
+
+echo -e $YELLOW"Reboot now?: [y/n]"$ENDCOLOR;
+read REBOOTNOW
+
+if [[ $REBOOTNOW = 'y' || $REBOOTNOW = 'Y' ]] ; then
+
+sudo reboot
+
+else
+
+echo -e $BLUE"Ok. You will see the new kernel in the grub when you reboot. "$ENDCOLOR;
+echo ""
+fi
 
 echo -e $BLUE"Updating airodump-ng manufacturer data.."$ENDCOLOR;
 airodump-ng-oui-update
@@ -214,8 +256,29 @@ update-grub
 echo ""
 echo -e $BLUE"[update-grub2]"$ENDCOLOR;
 update-grub2
+echo "" 
+sleep 1
+echo -e $YELLOW"Reboot now?: [y/n]"$ENDCOLOR;
+read REBOOTNOW
+
+if [[ $REBOOTNOW = 'y' || $REBOOTNOW = 'Y' ]] ; then
+
+
+echo ""
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo -e $YELLOW"#      Operation Complete.       #"$ENDCOLOR;
+echo -e $BLUE"#################################"$ENDCOLOR;
+
+
+sudo reboot
+
+else 
+
+echo -e $BLUE"OK. Kernel will be available upon next boot."$ENDCOLOR;
+
 echo ""
 echo -e $BLUE"#################################"$ENDCOLOR;
 echo -e $YELLOW"#      Operation Complete.       #"$ENDCOLOR;
 echo -e $BLUE"#################################"$ENDCOLOR;
 exit
+fi
