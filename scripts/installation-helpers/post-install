@@ -19,11 +19,11 @@ echo -e $RED"#################################################################"$
 echo -e $BLUE"#                                 ||"$ENDCOLOR;
 echo -e $BLUE"#                                 ||_________________________/'|"$ENDCOLOR;
 echo -e $BLUE"#                               _| O======/                    |"$ENDCOLOR;
-echo -e $BLUE"#  +-+-+-+-+ +--+-+ +-+-+-+-+  |_|               ============  |"$ENDCOLOR;
-echo -e $BLUE"#  |F|u|c|k| |'e|m| |a|l|l|!|    |  __   ______________________|"$ENDCOLOR;
-echo -e $BLUE"# +-+-+-+-+-+-+-+ +-+-+-+-+-+    |_/  )  (    |___||     O-   /"$ENDCOLOR;
-echo -e $BLUE"# |C|a|r|p|e| |O|m|n|i|o|u|s|         (  )    /  / |_________/"$ENDCOLOR;
-echo -e $BLUE"# +-+-+-+-+-+ +-+-+-+-+-+-+-+         (  )   /  /    | ) |   |"$ENDCOLOR;
+echo -e $BLUE"#                              |_|               ============  |"$ENDCOLOR;
+echo -e $BLUE"#                                |  __   ______________________|"$ENDCOLOR;
+echo -e $BLUE"#                                |_/  )  (    |___||     O-   /"$ENDCOLOR;
+echo -e $BLUE"#  C a r p e   O m n i o u s          (  )    /  / |_________/"$ENDCOLOR;
+echo -e $BLUE"#                                     (  )   /  /    | ) |   |"$ENDCOLOR;
 echo -e $BLUE"#                                     (__)  /  /     \___|__("$ENDCOLOR;
 echo -e $BLUE"#                                          /  /          )   \ "$ENDCOLOR;
 echo -e $BLUE"#                                         /  /            )   \ "$ENDCOLOR;
@@ -33,252 +33,585 @@ echo -e $BLUE"#                                      /__/"$ENDCOLOR;
 echo -e $BLUE"#                                "$ENDCOLOR;
 echo ""
 echo -e $YELLOW"Thank you for choosing SolidOptionOS!"$ENDCOLOR;
+sleep 2
 echo ""
-echo -e $YELLOW"This is a post installation script designed for the optionZ3ro drive you either purchased or downloaded online to give you a simpler, more robust user experience with the OS and its tools."$ENDCOLOR;
+echo -e $YELLOW"This is a post installation script designed for the optionZ3ro drive or downloaded OS"$ENDCOLOR;
+echo -e $YELLOW" you either purchased or downloaded online to give you a simpler, more robust user experience with the OS and its tools."$ENDCOLOR;
 echo ""
+sleep 1
+
 echo -e $YELLOW"Let's get started"$ENCOLOR;
 sleep 1
-echo -e $YELLOW"Updating and upgrading.."$ENDCOLOR;
-sleep 0.5
-apt-get update && apt-get upgrade -y
 echo ""
-echo -e $YELLOW"Installing and configuring add-apt-repository"$ENDCOLOR;
+
+echo -e $BLUE"Backing up original ssh tokens.."$ENDCOLOR;
+sleep 1
+
+if [[ ! -e /etc/ssh/oldies ]] ; then
+	mkdir /etc/ssh/oldies
+fi
+
+mv /etc/ssh/ssh_host* /etc/ssh/oldies
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"Reconfiguring openssh-server.."$ENDCOLOR;
+sleep 1
+dpkg-reconfigure openssh-server
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $GREEN"Success! Default ssh keys backed-up and regenerated."$ENDCOLOR;
+sleep 1
+echo ""
+
+echo -e $BLUE"Updating and upgrading.."$ENDCOLOR;
+sleep 1
+apt-get update && apt-get upgrade -y
+apt-get autoremove
+apt-get dist-upgrade
+echo ""
+echo -e $GREEN"Success! Your system is now up-to-date."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"Installing and configuring add-apt-repository"$ENDCOLOR;
+sleep 1
 echo ""
 echo -e $BLUE"Installing python-software-properties and apt-file.."$ENDCOLOR;
-sleep 0.5
-apt-get install python-software-properties apt-file -y
-echo ""
-echo -e $BLUE"Running apt-file update.."$ENDCOLOR;
-apt-file update
-echo ""
-echo -e $BLUE"Using apt-file search to find add-apt-repository"$ENDCOLOR;
 sleep 1
+apt-get install python-software-properties apt-file -y
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+echo -e $BLUE"Running apt-file update (This may take a while depending on your system.).."$ENDCOLOR;
+sleep 1
+apt-file update
+sleep 1
+echo -e $GREEN"Apt-file is now up to date."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"Using apt-file search to find add-apt-repository.."$ENDCOLOR;
 apt-file search add-apt-repository
 echo ""
 echo -e $BLUE"Modifying add-apt-repository with ~/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
-cp /root/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
-sleep 0.5
-echo ""
-echo -e $BLUE"Changing permissions and ownership.."$ENDCOLOR;
+cp ~/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
 chmod o+x /usr/sbin/add-apt-repository
 chown root:root /usr/sbin/add-apt-repository
 echo ""
-echo -e $GREEN"Add-Apt-Repository Added Successfully."$ENDCOLOR;
+echo -e $GREEN"Success! Add-Apt-Repository installed."$ENDCOLOR;
 echo ""
-echo -e $BLUE"Would you like to install custom themes and icons? [y/n]"$ENDCOLOR;
+sleep 1
+
+
+echo -e $YELLOW"Would you like to install custom themes and icons? [y/n]"$ENDCOLOR;
 read CUSTOMTHEMES
+echo ""
 
 if [[ $CUSTOMTHEMES = 'y' || $CUSTOMTHEMES = 'Y' ]] ; then
-echo ""
-/usr/sbin/add-apt-repository ppa:noobslab/themes
-echo""
-/usr/sbin/add-apt-repository ppa:alecive/antigone
-echo ""
+
+	echo -e $BLUE"Adding ppa:noobslab/themes.."$ENDCOLOR;
+	sleep 1
+	/usr/sbin/add-apt-repository ppa:noobslab/themes
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5
+
+	echo -e $BLUE"Adding ppa:alecive/antigone.."$ENDCOLOR;
+	sleep 1
+	/usr/sbin/add-apt-repository ppa:alecive/antigone
+	echo ""
+	sleep 0.5
+
+	echo -e $GREEN"Success! New themes and icons are now available."$ENDCOLOR;
+	sleep 1
+	echo ""
+
 else
 
-echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
-echo ""
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
 fi
 
 echo -e $BLUE"Configuring airmon-ng.."$ENDCOLOR;
 sleep 1
 echo ""
 echo -e $BLUE"Backing up airmon-ng.."$ENDCOLOR;
-sleep 0.5
-mv /usr/sbin/airmon-ng /usr/sbin/airmon-ng-bak 
-echo ""
-echo -e $BLUE"Modifying airmon-ng with asset.."$ENDCOLOR;
-echo ""
-cp ~/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
-echo -e $GREEN"Airmon-ng successfully configured!"$ENDCOLOR;
-echo ""
-sleep 0.5
+sleep 1
+
+if [[ ! -e /usr/sbin/airmon-ng-bak ]] ; then 
+	mv /usr/sbin/airmon-ng /usr/sbin/airmon-ng-bak 
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Modifying airmon-ng.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	cp ~/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5	
+
+	echo -e $GREEN"Airmon-ng successfully configured!"$ENDCOLOR;
+	echo ""
+	sleep 1
+fi
+
 echo -e $BLUE"Installing preferred extras.."$ENDCOLOR;
 sleep 1
-apt-get install --reinstall ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
+apt-get install ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
+echo -e $GREEN"Done."$ENDCOLOR;
 echo ""
+sleep 1
 
 echo -e $YELLOW"Would you like to install screenfetch? "$ENDCOLOR;
 read INSTALLSCREENFETCH
+echo ""
 
 if [[ $INSTALLSCREENFETCH = 'y' || $INSTALLSCREENFETCH = 'Y' ]] ; then
 
-echo -e $YELLOW"Installing and setting up screenfetch.."$ENDCOLOR
-sleep 1
-echo ""
-cd ~/
-echo -e $BLUE"Cloning screenfetch repository .. "$ENDCOLOR;
-sleep 0.5
-git clone https://github.com/KittyKatt/screenFetch.git  
-sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
-echo ""
-echo -e $YELLOW"Setting as executable in /usr/bin.."$ENDCOLOR;
-chmod +x /usr/local/bin/screenfetch
-echo ""
-echo -e $GREEN"Screenfetch setup successfully!"$ENDCOLOR;
+	echo -e $YELLOW"Installing and setting up screenfetch.."$ENDCOLOR;
+	sleep 1
+	echo ""
 
+	if [[ ! -e /tmp ]] ; then
+		mkdir /tmp
+	fi 
+
+	cd /tmp
+	echo -e $BLUE"Cloning screenFetch repository .. "$ENDCOLOR;
+	sleep 1
+	git clone https://github.com/KittyKatt/screenFetch.git  
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Adding screenfetch to /usr/local/bin.."$ENDCOLOR;
+	sleep 1
+
+	if [[ ! -e /usr/local/bin/screenfetch ]] ; then 
+		sudo cp /tmp/screenFetch/screenfetch-dev /usr/local/bin/screenfetch
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 0.5
+
+		echo -e $YELLOW"Setting as executable in /usr/bin.."$ENDCOLOR;
+		sleep 1
+		chmod +x /usr/local/bin/screenfetch
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 1
+	fi
+
+	echo -e $GREEN"Screenfetch setup successfully!"$ENDCOLOR;
+	sleep 1
+	echo ""
 else
-
-echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
-
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
 fi
 
-echo ""
 echo -e $YELLOW"Woud you like to install Java SE? "$ENDCOLOR;
 read INSTALLJAVA
+echo ""
 
 if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
 
-echo -e $YELLOW"Installing Java SE x64 version"$ENDCOLOR;
-echo ""
-echo -e $BLUE"Downloading the Java SE JDK from SolidOptionOS server.. "$ENDCOLOR;
-cd ~/Downloads
-wget http://solidoptionos.com/packages/jdk-7u79-linux-x64.tar.gz
-echo -e $BLUE"Extracting.."$ENDCOLOR;
-tar -xzvf jdk-7u79-linux-x64.tar.gz -C /opt
-cd /opt/jdk1.7.0_79
-sleep 1
-echo -e $BLUE"Updating alternatives.."$ENDCOLOR;
-update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_79/bin/java 1
-update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_79/bin/javac 1
-update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so 1
-update-alternatives --set java /opt/jdk1.7.0_79/bin/java
-update-alternatives --set javac /opt/jdk1.7.0_79/bin/javac
-update-alternatives --set mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so
-sleep 1
-echo -e $GREEN"Java SE JDK Installed Successfully!"$ENDCOLOR;
-echo ""
+	echo -e $BLUE"Downloading the Java SE JDK from SolidOptionOS server.. "$ENDCOLOR;
+	sleep 1
+
+	if [[ ! -e ~/Downloads/jdk-7u79-linux-x64.tar.gz ]] ; then
+		
+		cd ~/Downloads
+		wget http://solidoptionos.com/packages/jdk-7u79-linux-x64.tar.gz
+		echo -e $GREEN"Download complete."$ENDCOLOR;
+		echo ""
+		sleep 1
+
+	else
+		echo -e $BLUE"jdk-7u79-linux-x64.tar.gz already exists; skipping download."$ENDCOLOR;
+		sleep 1
+		echo ""
+	fi
+	
+	echo -e $BLUE"Extracting into /opt folder.."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	if [[ ! -e /opt/jdk1.7.0_79/ ]] ; then
+		tar -xzvf jdk-7u79-linux-x64.tar.gz -C /opt
+		cd /opt/jdk1.7.0_79
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 1
+	else
+		echo -e $BLUE"/opt/jdk1.7.0_79/ already exists; skipping extraction."$ENDCOLOR;
+		sleep 1
+	fi
+
+	echo -e $BLUE"Cleaning up afer installation.."$ENDCOLOR;
+	sleep 1
+	rm ~/Downloads/jdk-7u79-linux-x64.tar.gz*
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Updating Java alternatives.."$ENDCOLOR;
+	sleep 1
+	update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_79/bin/java 1
+	update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_79/bin/javac 1
+	update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so 1
+	update-alternatives --set java /opt/jdk1.7.0_79/bin/java
+	update-alternatives --set javac /opt/jdk1.7.0_79/bin/javac
+	update-alternatives --set mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5
+	echo -e $GREEN"Success! Java SE JDK Installed."$ENDCOLOR;
+	sleep 1
+	echo ""
 
 else
 
-echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	sleep 1
+	echo ""
 
 fi
 
-echo -e $YELLOW"Would you like to download and install SolidOptionOS artwork? [y/n]"$ENDCOLOR;
+echo -e $YELLOW"Would you like to download SolidOptionOS artwork - Solid-Art? [y/n]"$ENDCOLOR;
 read ARTWORK
+echo ""
 
 if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
+	
+	echo -e $BLUE"Creating Solid-Art folders in ~/Pictures.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	if [[ ! -e ~/Pictures/Solid-Art ]] ; then
+		mkdir ~/Pictures/Solid-Art
+                cd ~/Pictures/Solid-Art
+                echo -e $GREEN"Done."$ENDCOLOR;
+                echo ""
+                sleep 0.5
+	
+		echo -e $BLUE"Downloading artwork for SolidOptionOS server.."$ENDCOLOR;
+		sleep 1
 
-cd ~/Pictures
-echo -e $BLUE"Downloading artwork for SolidOptionOS server.."$ENDCOLOR;
-sleep 0.5
-wget http://solidoptionos.com/pics/pics.zip
+		if [[ ! -e ~/Pictures/Solid-Art/archive.zip ]] ; then		
+			wget http://solidoptionos.com/pics/archive.zip
+			echo -e $GREEN"Done."$ENDCOLOR;
+			echo ""
+			sleep 0.5
+		else 
+			echo -e $BLUE"Solid-Art download archive already exists."$ENDCOLOR;
+			sleep 1
+		fi
+                        
+		wget http://solidoptionos.com/pics/archive.zip
+                echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 1
+
+                echo -e $BLUE"Extracting.."$ENDCOLOR;
+                sleep 1
+		unzip archive.zip
+                echo -e $GREEN"Done."$ENDCOLOR;
+                echo ""
+                sleep 0.5
+
+                echo -e $BLUE"Cleaning up.."$ENDCOLOR;
+                sleep 1
+		rm -rf __MACOSX/
+                mv hacker_wallpaper/* .
+                rm -rf hacker_wallpaper/
+                mv epic-grunge-wall-texture-by-GR/* .
+                rm -rf epic-grunge-wall-texture-by-GR/
+                rm *.psd
+                rm *.pdf
+                rm *.ai
+                rm archive.zip*
+		chmod 777 *
+		echo -e $GREEN"Success! Solid-Art is now available in ~/Pictures/Solid-Art. "$ENDCOLOR;
+		sleep 1
+		echo ""
+ 
+	else
+
+		echo -e $BLUE"A Solid-Art folder already exists in ~/Pictures. Do you want to overwrite/merge it with a new download? "$ENDCOLOR;
+		read OVERWRITEART
+
+		if [[ $OVERWRITEART = 'y' || $OVERWRITEART = 'Y' ]] ; then
+			rm ~/Pictures/Solid-Art/archive.zip
+			cd ~/Pictures/Solid-Art
+			wget http://solidoptionos.com/pics/archive.zip
+			echo -e $GREEN"Done."$ENDCOLOR;
+			echo ""
+			sleep 0.5
+
+			echo -e $BLUE"Extracting.."$ENDCOLOR;
+			sleep 1
+			unzip archive.zip
+			echo -e $GREEN"Done."$ENDCOLOR;
+			echo ""
+			sleep 0.5
+
+			echo -e $BLUE"Cleaning up.."$ENDCOLOR;
+			sleep 1
+			rm -rf __MACOSX/
+			mv hacker_wallpaper/* .
+			rm -rf hacker_wallpaper/
+			mv epic-grunge-wall-texture-by-GR/* .
+			rm -rf epic-grunge-wall-texture-by-GR/
+			rm *.psd
+			rm *.pdf
+			rm *.ai
+			chmod 777 *
+			echo ""
+			echo -e $GREEN"Success! Solid-Art has been updated to the latest version. "$ENDCOLOR;
+			sleep 1
+		else
+			echo -e $BLUE"Okay. Skipping."$ENDCOLOR;
+			echo ""
+			sleep 1
+		fi
+        fi
+else
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+fi
+
+echo -e $YELLOW"Replace default backgrounds with Solid-Art?"$ENDCOLOR;
+read CHANGEDEFAULT
 echo ""
-echo -e $BLUE"Extracting.."$ENDCOLOR;
-unzip pics.zip
-rm -rf __MACOSX/
-chmod 777 *
-echo ""
-echo -e $BLUE"Backing up originals.."$ENDCOLOR;
-sleep 0.5
-mkdir /usr/share/images/desktop-base/backup
-cp /usr/share/images/desktop-base/* /usr/share/images/desktop-base/backup/
-echo ""
-echo -e $BLUE"Replacing default wallpapers and login screens.."$ENDCOLOR;
-cp ~/Pictures/* /usr/share/images/desktop-base/
-mkdir /usr/share/gnome-shell/theme/backup
-mv /usr/share/gnome-shell/theme/KaliLogin.png /usr/share/gnome-shell/theme/backup/KaliLogin.png.bak
-cp ~/Pictures/login-background.png /usr/share/gnome-shell/theme/KaliLogin.png
-echo ""
+
+if [[ $CHANGEDEFAULT = 'y' || $CHANGEDEFAULT = 'Y' ]] ; then
+
+	echo -e $BLUE"Backing up originals.."$ENDCOLOR;
+	sleep 0.5
+	
+	if [[ ! -e /usr/share/images/desktop-base/backup ]] ; then
+		mkdir /usr/share/images/desktop-base/backup
+	fi
+	
+	cp /usr/share/images/desktop-base/* /usr/share/images/desktop-base/backup/
+	
+	if [[ ! -e /usr/share/gnome-shell/theme/backup ]] ; then
+		mkdir /usr/share/gnome-shell/theme/backup
+	fi
+
+	mv /usr/share/gnome-shell/themes/KaliLogin.png /usr/share/gnome-shell/themes/backup/KaliLogin.png.bak
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Replacing default wallpapers and login screens.."$ENDCOLOR;
+	cp ~/Pictures/Solid-Art/* /usr/share/images/desktop-base/
+	cp ~/Pictures/Solid-Art/login-background.png /usr/share/gnome-shell/themes/KaliLogin.png
+	echo ""
+	echo -e $GREEN"Success! Default backgrounds replace with Solid-Art."$ENDCOLOR;
+	sleep 1
+	echo ""
 
 else
 
-echo -e $BLUE"Okay. Maybe some other time."$ENDCOLOR;
-echo ""
+	echo -e $BLUE"Okay. Maybe some other time."$ENDCOLOR;
+	echo ""
 
 fi
 
-echo -e $BLUE"Would you like to add screenfetch and custom alias to your bashrc? [y/n]"$ENDCOLOR;
+echo -e $BLUE"Would you like to update your bashrc? [y/n]"$ENDCOLOR;
 read BASHRC
+echo ""
 
 if [[ $BASHRC = 'y' || $BASHRC = 'Y' ]] ; then
 
-echo "screenfetch" >> ~/.bashrc
-echo "alias ll='ls -Al'" >> ~/.bashrc
-echo "alias goto-scripts='cd /root/optionZ3ro/scripts'" >> ~/.bashrc
-echo "alias update-all='./root/optionZ3ro/scripts/solid-update" >> ~/.bashrc
+	echo -e $BLUE"Backing up original bashrc.."$ENDCOLOR;
+	
+	if [[ ! -e ~/.bashrc.bak ]] ; then
+		cp ~/.bashrc ~/.bashrc.bak
+	else
+		cp ~/.bashrc ~/.bashrc.bak-new
+	fi
+	
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	echo -e $BLUE"Updating bashrc.."$ENDCOLOR;
+	cp ~/optionZ3ro/configs/bashrc ~/.bashrc
+	echo ""
+	echo -e $GREEN"Success! Bashrc updated."$ENDCOLOR;
+	sleep 1
 
 else
 
-echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
 
 fi
-echo "Do you want to install linux-kernel-4.2.3?: "
-read INSTALLKERNEL
-if [[ $INSTALLKERNEL = 'y' || $INSTALLKERNEL = 'Y' ]] ; then
-cd ~/
-wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-headers-4.2.3-040203_4.2.3-040203.201510030832_all.deb
-sleep 0.5
-wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-headers-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb
-sleep 0.5
-wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-image-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb
-sleep 1
-sudo dpkg -i linux-headers-4.2.3*.deb linux-image-4.2.3*.deb
-sleep 1
 
-echo ""else
-exit 0
-fi
-
-echo -e $YELLOW"Reboot now?: [y/n]"$ENDCOLOR;
-read REBOOTNOW
-
-if [[ $REBOOTNOW = 'y' || $REBOOTNOW = 'Y' ]] ; then
-
-sudo reboot
-
-else
-
-echo -e $BLUE"Ok. You will see the new kernel in the grub when you reboot. "$ENDCOLOR;
+echo -e $YELLOW"Would you like to upgrade your htop style? [y/n]"$ENDCOLOR;
+read HTOPUPGRADE
 echo ""
+
+if [[ $HTOPUPGRADE = 'y' || $HTOPUPGRADE = 'Y' ]] ; then
+
+	echo -e $BLUE"Upgrading htop style.."$ENDCOLOR;
+	
+	if [[ ! -e ~/.config/htop ]] ; then
+		mkdir ~/.config/htop
+	fi
+
+	cp ~/optionZ3ro/configs/htoprc ~/.config/htop/htoprc
+	echo ""
+	echo -e $GREEN"Success! Htop style upgraded."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+else
+
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR; 
+	echo ""
+
+fi
+
+echo -e $YELLOW"Do you want to install linux-kernel-4.2.3 - not recommended for virtual macines? [y/n]"$ENDCOLOR;
+read INSTALLKERNEL
+echo ""
+if [[ $INSTALLKERNEL = 'y' || $INSTALLKERNEL = 'Y' ]] ; then
+
+	echo -e $BLUE"Downloading kernel 4.2.3.."$ENDCOLOR;
+	
+	if [[ ! -e /tmp ]] ; then
+		mkdir /tmp
+	fi
+
+	cd /tmp
+	
+	if [[ ! -e linux-headers-4.2.3-040203_4.2.3-040203.201510030832_all.deb ]] ; then
+		wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-headers-4.2.3-040203_4.2.3-040203.201510030832_all.deb
+	fi
+
+	if [[ ! -e linux-headers-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb ]] ; then
+		wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-headers-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb
+	fi
+
+	if [[ ! -e linux-image-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb ]] ; then
+		wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.2.3-unstable/linux-image-4.2.3-040203-generic_4.2.3-040203.201510030832_amd64.deb
+	fi
+	
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5
+
+	echo -e $BLUE"Installing linux-headers-4.2.3 and linux-image-4.2.3.."$ENDCOLOR;
+	sudo dpkg -i linux-headers-4.2.3*.deb linux-image-4.2.3*.deb
+	echo -e $GREEN"Done"$ENDCOLOR;
+	echo ""
+	sleep 0.5
+
+	echo -e $BLUE"Cleaning up after install.."$ENDCOLOR;
+	rm /tmp/*.deb
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5
+
+	echo -e $GREEN"Success! Kernel 4.2.3 installed and will be available after reboot."$ENDCOLOR;
+	echo ""
+	sleep 1
+else
+	echo -e $BLUE"Okay. Maybe another time."$ENDCOLOR;
+	echo ""
 fi
 
 echo -e $BLUE"Updating airodump-ng manufacturer data.."$ENDCOLOR;
 airodump-ng-oui-update
+echo -e $GREEN"Airodump-ng manufacturer data updated."$ENDCOLOR;
 echo ""
-echo -e $BLUE"Wrapping up the post install.."$ENDCOLOR;
-echo ""
-echo -e $BLUE"[update-usbids]"$ENDCOLOR;
-update-usbids
-echo ""
-echo -e $BLUE"[update-pciids]"$ENDCOLOR;
-update-pciids
-echo ""
-echo -e $BLUE"[update-menus]"$ENDCOLOR;
-update-menus
-echo ""
-echo -e $BLUE"[update-initramfs -uv]"$ENDCOLOR;
-update-initramfs -uv
-echo ""
-echo -e $BLUE"[update-grub]"$ENDCOLOR;
-update-grub
-echo ""
-echo -e $BLUE"[update-grub2]"$ENDCOLOR;
-update-grub2
-echo "" 
 sleep 1
-echo -e $YELLOW"Reboot now?: [y/n]"$ENDCOLOR;
-read REBOOTNOW
 
-if [[ $REBOOTNOW = 'y' || $REBOOTNOW = 'Y' ]] ; then
-
-
+echo -e $BLUE"Wrapping up the post install with necessary updates.."$ENDCOLOR;
 echo ""
+sleep 1
+
+echo -e $BLUE"[update-usbids]"$ENDCOLOR;
+sleep 0.5
+update-usbids
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-pciids]"$ENDCOLOR;
+sleep 0.5
+update-pciids
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep  0.5
+
+echo -e $BLUE"[update-menus]"$ENDCOLOR;
+sleep 0.5
+update-menus
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-initramfs -uv]"$ENDCOLOR;
+sleep 0.5
+update-initramfs -uv
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-grub]"$ENDCOLOR;
+sleep 0.5
+update-grub
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-grub2]"$ENDCOLOR;
+sleep 0.5
+update-grub2
+echo -e $GREEN"Done."$ENDCOLOR;
+echo "" 
+sleep 0.5
+
+echo -e $BLUE"Syncing.."$ENDCOLOR;
+sleep 0.5
+sync
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+sleep 0.5
+echo -e $GREEN"Wrap up complete."$ENDCOLOR;
+echo ""
+sleep 1
+
+clear
 echo -e $BLUE"#################################"$ENDCOLOR;
 echo -e $YELLOW"#      Operation Complete.       #"$ENDCOLOR;
 echo -e $BLUE"#################################"$ENDCOLOR;
-
-
-sudo reboot
-
-else 
-
-echo -e $BLUE"OK. Kernel will be available upon next boot."$ENDCOLOR;
-
 echo ""
-echo -e $BLUE"#################################"$ENDCOLOR;
-echo -e $YELLOW"#      Operation Complete.       #"$ENDCOLOR;
-echo -e $BLUE"#################################"$ENDCOLOR;
-exit
+echo -e $YELLOW"Some updates require you to reboot your system to take effect."$ENDCOLOR;
+echo ""
+echo -e $YELLOW"Would you like to reboot now? "$ENDCOLOR;
+read REBOOTING
+
+if [[ $REBOOTING = 'y' || $REBOOTING = 'Y' ]] ; then 
+
+	echo -e $GREEN"Will reboot in a few seconds.  BTW - If you recommend SolidOptionOS to a friend and they purchase a drive.."$ENDCOLOR;
+	sleep 1
+	echo -e $GREEN"We will send you a FREE GIFT!"$ENDCOLOR;
+	sleep 1
+	reboot
+else
+
+	echo -e $BLUE"Okay.  Kernel 4.3.2 will be available upon next reboot.  Goodbye."$ENDCOLOR;
+
 fi
