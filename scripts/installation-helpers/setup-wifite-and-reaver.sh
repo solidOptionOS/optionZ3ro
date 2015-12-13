@@ -1,5 +1,4 @@
 #!/bin/bash
-<<<<<<< HEAD
 clear
 #Colors
 dgrey="\033[0;34m"
@@ -24,9 +23,7 @@ sleep 1
 echo ""
 cd ~/
 echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
-=======
 cd ~/
->>>>>>> de2b3b7e8fda46e7ac56291183dc7b8e1959ed65
 mkdir backup
 cd backup
 echo ""
