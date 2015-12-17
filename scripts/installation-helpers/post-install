@@ -285,6 +285,107 @@ else
 
 fi
 
+echo -e $YELLOW"Would you like to patch wifite with reaver and pixiewps? [y/n]"$ENDCOLOR;
+read PATCHWIFITE
+echo ""
+
+if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
+
+	echo -e $YELLOW"Patching Wifite with Reaver and Pixiewps"$ENDCOLOR;
+	sleep 1
+	echo ""
+
+	if [[ ! -e ~/backup ]] ; then
+                mkdir ~/backup
+        fi
+
+	echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
+	sleep 1
+	cd ~/backup
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Cloning wifite repository"$ENDCOLOR;
+	sleep 1
+	git clone https://github.com/derv82/wifite.git
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Cloning wifite-mod-pixiewps repository"$ENDCOLOR;
+	sleep 1
+	git clone https://github.com/aanarchyy/wifite-mod-pixiewps.git
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Cloning reaver-wps-fork-t6x repository"$ENDCOLOR;
+	sleep 1
+	git clone https://github.com/t6x/reaver-wps-fork-t6x.git
+	echo ""
+	
+	echo -e $BLUE"Cloning pixiewps repository"$ENDCOLOR;
+	git clone https://github.com/wiire/pixiewps.git
+	echo ""
+	sleep 1
+	
+	echo -e $BLUE"Updating and upgrading before installation.."$ENDCOLOR;
+	sleep 1
+	apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
+	echo ""
+	sleep 1
+	
+	echo -e $BLUE"Installing prerequisites.."$ENDCOLOR;
+	sleep 1
+	sudo apt-get install libpcap-dev aircrack-ng sqlite3 libsqlite3-dev libssl-dev -y
+	echo ""
+	sleep 1	
+
+	echo -e $BLUE"Installing pixiewps.."$ENDCOLOR;
+	sleep 1
+	cd pixiewps/src/
+	make
+	sleep 1
+	echo ""
+	make install
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Installing reaver-wps-fork-t6x.."$ENDCOLOR;
+	sleep 1
+	cd /root/backup/reaver-wps-fork-t6x/src/
+	echo ""
+	echo -e $BLUE"Configuring.."$ENDCOLOR;
+	sleep 1
+	./configure
+	sleep 1
+	echo -e $GREEN"Done"$ENDCOLOR;
+	echo ""
+
+	echo -e $BLUE"Compiling.."$ENDCOLOR;
+	sleep 1
+	echo "" 
+	make 
+	sleep 1
+        echo -e $GREEN"Done"$ENDCOLOR;
+        echo ""
+	echo -e $BLUE"Installing .."$ENDCOLOR;
+	sleep 1
+	echo ""
+	make install
+	sleep 1
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+
+	echo -e $BLUE"Adding modified wifite and wifite-ng to /usr/bin.."$ENDCOLOR;
+	sleep 1	
+	cp /root/backup/wifite/wifite.py /usr/bin/wifite
+	chmod +x /usr/bin/wifite
+	cp /root/backup/wifite-mod-pixiewps/wifite-ng /usr/bin/wifite-ng
+	chmod +x /usr/bin/wifite-ng
+	echo ""
+ else
+	echo -e $BLUE"Okay, maybe some other time."$ENDCOLOR;
+fi
+
 echo -e $YELLOW"Would you like to download SolidOptionOS artwork - Solid-Art? [y/n]"$ENDCOLOR;
 read ARTWORK
 echo ""
@@ -315,13 +416,15 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 		fi
                         
 		wget http://solidoptionos.com/pics/archive.zip
+		wget http://solidoptionos.com/pics/pics.zip
                 echo -e $GREEN"Done."$ENDCOLOR;
-		echo ""
+`		echo ""
 		sleep 1
 
                 echo -e $BLUE"Extracting.."$ENDCOLOR;
                 sleep 1
 		unzip archive.zip
+		unzip pics.zip
                 echo -e $GREEN"Done."$ENDCOLOR;
                 echo ""
                 sleep 0.5
