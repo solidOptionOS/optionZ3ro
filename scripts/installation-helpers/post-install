@@ -418,7 +418,7 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 		wget http://solidoptionos.com/pics/archive.zip
 		wget http://solidoptionos.com/pics/pics.zip
                 echo -e $GREEN"Done."$ENDCOLOR;
-`		echo ""
+		echo ""
 		sleep 1
 
                 echo -e $BLUE"Extracting.."$ENDCOLOR;
