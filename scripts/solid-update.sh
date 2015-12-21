@@ -1,281 +1,516 @@
 #!/bin/bash
 clear
+clear
 #Colors
-dgrey="\033[0;34m"
-port="\033[0;33m"
-RED="\033[1;31m"
-GREEN="\033[2;32m"
-YELLOW="\033[1;33m"
-BLUE="\033[1;34m"
-RED="\033[0;31m"
-ENDCOLOR="\033[0m"
+dgrey="\e[0;34m"
+port="\e[0;33m"
+RED="\e[1;31m"
+GREEN="\e[1;32m"
+YELLOW="\e[1;33m"
+BLUE="\e[1;34m"
+PURPLE="\e[1;35"
+CYAN="\e[1;36"
+WHITE="\e[1:37"
+ENDCOLOR="\e[0m"
 
-echo -e $RED"#################################################################"$ENDCOLOR; 
-echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
-echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
-echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
-echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
-echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
-echo -e $RED"#################################################################"$ENDCOLOR;
+echo -e $RED" #################################################################"$ENDCOLOR; 
+echo -e $YELLOW"    ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
+echo -e $YELLOW"   / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
+echo -e $YELLOW"  _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
+echo -e $YELLOW" /___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
+echo -e $YELLOW"                          /_/                                  "$ENDCOLOR;
+echo -e $RED" #################################################################"$ENDCOLOR;
 echo ""
 echo ""
-echo -e $YELLOW"Solid-Update"$ENDCOLOR;
-echo ""
+echo -e $CYAN" Solid-Update"$ENDCOLOR;
 sleep 1
+echo ""
 
-echo -e $YELLOW"Would you like to clean and purge first? [y/n]"$ENDCOLOR;
+echo ""
+echo -e $CYAN"  Would you like to clean and purge first? [y/n]"$ENDCOLOR;
 read CLEANPURGE
 
 if [[ $CLEANPURGE = 'y' || $CLEANPURGE = 'Y' ]] ; then
 
-	echo -e $GREEN"'It's time to purge, Morty!'"$ENDCOLOR;
-	sleep 2
 	echo ""
-	echo -e $BLUE"[apt-get autoremove clean autoclean]"$ENDCOLOR;
+	echo ""
+	echo -e $YELLOW" Running Clean and Purge.. "$ENDCOLOR;
+	echo ""
+	echo ""
+	sleep 2
+
+	echo -e $BLUE" [apt-get autoremove]"$ENDCOLOR;
 	sleep 1
 	sudo apt-get autoremove
-	sudo apt-get clean 
-	sudo apt-get autoclean
-	echo -e $GREEN"Done."$ENDCOLOR;
+	echo -e $GREEN" Done."$ENDCOLOR;
 	sleep 1
 	echo ""
 
-	echo -e $BLUE"[rm -rf /var/cache/apt/archives/]"$ENDCOLOR;
+	echo -e $BLUE" [apt-get clean]"$ENDCOLOR;
+	sleep 1
+	sudo apt-get clean
+	echo -e $GREEN" Done."$ENDCOLOR;
+	sleep 1
+	echo ""
+	
+	echo -e $BLUE" [apt-get purge]"$ENDCOLOR;
+	sleep 1
+	sudo apt-get purge
+	echo -e $GREEN" [Done]"$ENDCOLOR;
+	sleep 1
+	echo ""
+
+	echo -e $BLUE" [rm -rf /var/cache/apt/archives/]"$ENDCOLOR;
 	sleep 1
 	sudo rm -rf /var/cache/apt/archives/
-	echo -e $GREEN"Done."$ENDCOLOR;
+	echo -e $GREEN" Done."$ENDCOLOR;
 	sleep 1
 	echo ""
 
-else
+        echo ""
+        echo -e $CYAN" Clean and Purge Complete"$ENDCOLOR;
+        echo ""
+        echo ""
+        sleep 3
+	clear
 
-	echo -e $YELLOW"Fine then..keep your trash. You disgust me..."$ENDCOLOR;
+else
+	sleep 1
 	echo ""
+	echo -e $CYAN" Okay. Maybe later"$ENDCOLOR;
+	sleep 3
+	echo ""
+	clear
 
 fi
 
-echo -e $YELLOW"Updating package cache.. "$ENDCOLOR;
-sleep 1
 echo ""
+echo ""
+echo -e $YELLOW"    ___  __                  ___"$ENDCOLOR;
+echo -e $YELLOW"   / _ \/ /  ___ _ ___ ___  <  /"$ENDCOLOR;
+echo -e $YELLOW"  / ___/ _ \/ _ \`(_-</ -_)  / / "$ENDCOLOR;
+echo -e $YELLOW" /_/  /_//_/\_,_ /___/\__/  /_/  "$ENDCOLOR;
+echo -e $YELLOW"                                "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
 
-echo -e $BLUE"[apt-get update]"$ENDCOLOR;
+echo -e $CYAN" Upgrading packages..#"$ENDCOLOR;
+echo ""
+sleep 2
+
+echo -e $BLUE" [apt-get update]"$ENDCOLOR;
 sleep 1
 sudo apt-get update
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[aptitude update]"$ENDCOLOR;
+clear
+echo -e $BLUE" [aptitude update]"$ENDCOLOR;
 sleep 1
 sudo aptitude update 
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[apt-get autoremove]"$ENDCOLOR;
+clear
+echo -e $CYAN" Cleaning up.."$ENDCOLOR;
+sleep 1
+echo ""
+                                         
+echo -e $BLUE" [apt-get autoremove]"$ENDCOLOR;
 sleep 1
 sudo apt-get autoremove
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
-echo ""
 
-echo -e $BLUE"Installing apt-file "$ENDCOLOR;
-sleep 1
-sudo apt-get install apt-file -y
-echo -e $GREEN"Done."$ENDCOLOR;
-sleep 1
 echo ""
-
-echo -e $YELLOW"Updating apt-file.. "$ENDCOLOR;
-echo -e $RED"This may take a while depending on your system. "$ENDCOLOR;
-sleep 1
-sudo apt-file update
-echo -e $GREEN"Done."$ENDCOLOR;
-sleep 1
 echo ""
-
-echo -e $YELLOW"Upgrading packages.. "$ENDCOLOR;
-sleep 1
+echo -e $CYAN" Phase 1 Complete"$ENDCOLOR;
 echo ""
+echo ""
+sleep 3
+clear
 
-echo -e $BLUE"[apt-get upgrade]"$ENDCOLOR;
+echo ""
+echo ""
+echo -e $YELLOW"   ____       __  _                 __"$ENDCOLOR;
+echo -e $YELLOW"  / __ \___  / /_(_)__  ___  ___ _ / /"$ENDCOLOR;
+echo -e $YELLOW" / /_/ / _ \/ __/ / _ \/ _ \/ _ \`/ / "$ENDCOLOR;
+echo -e $YELLOW" \____/ .__/\__/_/\___/_//_/\_,_ /_/  "$ENDCOLOR;
+echo -e $YELLOW"     /_/                             "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
+
+echo -e $CYAN" Would you like to install and update apt-file? [y/n]"$ENDCOLOR;
+read APTFILE
+
+if [[ $APTFILE = 'y' || $APTFILE = 'Y' ]] ; then
+ 
+	echo -e $CYAN" Installing and/or updating apt-file"$ENDCOLOR;
+	sleep 2
+	echo ""
+
+	echo -e $BLUE" Installing apt-file "$ENDCOLOR;
+	sleep 1
+	sudo apt-get install apt-file -y
+	echo -e $GREEN" Done."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+	echo -e $CYAN" Updating apt-file.. "$ENDCOLOR;
+	sleep 1
+	echo -e $RED" This may take a while depending on your system. "$ENDCOLOR;
+	sleep 1
+	sudo apt-file update
+	echo -e $GREEN" Done."$ENDCOLOR;
+	sleep 1
+
+	echo ""
+	echo ""
+	echo -e $CYAN" Update Complete."$ENDCOLOR;
+	echo ""
+	sleep 3
+	clear
+
+else
+
+	sleep 2
+	echo ""
+	echo -e $CYAN" Okay. Maybe later."$ENDCOLOR;
+	sleep 3
+	echo ""
+	clear
+
+fi
+
+echo ""
+echo ""
+echo -e $YELLOW"    ___  __                   ___ "$ENDCOLOR;
+echo -e $YELLOW"   / _ \/ /  ___ _ ___ ___   |_  |"$ENDCOLOR;
+echo -e $YELLOW"  / ___/ _ \/ _ \`(_-</ -_)   / __/ "$ENDCOLOR;
+echo -e $YELLOW" /_/  /_//_/\_,_ /___/\__/ /____/ "$ENDCOLOR;
+echo -e $YELLOW"                                  "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
+
+echo -e $CYAN" Upgrading packages..#"$ENDCOLOR;
+echo ""
+sleep 2
+
+echo -e $BLUE" [apt-get upgrade]"$ENDCOLOR;
 sleep 1
 sudo apt-get upgrade
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[apt-get dist-upgrade]"$ENDCOLOR;
+echo -e $BLUE" [apt-get dist-upgrade]"$ENDCOLOR;
 sleep 1
 sudo apt-get dist-upgrade 
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[aptitude upgrade]"$ENDCOLOR;
+echo -e $BLUE" [aptitude upgrade]"$ENDCOLOR;
 sleep 1
 sudo aptitude upgrade
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[aptitude dist-upgrade]"$ENDCOLOR;
+echo -e $BLUE" [aptitude dist-upgrade]"$ENDCOLOR;
 sleep 1
 sudo aptitude dist-upgrade
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $YELLOW"Removing old packages and cleaning up.."$ENDCOLOR;
+echo -e $CYAN" Removing old packages and cleaning up.."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[apt-get autoremove]"$ENDCOLOR;
+echo -e $BLUE" [apt-get autoremove]"$ENDCOLOR;
 sleep 1
 sudo apt-get autoremove
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[apt-get autoclean]"$ENDCOLOR; 
+echo -e $BLUE" [apt-get autoclean]"$ENDCOLOR; 
 sleep 1
 sudo apt-get autoclean
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
+
 echo ""
+echo ""
+echo -e $CYAN" Phase 2 Complete"$ENDCOLOR;
+echo ""
+echo ""
+sleep 3
+clear
 
+echo ""
+echo ""
+echo -e $YELLOW"   ____       __  _                __"$ENDCOLOR;
+echo -e $YELLOW"  / __ \___  / /_(_)__  ___  ___ _/ /"$ENDCOLOR;
+echo -e $YELLOW" / /_/ / _ \/ __/ / _ \/ _ \/ _ \`/ / "$ENDCOLOR;
+echo -e $YELLOW" \____/ .__/\__/_/\___/_//_/\_,_ /_/  "$ENDCOLOR;
+echo -e $YELLOW"     /_/                             "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
 
-echo -e $YELLOW"Would you like to try and repair any broken packages? [y/n] "$ENDCOLOR;
+echo -e $CYAN" Would you like to try and repair any broken packages? [y/n] "$ENDCOLOR;
 read fixornot
 
 if [[ $fixornot = 'y' || $fixornot = 'Y' ]] ; then
 
 	echo ""
-	echo -e $YELLOW"OK. Attempting to repair broken packages.. "$ENDCOLOR;
-	sleep 1
+	echo -e $CYAN" OK. Attempting to repair broken packages.. "$ENDCOLOR;
+	sleep 2
 	echo ""
 	
-	echo -e $BLUE"[apt-get update --fix-missing]"$ENDCOLOR;
+	echo -e $BLUE" [apt-get update --fix-missing]"$ENDCOLOR;
 	sleep 1
 	sudo apt-get update --fix-missing
-	echo -e $GREEN"Done."$ENDCOLOR;
+	echo -e $GREEN" Done."$ENDCOLOR;
 	sleep 1
 	echo ""
 
-	echo -e $BLUE"[apt-get upgrade --fix-broken]"$ENDCOLOR;
+	echo -e $BLUE" [apt-get upgrade --fix-broken]"$ENDCOLOR;
 	sleep 1
 	sudo apt-get upgrade --fix-broken
-	echo -e $GREEN"Done."$ENDCOLOR;
+	echo -e $GREEN" Done."$ENDCOLOR;
 	sleep 1
 	echo ""
 
-	echo -e $BLUE"[aptitude -f install]"$ENDCOLOR;
+	echo -e $BLUE" [aptitude -f install]"$ENDCOLOR;
 	sleep 1
 	sudo aptitude -f install
-	echo -e $GREEN"Done."$ENDCOLOR;
+	echo -e $GREEN" Done."$ENDCOLOR;
 	sleep 1
 	echo ""
 
-	echo -e $BLUE"[apt-get -f install]"$ENDCOLOR;  
+	echo -e $BLUE" [apt-get -f install]"$ENDCOLOR;  
         sleep 1
         sudo apt-get -f install
-	echo -e $GREEN"Done."$ENDCOLOR;
+	echo -e $GREEN" Done."$ENDCOLOR;
 	sleep 1
 	
-	echo -e $GREEN"Repair complete."$ENDCOLOR;
-	sleep 1
 	echo ""
+	echo -e $CYAN" Repair complete."$ENDCOLOR;
+	sleep 3
 
-	echo -e $YELLOW"Are you still having problems? [y/n]"$ENDCOLOR;
+	echo ""
+	echo ""
+	echo -e $YELLOW"   ____       __  _                __"$ENDCOLOR;
+	echo -e $YELLOW"  / __ \___  / /_(_)__  ___  ___ _/ /"$ENDCOLOR;
+	echo -e $YELLOW" / /_/ / _ \/ __/ / _ \/ _ \/ _ \`/ / "$ENDCOLOR;
+	echo -e $YELLOW" \____/ .__/\__/_/\___/_//_/\_,_ /_/  "$ENDCOLOR;
+	echo -e $YELLOW"     /_/                             "$ENDCOLOR;
+	echo ""
+	echo ""
+	sleep 2
+
+	echo -e $CYAN" Run aptitude -f install --full-resolver? [y/n]"$ENDCOLOR;
 	read moproblems
 
 	if [[ $moproblems = 'y' || $moproblems = 'Y' ]] ; then
 	
 		sleep 1
 		echo ""
-		echo -e $YELLOW"Attempting fix with full-resolver.."$ENDCOLOR;
-		echo -e $RED"This may take a while.."$ENDCOLOR;
+		echo -e $CYAN" Attempting fix with full-resolver.."$ENDCOLOR;
 		sleep 1
-		echo -e $BLUE"[aptitude -f install --full-resolver]"$ENDCOLOR;
+		echo -e $RED" This may take a while.."$ENDCOLOR;
 		sleep 1
-		aptitude -f install --full-resolver
-		echo -e $GREEN"Done."$ENDCOLOR;
+		echo -e $BLUE" [aptitude -f install --full-resolver]"$ENDCOLOR;
+		sleep 1
+		sudo aptitude -f install --full-resolver
+		echo -e $GREEN" Done."$ENDCOLOR;
 		sleep 1
 		echo ""
 		
-		echo -e $GREEN"Full-Resolver repair complete!"$ENDCOLOR;
-		sleep 1
+		echo -e $CYAN" Full-Resolver repair complete!"$ENDCOLOR;
+		sleep 3
 		echo ""
+		
 	else
-		echo -e $YELLOW"Awesome! Good for you! Moving on.."$ENDCOLOR;
-		sleep 1
-		echo ""
+ 		echo ""
+        	echo ""
+        	echo -e $CYAN" Okay. Maybe later."$ENDCOLOR;
+        	echo ""
+        	echo ""
+        	sleep 3
 
 	fi
+	
+	echo ""
+        echo ""
+        echo -e $CYAN" Phase 2 Complete"$ENDCOLOR;
+        echo ""
+        echo ""
+        sleep 3
+        clear
+
+
 else
 
-	echo -e $YELLOW"Okay, Mr. Perfect - moving on."$ENDCOLOR;
-	sleep 1
 	echo ""
+	echo ""
+	echo -e $CYAN" Phase 2 Complete"$ENDCOLOR;
+	echo ""
+	echo ""
+	sleep 3
+	clear
 
 fi
 
-echo -e $BLUE"Updating USB IDs.."$ENDCOLOR;
+echo ""
+echo ""
+echo -e $YELLOW"    ___  __                  ____"$ENDCOLOR;
+echo -e $YELLOW"   / _ \/ /  ___ _ __  ___  |_  /"$ENDCOLOR;
+echo -e $YELLOW"  / ___/ _ \/ _ \`(_-</ -_) _/_ < "$ENDCOLOR;
+echo -e $YELLOW" /_/  /_//_/\_,_/___/ \__/ /___/ "$ENDCOLOR;
+echo -e $YELLOW"                                 "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
+
+echo -e $CYAN" Updating database, USB and PCI IDs."$ENDCOLOR;
+echo ""
+sleep 2
+
+
+echo -e $CYAN" Updating database.."$ENDCOLOR;
 sleep 1
-update-usbids
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $BLUE" [updatedb]"$ENDCOLOR;
+sleep 1
+sudo updatedb
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"Updating PCI IDs.."$ENDCOLOR;
+echo -e $CYAN" Updating USB IDs.."$ENDCOLOR;
 sleep 1
-update-pciids
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $BLUE" [update-usbids]"$ENDCOLOR;
 sleep 1
-echo ""
-
-echo -e $BLUE"Updating airodump oui data.."$ENDCOLOR;
-sleep 1
-sudo airodump-ng-oui-update
-echo -e $GREEN"Done."$ENDCOLOR;
+sudo update-usbids
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"Updating database.."$ENDCOLOR;
+echo -e $CYAN" Updating PCI IDs.."$ENDCOLOR;
 sleep 1
-updatedb
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $BLUE" [update-pciids]"$ENDCOLOR;
+sleep 1
+sudo update-pciids
+echo -e $GREEN" Done."$ENDCOLOR;
+sleep 1
+
+echo ""
+echo ""
+echo -e $CYAN" Phase 3 Complete"$ENDCOLOR;
+echo ""
+echo ""
+sleep 3
+clear
+
+echo ""
+echo ""
+echo -e $YELLOW"   ____       __  _                __"$ENDCOLOR;
+echo -e $YELLOW"  / __ \___  / /_(_)__  ___  ___ _/ /"$ENDCOLOR;
+echo -e $YELLOW" / /_/ / _ \/ __/ / _ \/ _ \/ _ \`/ / "$ENDCOLOR;
+echo -e $YELLOW" \____/ .__/\__/_/\___/_//_/\_,_ /_/  "$ENDCOLOR;
+echo -e $YELLOW"     /_/                             "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
+echo -e $CYAN" Would you like to update airodump-ng-oui-data? [y/n]"$ENDCOLOR;
+read AIRODUMPDATE
+
+if [[ $AIRODUMPDATE = 'y' || $AIRODUMPDATE = 'Y' ]] ; then
+
+	echo -e $CYAN" Updating airodump oui data.."$ENDCOLOR;
+	sleep 1
+	echo -e $BLUE" This may take a while depending on your system."$ENDCOLOR;
+	sleep 1
+	sudo airodump-ng-oui-update
+	echo ""
+	echo ""
+	echo -e $CYAN" Update Complete.   #"$ENDCOLOR;
+	echo ""
+	echo ""
+	sleep 3
+	clear
+
+else
+	echo ""
+	sleep 2
+	echo -e $CYAN" Okay. Maybe later."$ENDCOLOR;
+	sleep 3
+	echo ""
+	clear
+
+fi
+
+echo ""
+echo ""
+echo -e $YELLOW"    ___  __                  ____"$ENDCOLOR;
+echo -e $YELLOW"   / _ \/ /  ___ ____ ___   / / /"$ENDCOLOR;
+echo -e $YELLOW"  / ___/ _ \/ _ \`(_-</ -_) / _ _/"$ENDCOLOR;
+echo -e $YELLOW" /_/  /_//_/\_,_/___/\__/    /_/  "$ENDCOLOR;
+echo -e $YELLOW"                                  "$ENDCOLOR;
+echo ""
+echo ""
+sleep 2
+
+echo -e $CYAN" Updating initramfs.."$ENDCOLOR;
+sleep 1
+echo ""
+echo -e $BLUE" [update-initramfs -uv]"$ENDCOLOR;
+sleep 1
+sudo update-initramfs -uv
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"Updating initramfs.."$ENDCOLOR;
+echo -e $CYAN" Updating grub and grub2.."$ENDCOLOR;
 sleep 1
-update-initramfs -uv
-echo -e $GREEN"Done."$ENDCOLOR;
+echo -e $BLUE" [update-grub]"$ENDCOLOR;
 sleep 1
-echo ""
-
-echo -e $YELLOW"Updating grub and grub2.."$ENDCOLOR;
-sleep 1
-echo -e $BLUE"[update-grub]"$ENDCOLOR;
-sleep 1
-update-grub
-echo -e $GREEN"Done."$ENDCOLOR;
+sudo update-grub
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 
-echo -e $BLUE"[update-grub2]"$ENDCOLOR;
+echo -e $BLUE" [update-grub2]"$ENDCOLOR;
 echo ""
-update-grub2
-echo -e $GREEN"Done."$ENDCOLOR;
+sudo update-grub2
+echo -e $GREEN" Done."$ENDCOLOR;
 sleep 1
 echo ""
 	
-sleep 1
-echo -e $GREEN"Operation complete!"$ENDCOLOR;
-sleep 1
-echo "" 
-echo -e $BLUE"#################################"$ENDCOLOR;
-echo -e $YELLOW"#    Solid Update Complete.     #"$ENDCOLOR;
-echo -e $BLUE"#################################"$ENDCOLOR;
+echo ""
+echo ""
+echo -e $CYAN" Phase 4 Complete"$ENDCOLOR;
+echo ""
+echo ""
+sleep 3
+clear
+
+echo ""
+echo ""
+echo -e $YELLOW"    ____         __              __  __        __      __         __"$ENDCOLOR;
+echo -e $YELLOW"   / __/_ _____ / /____ __ _    / / / /__  ___/ /__  _/ /____ ___/ /"$ENDCOLOR;
+echo -e $YELLOW"  _\ \/ // (_-</ __/ -_)  ' \  / /_/ / _ \/ _  / _ \`/ __/ -_) _  / "$ENDCOLOR;
+echo -e $YELLOW" /___/\_, /___/\__/\__/_/_/_/  \____/ .__/\_,_/\_,_/\__/\__/ \_,_/  "$ENDCOLOR;
+echo -e $YELLOW"     /___/                         /_/                             "$ENDCOLOR;
+echo ""
+echo ""
+
 exit
