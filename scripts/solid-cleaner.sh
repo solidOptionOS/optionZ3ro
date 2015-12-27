@@ -33,7 +33,7 @@ exit 0
 fi
 echo -e $BLUE"Installing festival first..."$ENDCOLOR;
 sleep 1
-apt-get install festival -Y
+apt-get install festival -y
 echo ""
 echo -e $BLUE"Ok. Let's clean."$ENDCOLOR;
 echo ""
