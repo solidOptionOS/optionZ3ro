@@ -50,18 +50,20 @@ read TORBIT
 
 if [[ $TORBIT = '32' ]] ; then
 
-tar -xJf ~/optionZ3ro/assets/tor-browser-linux32-5.5.2_en-US.tar.xz
-cd ~/optionZero/assets/tor-browser/
-sudo cp -rf ~/optionZ3ro/assets/tor-browser/ ~/
+cd ~/
+sudo wget http://solidoptionos.com/assets/tor-browser-linux32-5.5.2_en-US.tar.xz
+tar -xJf ~/tor-browser-linux32-5.5.2_en-US.tar.xz
+cd ~/tor-browser/
 echo -e $GREEN"Success!"$ENDCOLOR;
 echo ""
 sleep 1
 
 else
 
-tar -xJf ~/optionZ3ro/assets/tor-browser-linux64-5.5.2_en-US.tar.xz
-cd ~/optionZero/assets/tor-browser/
-sudo cp -rf ~/optionZero/assets/tor-browser/ ~/
+cd ~/
+sudo wget http://solidoptionos.com/assets/tor-browser-linux64-5.5.2_en-US.tar.xz
+tar -xJf ~/tor-browser-linux64-5.5.2_en-US.tar.xz
+cd ~/tor-browser/
 echo -e $GREEN"Success!"$ENDCOLOR;
 echo ""
 sleep 1
