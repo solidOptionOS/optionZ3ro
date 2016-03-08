@@ -93,6 +93,12 @@ sudo cp /etc/network/interfaces /etc/network/interfaces.bak
 echo -e $GREEN"Success! Backup is located at /etc/network/interfaces.bak."$ENDCOLOR;
 echo ""
 sleep 1
+echo -e $BLUE"Would you like to configure network configuration to work with Whonix? If you do not have Whonix gateway running on another Virtual Machine, your network may bnot work properly after doing this. [y/n] "$ENDCOLOR;
+
+read CONFIGUREWHONIX
+
+if [[ $CONFIGUREWHONIX = 'y' || $CONFIGUREWHONIX = 'Y' ]] ; then
+
 echo -e $BLUE"Adding Whonix network configuration to /etc/network/interfaces.."$ENDCOLOR;
 echo ""
 sleep 1
@@ -112,7 +118,7 @@ sudo cp ~/optionZ3ro/assets/whonix-resolv.conf /etc/resolv.conf
 echo -e $GREEN"Success! Whonix resolv.conf configuration complete."$ENDCOLOR;
 echo ""
 sleep 1
-echo -e $YELLOW"Bouncing the iterface inside of Kali..(you may run this command anytime with the script '~/optionZero/scripts/bounce-interface'
+echo -e $YELLOW"Bouncing the interface inside of Kali..(you may run this command anytime with the script '~/optionZero/scripts/bounce-interface'"$ENDCOLOR;
 echo ""
 sleep 1
 echo -e $BLUE"[ifdown eth0]"$ENDCOLOR;
@@ -123,12 +129,44 @@ echo -e $BLUE"[ifup eth0]"$ENDCOLOR;
 sudo ifup eth0
 echo -e $GREEN"Success!"$ENDCOLOR;
 echo ""
-
-
 echo -e $GREEN"Success!  Whonix interface configuration complete."$ENDCOLOR;
+
+else
+
+echo -e $YELLOW"Recommended:  Please close Kali, and run a virtual machine with Whonix gateway running, then restart the Kali Virtual Machine and return to this script."$ENDCOLOR;
+echo ""
+
+fi
+
+echo -e $YELLOW"Restore network interfaces backup? [y/n]" $ENDCOLOR;
+read RESTORENETWORK
+
+if [[ $RESTORENETWORK = 'y' || $RESTORENETWORK = 'Y' ]] ; then
+
+sudo cp /etc/network/interfaces.bak /etc/network/interfaces
+echo -e $GREEN"Default network interfaces restored."$ENDCOLOR;
 echo ""
 sleep 1
-echo -e $BLUE"It is highly recommended to start Tor Browser bundle as a non-root user."
+
+echo -e $BLUE"Restarting Network.."$ENDCOLOR;
+echo ""
+sleep 1
+sudo /etc/init.d/networking restart
+sleep 1
+sudo /etc/init.d/network-manager restart
+echo ""
+
+else 
+
+echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+echo ""
+echo -e $YELLOW"You can always restart the network after making a chage with the script, '~/optionZ3ro/scripts/restart-network'"$ENDCOLOR;
+
+fi
+
+echo ""
+sleep 1
+echo -e $BLUE"It is highly recommended to start Tor Browser bundle as a non-root user."$ENDCOLOR;
 sleep 0.5
 echo ""
 echo -e $YELLOW"Would you like to setup a non-root user now? [y/n] "$ENDCOLOR;
