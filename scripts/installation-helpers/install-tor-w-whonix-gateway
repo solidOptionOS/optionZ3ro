@@ -65,7 +65,7 @@ sleep 1
 echo -e $YELLOW"Would you like to install Tor Browser 32bit or 64bt? [32 / 64] "$ENDCOLOR;
 read TORBIT
 
-if [[ $TORBIT = '32' ]] ; then
+if [[ $TORBIT = '32' ]]; then
 
 cd ~/
 sudo wget http://solidoptionos.com/assets/tor-browser-linux32-5.5.2_en-US.tar.xz
@@ -90,15 +90,38 @@ fi
 echo -e $BLUE"Next we will configure your network to work with the Whonix gateway.  Make sure Whonix is running on a seperate Virtual Machine."$ENDCOLOR;
 echo ""
 sleep 1
- 
+
+echo -e $YELLOW"Configure Network Manager to manage network configurations? [y/n] "$ENDCOLOR;
+
+read CONFNETWORKMANAGER
+
+if [[ $CONFNETWORKMANAGER = 'y' || $CONFNETWORKMANAGER = 'Y' ]]; then
+
 echo -e $BLUE"Backing up NetworkManager.conf.."$ENDCOLOR;
 echo ""
+
 sleep 1
+
 sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.bak
 echo ""
 echo -e $GREEN"Success! NetworkManager.conf backed up to /etc/NetworkManager/NetworkManager.conf.bak."$ENDCOLOR;
 echo ""
 sleep 1
+
+else
+
+echo -e $YELLOW"Okay. Maybe later"$ENDCOLOR;
+echo ""
+sleep 1
+
+fi
+
+echo -e $YELLOW"Configure network interfaces to Whonix? [y/n]"$ENDCOLOR;
+
+read CONFINTERFACES
+
+if [[ $CONFINTERFACES = 'y' || $CONFINTERFACES = 'Y' ]]; then
+
 echo -e $BLUE"Configuring NetworkManager to manage interfaces.."$ENDCOLOR;
 echo ""
 sleep 1
@@ -110,17 +133,27 @@ sudo cp /etc/network/interfaces /etc/network/interfaces.bak
 echo -e $GREEN"Success! Backup is located at /etc/network/interfaces.bak."$ENDCOLOR;
 echo ""
 sleep 1
-echo -e $BLUE"Would you like to configure network configuration to work with Whonix? If you do not have Whonix gateway running on another Virtual Machine, your network may bnot work properly after doing this. [y/n] "$ENDCOLOR;
-
-read CONFIGUREWHONIX
-
-if [[ $CONFIGUREWHONIX = 'y' || $CONFIGUREWHONIX = 'Y' ]] ; then
-
 echo -e $BLUE"Adding Whonix network configuration to /etc/network/interfaces.."$ENDCOLOR;
 echo ""
 sleep 1
 sudo cp ~/optionZ3ro/assets/whonix-interfaces /etc/network/interfaces
+echo -e $GREEN"Success!"$ENDCOLOR;
 echo ""
+sleep 1
+
+else
+
+echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+echo ""
+
+fi
+
+echo -e $YELLOW"Would you like to set nameservers to Whonix gateway? [y/n]"$ENDCOLOR;
+
+read NAMESERVERCONF
+
+if [[ $NAMESERVERCONF = 'y' || $NAMESERVERCONF = 'Y' ]]; then
+
 echo -e $BLUE"Backing up /etc/resolv.conf.."$ENDCOLOR;
 echo ""
 sleep 1
@@ -133,8 +166,20 @@ echo ""
 sleep 1
 sudo cp ~/optionZ3ro/assets/whonix-resolv.conf /etc/resolv.conf
 echo -e $GREEN"Success! Whonix resolv.conf configuration complete."$ENDCOLOR;
+
+else
+
+echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
 echo ""
-sleep 1
+
+fi 
+
+echo -e $YELLOW"Bounce interface inside of Kali? Only do this when Whonix gateway is running. [y/n]"$ENDCOLOR;
+
+read BOUNCENET
+
+if [[ $BOUNCENET = 'y' || $BOUNCENET = 'Y' ]] ; then
+
 echo -e $YELLOW"Bouncing the interface inside of Kali..(you may run this command anytime with the script '~/optionZero/scripts/bounce-interface'"$ENDCOLOR;
 echo ""
 sleep 1
@@ -146,14 +191,18 @@ echo -e $BLUE"[ifup eth0]"$ENDCOLOR;
 sudo ifup eth0
 echo -e $GREEN"Success!"$ENDCOLOR;
 echo ""
-echo -e $GREEN"Success!  Whonix interface configuration complete."$ENDCOLOR;
 
 else
+
+echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+
+fi
+
+echo -e $GREEN"Success!  Whonix interface configuration complete."$ENDCOLOR;
 
 echo -e $YELLOW"Recommended:  Please close Kali, and run a virtual machine with Whonix gateway running, then restart the Kali Virtual Machine and return to this script."$ENDCOLOR;
 echo ""
 
-fi
 
 echo -e $YELLOW"Restore network interfaces backup? [y/n]" $ENDCOLOR;
 read RESTORENETWORK
