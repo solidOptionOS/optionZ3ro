@@ -35,6 +35,23 @@ echo ""
 echo -e $YELLOW"The following will configure Tor browser and configure network settings for use with Whonix Gateway."$ENDCOLOR;
 sleep 2
 echo ""
+echo -e $YELLOW"Important: Please download, install and run the Whonix gateway Virtual Image first."
+echo ""
+echo -e $YELLOW"Would you like to open the setup URL with images and links? [y/n]"$ENDCOLOR;
+read WHONIXURL
+
+if [[ $WHONIXURL = 'y' || $WHONIXURL = 'Y' ]]; then
+
+cd ~/optionZ3ro/scrips/installation-helpers/
+./whonix-url
+
+else
+
+echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+
+fi
+
+echo ""
 echo -e $YELLOW"Installing tor.."$ENDCOLOR;
 echo ""
 sleep 1
