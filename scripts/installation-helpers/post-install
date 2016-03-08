@@ -164,7 +164,7 @@ fi
 
 echo -e $BLUE"Installing preferred extras.."$ENDCOLOR;
 sleep 1
-apt-get install ieee-data unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make linux-headers-$(uname -r) firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
+apt-get install ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
 echo -e $GREEN"Done."$ENDCOLOR;
 echo ""
 sleep 1
