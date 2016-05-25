@@ -9,6 +9,7 @@ YELLOW="\033[1;33m"
 BLUE="\033[1;34m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
+
 echo -e $RED"#################################################################"$ENDCOLOR;
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
 echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
@@ -37,10 +38,60 @@ sleep 2
 echo ""
 echo -e $YELLOW"This is a post installation script designed for the optionZ3ro drive or downloaded OS"$ENDCOLOR;
 echo -e $YELLOW" you either purchased or downloaded online to give you a simpler, more robust user experience with the OS and its tools."$ENDCOLOR;
+
+echo -e $YELLOW"Let's get started"$ENDCOLOR;
+sleep 1
+echo ""
+echo -e $BLUE"Adding aliases to .bashrc.."$ENDCOLOR;
+sleep 1
+echo ""
+echo "alias ll='ls -Al'" >> ~/.bashrc
+echo "alias lz='ls -Zla'" >> ~/.bashrc
+echo "alias xclip='xclip -selection c'" >> ~/.basrc
+echo "goto-scripts='cd /root/optionZ3ro/scripts'" >> ~/.bashrc
+echo "alias gitusername=solidOptionOS" >> ~/.bashrc
+echo "screenfetch" >> ~/.bashrc
+echo ""
+echo -e $BLUE"NOTE: the ScreenFetch command will only work once installed"$ENDCOLOR;
 echo ""
 sleep 1
 
-echo -e $YELLOW"Let's get started"$ENCOLOR;
+echo -e $BLUE"Modifying NetworkManager.conf to allow for managed interfaces.."$ENDCOLOR;
+echo ""
+sleep 1
+sed -i 's/false/true/g' /etc/NetworkManager/NetworkManager.conf
+echo ""
+cat /etc/NetworkManager/NetworkManager.conf
+echo ""
+sleep 1
+echo -e $BLUE"Checking sources.list.."$ENDCOLOR;
+sleep 1 
+echo ""
+cat /etc/apt/sources.list
+echo ""
+sleep 1
+echo -e $BLUE"Backing up original sources.list file in /root/backup.."$ENDCOLOR;
+echo ""
+sleep 1
+mkdir -p /root/backup/sources
+cp -rf /etc/apt/ /root/backup/sources/
+echo -e $GREEN"The entire /etc/apt folder has been backed up to /root/backup/sources/"$ENDCOLOR;
+echo ""
+echo -e $BLUE"Updating sources.list.."$ENDCOLOR;
+sleep 1
+echo ""
+cat << EOF > /etc/apt/sources.list
+deb http://http.kali.org/kali kali-rolling main non-free contrib
+EOF
+echo ""
+sleep 1
+echo -e $BLUE"Adding PGP keys.."$ENDCOLOR;
+sleep 1
+echo ""
+gpg –keyserver pgpkeys.mit.edu –recv-key ED444FF07D8D0BF6
+gpg -a –export ED444FF07D8D0BF6| sudo apt-key add –
+echo ""
+echo -e $GREEN"PGP Keys successfully added."$ENDCOLOR;
 sleep 1
 echo ""
 
@@ -48,7 +99,7 @@ echo -e $BLUE"Backing up original ssh tokens.."$ENDCOLOR;
 sleep 1
 
 if [[ ! -e /etc/ssh/oldies ]] ; then
-	mkdir /etc/ssh/oldies
+	sudo mkdir /etc/ssh/oldies
 fi
 
 mv /etc/ssh/ssh_host* /etc/ssh/oldies
@@ -58,7 +109,7 @@ sleep 1
 
 echo -e $BLUE"Reconfiguring openssh-server.."$ENDCOLOR;
 sleep 1
-dpkg-reconfigure openssh-server
+sudo dpkg-reconfigure openssh-server
 echo -e $GREEN"Done."$ENDCOLOR;
 echo ""
 sleep 1
@@ -69,20 +120,89 @@ echo ""
 
 echo -e $BLUE"Updating and upgrading.."$ENDCOLOR;
 sleep 1
-apt-get update && apt-get upgrade -y
-apt-get autoremove
-apt-get dist-upgrade
+sudo apt-get update && sudo apt-get -f install -y  && sudo apt-get autoremove -y && sudo apt-get upgrade -y && sudo apt-get dist-upgrade
 echo ""
 echo -e $GREEN"Success! Your system is now up-to-date."$ENDCOLOR;
 echo ""
 sleep 1
+echo -e $BLUE"Installing preferred extras.."$ENDCOLOR;
+sleep 1
+apt-get install --reinstall xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker linux-headers-$(uname -r) tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek multiarch-support bash-completion monodevelop -y
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $YELLOW"Would you like to create a standard user? [y/n] "$ENDCOLOR;
+read NEWUSER
+
+if [[ $NEWUSER = 'y' || $NEWUSER = 'y' ]] ; then 
+
+	echo -e $YELLOW"Username: [enter username] "$ENDCOLOR;
+	read USERNAME
+	sleep 1
+	echo ""
+	echo -e $BLUE"Creating standard user, $USERNAME.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	useradd $USERNAME
+	mkdir -p /home/$USERNAME/Downloads
+        mkdir -p /home/$USERNAME/Pictures
+        mkdir -p /home/$USERNAME/Documents
+        mkdir -p /home/$USERNAME/Desktop
+
+	chown -R $USERNAME:$USERNAME /home/$USERNAME
+	chmod -R 777 /home/$USERNAME
+	echo ""
+	echo -e $BLUE"Adding $USERNAME to sudo group."$ENDCOLOR;
+	usermod -aG sudo $USERNAME
+	echo ""
+	echo -e $BLUE"Adding $USERNAME to adm group."$ENDCOLOR;
+	usermod -aG adm $USERNAME
+	echo ""
+        echo -e $BLUE"Adding $USERNAME to adm group."$ENDCOLOR;
+        usermod -aG kismet $USERNAME
+        echo ""
+	echo -e $BLUE"Adding $USERNAME to netdev group."$ENDCOLOR;
+	usermod -aG netdev $USERNAME
+	echo ""
+	echo -e $BLUE"Adding $USERNAME to root group."$ENDCOLOR;
+	usermod -aG root $USERNAME
+	echo ""
+	echo -e $BLUE"Updating $USERNAME shell to /bin/bash.."$ENDCOLOR;
+	usermod -s /bin/bash $USERNAME
+	echo ""
+	sleep 1
+	echo -e $BLUE"Copying the root .bashrc to $USERNAME .bashrc.."$ENDCOLOR;
+	cp /root/.bashrc /home/$USERNAME/.bashrc
+	chown $USERNAME:$USERNAME /home/$USERNAME/.bashrc
+	chmod 777 /home/$USERNAME/.bashrc 
+
+	echo -e $GREEN"$USERNAME setup."$ENDCOLOR;
+	sleep 1
+
+else 
+
+	echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+fi 
+echo -e $BLUE"Adding aliases to .bashrc.."$ENDCOLOR;
+sleep 1
+echo ""
+echo "alias ll='ls -Al'" >> ~/.bashrc
+echo "alias lz='ls -Zla'" >> ~/.bashrc
+echo "alias xclip='xclip -selection c'" >> ~/.basrc
+echo "goto-scripts='cd /root/optionZ3ro/scripts'" >> ~/.bashrc
+echo "alias gitusername=solidOptionOS" >> ~/.bashrc
+echo "screenfetch" >> ~/.bashrc
 
 echo -e $BLUE"Installing and configuring add-apt-repository"$ENDCOLOR;
 sleep 1
 echo ""
-echo -e $BLUE"Installing python-software-properties and apt-file.."$ENDCOLOR;
+echo -e $BLUE"Installing software-properties-common and apt-file.."$ENDCOLOR;
 sleep 1
-apt-get install python-software-properties apt-file -y
+apt-get install software-properties-common apt-file -y
 echo -e $GREEN"Done."$ENDCOLOR;
 echo ""
 sleep 0.5
@@ -97,8 +217,8 @@ sleep 1
 echo -e $BLUE"Using apt-file search to find add-apt-repository.."$ENDCOLOR;
 apt-file search add-apt-repository
 echo ""
-echo -e $BLUE"Modifying add-apt-repository with ~/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
-cp ~/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
+echo -e $BLUE"Modifying add-apt-repository with /root/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
+cp /root/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
 chmod o+x /usr/sbin/add-apt-repository
 chown root:root /usr/sbin/add-apt-repository
 echo ""
@@ -152,7 +272,9 @@ if [[ ! -e /usr/sbin/airmon-ng-bak ]] ; then
 	echo -e $BLUE"Modifying airmon-ng.."$ENDCOLOR;
 	sleep 1
 	echo ""
-	cp ~/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+	cp /root/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+	chown root:root /usr/sbin/airmon-ng
+	chmod +x /usr/sbin/airmon-ng
 	echo -e $GREEN"Done."$ENDCOLOR;
 	echo ""
 	sleep 0.5	
@@ -161,14 +283,16 @@ if [[ ! -e /usr/sbin/airmon-ng-bak ]] ; then
 	echo ""
 	sleep 1
 fi
-
-echo -e $BLUE"Installing preferred extras.."$ENDCOLOR;
-sleep 1
-apt-get install ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart parted gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek -y
-echo -e $GREEN"Done."$ENDCOLOR;
 echo ""
 sleep 1
-
+echo -e $BLUE"Adding architectures .."$ENDCOLOR;
+sleep 1
+echo ""
+dpkg --add-architecture i386
+dpkg --add-architecture amd64
+echo -e $GREEN"Architectures updated."$ENDCOLOR;
+sleep 1
+echo ""
 echo -e $YELLOW"Would you like to install screenfetch? "$ENDCOLOR;
 read INSTALLSCREENFETCH
 echo ""
@@ -226,9 +350,9 @@ if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
 	echo -e $BLUE"Downloading the Java SE JDK from SolidOptionOS server.. "$ENDCOLOR;
 	sleep 1
 
-	if [[ ! -e ~/Downloads/jdk-7u79-linux-x64.tar.gz ]] ; then
+	if [[ ! -e /root/Downloads/jdk-7u79-linux-x64.tar.gz ]] ; then
 		
-		cd ~/Downloads
+		cd /root/Downloads
 		wget http://solidoptionos.com/packages/jdk-7u79-linux-x64.tar.gz
 		echo -e $GREEN"Download complete."$ENDCOLOR;
 		echo ""
@@ -257,7 +381,7 @@ if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
 
 	echo -e $BLUE"Cleaning up afer installation.."$ENDCOLOR;
 	sleep 1
-	rm ~/Downloads/jdk-7u79-linux-x64.tar.gz*
+	rm /root/Downloads/jdk-7u79-linux-x64.tar.gz*
 	echo -e $GREEN"Done."$ENDCOLOR;
 	echo ""
 	sleep 1
@@ -295,30 +419,30 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 	sleep 1
 	echo ""
 
-	if [[ ! -e ~/backup ]] ; then
-                mkdir ~/backup
+	if [[ ! -e /root/backup ]] ; then
+                mkdir /root/backup
         fi
 
 	echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
-	sleep 1
-	cd ~/backup
+	echo ""
+	cd /root/backup
 	echo ""
 	sleep 1
 
 	echo -e $BLUE"Cloning wifite repository"$ENDCOLOR;
-	sleep 1
+	echo ""
 	git clone https://github.com/derv82/wifite.git
 	echo ""
 	sleep 1
 
 	echo -e $BLUE"Cloning wifite-mod-pixiewps repository"$ENDCOLOR;
-	sleep 1
+	echo ""
 	git clone https://github.com/aanarchyy/wifite-mod-pixiewps.git
 	echo ""
 	sleep 1
 
 	echo -e $BLUE"Cloning reaver-wps-fork-t6x repository"$ENDCOLOR;
-	sleep 1
+	echo ""
 	git clone https://github.com/t6x/reaver-wps-fork-t6x.git
 	echo ""
 	
@@ -328,20 +452,20 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 	sleep 1
 	
 	echo -e $BLUE"Updating and upgrading before installation.."$ENDCOLOR;
-	sleep 1
-	apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y
+	echo ""
+	apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get -f install -y
 	echo ""
 	sleep 1
 	
 	echo -e $BLUE"Installing prerequisites.."$ENDCOLOR;
-	sleep 1
-	sudo apt-get install libpcap-dev aircrack-ng sqlite3 libsqlite3-dev libssl-dev -y
+	echo ""
+	sudo apt-get install --reinstall libpcap-dev aircrack-ng sqlite3 libsqlite3-dev libssl-dev -y
 	echo ""
 	sleep 1	
 
 	echo -e $BLUE"Installing pixiewps.."$ENDCOLOR;
-	sleep 1
-	cd pixiewps/src/
+	echo ""
+	cd /root/backup/pixiewps/src/
 	make
 	sleep 1
 	echo ""
@@ -350,7 +474,7 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 	sleep 1
 
 	echo -e $BLUE"Installing reaver-wps-fork-t6x.."$ENDCOLOR;
-	sleep 1
+	echo ""
 	cd /root/backup/reaver-wps-fork-t6x/src/
 	echo ""
 	echo -e $BLUE"Configuring.."$ENDCOLOR;
@@ -392,12 +516,12 @@ echo ""
 
 if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 	
-	echo -e $BLUE"Creating Solid-Art folders in ~/Pictures.."$ENDCOLOR;
+	echo -e $BLUE"Creating Solid-Art folders in /root/Pictures.."$ENDCOLOR;
 	sleep 1
 	echo ""
-	if [[ ! -e ~/Pictures/Solid-Art ]] ; then
-		mkdir ~/Pictures/Solid-Art
-                cd ~/Pictures/Solid-Art
+	if [[ ! -e /root/Pictures/Solid-Art ]] ; then
+		mkdir /root/Pictures/Solid-Art
+                cd /root/Pictures/Solid-Art
                 echo -e $GREEN"Done."$ENDCOLOR;
                 echo ""
                 sleep 0.5
@@ -405,7 +529,7 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 		echo -e $BLUE"Downloading artwork for SolidOptionOS server.."$ENDCOLOR;
 		sleep 1
 
-		if [[ ! -e ~/Pictures/Solid-Art/archive.zip ]] ; then		
+		if [[ ! -e /root/Pictures/Solid-Art/archive.zip ]] ; then		
 			wget http://solidoptionos.com/pics/archive.zip
 			echo -e $GREEN"Done."$ENDCOLOR;
 			echo ""
@@ -416,7 +540,6 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 		fi
                         
 		wget http://solidoptionos.com/pics/archive.zip
-		wget http://solidoptionos.com/pics/pics.zip
                 echo -e $GREEN"Done."$ENDCOLOR;
 		echo ""
 		sleep 1
@@ -424,7 +547,6 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
                 echo -e $BLUE"Extracting.."$ENDCOLOR;
                 sleep 1
 		unzip archive.zip
-		unzip pics.zip
                 echo -e $GREEN"Done."$ENDCOLOR;
                 echo ""
                 sleep 0.5
@@ -432,27 +554,27 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
                 echo -e $BLUE"Cleaning up.."$ENDCOLOR;
                 sleep 1
 		rm -rf __MACOSX/
-                mv hacker_wallpaper/* .
+                cp -rf hacker_wallpaper/ .
                 rm -rf hacker_wallpaper/
-                mv epic-grunge-wall-texture-by-GR/* .
+                cp -rf epic-grunge-wall-texture-by-GR/ .
                 rm -rf epic-grunge-wall-texture-by-GR/
                 rm *.psd
                 rm *.pdf
                 rm *.ai
                 rm archive.zip*
-		chmod 777 *
+		chmod -R 777 *
 		echo -e $GREEN"Success! Solid-Art is now available in ~/Pictures/Solid-Art. "$ENDCOLOR;
 		sleep 1
 		echo ""
  
 	else
 
-		echo -e $BLUE"A Solid-Art folder already exists in ~/Pictures. Do you want to overwrite/merge it with a new download? "$ENDCOLOR;
+		echo -e $BLUE"A Solid-Art folder already exists in /root/Pictures. Do you want to overwrite/merge it with a new download? "$ENDCOLOR;
 		read OVERWRITEART
 
 		if [[ $OVERWRITEART = 'y' || $OVERWRITEART = 'Y' ]] ; then
-			rm ~/Pictures/Solid-Art/archive.zip
-			cd ~/Pictures/Solid-Art
+			rm /root/Pictures/Solid-Art/archive.zip
+			cd /root/Pictures/Solid-Art
 			wget http://solidoptionos.com/pics/archive.zip
 			echo -e $GREEN"Done."$ENDCOLOR;
 			echo ""
@@ -468,14 +590,14 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 			echo -e $BLUE"Cleaning up.."$ENDCOLOR;
 			sleep 1
 			rm -rf __MACOSX/
-			mv hacker_wallpaper/* .
+			cp -rf hacker_wallpaper/ .
 			rm -rf hacker_wallpaper/
-			mv epic-grunge-wall-texture-by-GR/* .
+			cp -rf epic-grunge-wall-texture-by-GR/ .
 			rm -rf epic-grunge-wall-texture-by-GR/
 			rm *.psd
 			rm *.pdf
 			rm *.ai
-			chmod 777 *
+			chmod -R 777 *
 			echo ""
 			echo -e $GREEN"Success! Solid-Art has been updated to the latest version. "$ENDCOLOR;
 			sleep 1
@@ -515,8 +637,8 @@ if [[ $CHANGEDEFAULT = 'y' || $CHANGEDEFAULT = 'Y' ]] ; then
 	sleep 1
 
 	echo -e $BLUE"Replacing default wallpapers and login screens.."$ENDCOLOR;
-	cp ~/Pictures/Solid-Art/* /usr/share/images/desktop-base/
-	cp ~/Pictures/Solid-Art/login-background.png /usr/share/gnome-shell/themes/KaliLogin.png
+	cp /root/Pictures/Solid-Art/* /usr/share/images/desktop-base/
+	cp /root/Pictures/Solid-Art/login-background.png /usr/share/gnome-shell/themes/KaliLogin.png
 	echo ""
 	echo -e $GREEN"Success! Default backgrounds replace with Solid-Art."$ENDCOLOR;
 	sleep 1
@@ -529,35 +651,6 @@ else
 
 fi
 
-echo -e $BLUE"Would you like to update your bashrc? [y/n]"$ENDCOLOR;
-read BASHRC
-echo ""
-
-if [[ $BASHRC = 'y' || $BASHRC = 'Y' ]] ; then
-
-	echo -e $BLUE"Backing up original bashrc.."$ENDCOLOR;
-	
-	if [[ ! -e ~/.bashrc.bak ]] ; then
-		cp ~/.bashrc ~/.bashrc.bak
-	else
-		cp ~/.bashrc ~/.bashrc.bak-new
-	fi
-	
-	echo -e $GREEN"Done."$ENDCOLOR;
-	echo ""
-	echo -e $BLUE"Updating bashrc.."$ENDCOLOR;
-	cp ~/optionZ3ro/configs/bashrc ~/.bashrc
-	echo ""
-	echo -e $GREEN"Success! Bashrc updated."$ENDCOLOR;
-	sleep 1
-
-else
-
-	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
-	echo ""
-
-fi
-
 echo -e $YELLOW"Would you like to upgrade your htop style? [y/n]"$ENDCOLOR;
 read HTOPUPGRADE
 echo ""
@@ -565,12 +658,12 @@ echo ""
 if [[ $HTOPUPGRADE = 'y' || $HTOPUPGRADE = 'Y' ]] ; then
 
 	echo -e $BLUE"Upgrading htop style.."$ENDCOLOR;
-	
-	if [[ ! -e ~/.config/htop ]] ; then
-		mkdir ~/.config/htop
+	mkdir -p ~/.config/htop	
+	if [[ ! -e /root/.config/htop ]] ; then
+		mkdir /root/.config/htop
 	fi
 
-	cp ~/optionZ3ro/configs/htoprc ~/.config/htop/htoprc
+	cp /root/optionZ3ro/configs/htoprc /root/.config/htop/htoprc
 	echo ""
 	echo -e $GREEN"Success! Htop style upgraded."$ENDCOLOR;
 	echo ""
@@ -654,7 +747,7 @@ sleep 0.5
 update-pciids
 echo -e $GREEN"Done."$ENDCOLOR;
 echo ""
-sleep  0.5
+sleep 0.5
 
 echo -e $BLUE"[update-menus]"$ENDCOLOR;
 sleep 0.5
