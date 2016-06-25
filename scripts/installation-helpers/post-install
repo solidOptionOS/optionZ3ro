@@ -296,6 +296,8 @@ if [[ $NEWUSER = 'y' || $NEWUSER = 'y' ]] ; then
 		echo ""
 		echo -e $BLUE"Backing up first.."$ENDCOLOR; 
 		echo ""
+		sudo mkdir -p /home/$USERNAME
+		echo ""
 		sudo cp /home/$USERNAME/.bashrc /home/$USERNAME/.bashrc.bak
 		sleep 1
 		echo -e $GREEN"Complete."$ENDCOLOR;
@@ -520,7 +522,7 @@ if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
 	sleep 1
 
 	if [[ ! -e /opt/jdk1.7.0_79/ ]] ; then
-		tar -xzvf jdk-7u79-linux-x64.tar.gz -C /opt
+		sudo tar -xzvf jdk-7u79-linux-x64.tar.gz -C /opt
 		cd /opt/jdk1.7.0_79
 		echo -e $GREEN"Done."$ENDCOLOR;
 		echo ""
@@ -539,12 +541,12 @@ if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
 
 	echo -e $BLUE"Updating Java alternatives.."$ENDCOLOR;
 	sleep 1
-	update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_79/bin/java 1
-	update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_79/bin/javac 1
-	update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so 1
-	update-alternatives --set java /opt/jdk1.7.0_79/bin/java
-	update-alternatives --set javac /opt/jdk1.7.0_79/bin/javac
-	update-alternatives --set mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so
+	sudo update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_79/bin/java 1
+	sudo update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_79/bin/javac 1
+	sudo update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so 1
+	sudo update-alternatives --set java /opt/jdk1.7.0_79/bin/java
+	sudo update-alternatives --set javac /opt/jdk1.7.0_79/bin/javac
+	sudo update-alternatives --set mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so
 	echo -e $GREEN"Done."$ENDCOLOR;
 	echo ""
 	sleep 0.5
