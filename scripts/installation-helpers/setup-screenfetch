@@ -35,61 +35,28 @@ echo -e $BLUE"#                                       /  / "$ENDCOLOR;
 echo -e $BLUE"#                                      /__/"$ENDCOLOR;
 echo -e $BLUE"#                                "$ENDCOLOR;
 echo ""
-
 echo -e $YELLOW"Setup Screenfetch"$ENDCOLOR
 sleep 1
 echo ""
+
 cd ~/
 echo -e $BLUE"Cloning screenfetch repository .. "$ENDCOLOR;
 sleep 0.5
-git clone https://github.com/KittyKatt/screenFetch.git  && sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
+git clone https://github.com/KittyKatt/screenFetch.git
+echo ""
+sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
 echo ""
 sleep 0.5
 echo -e $YELLOW"Setting screenfetch as executable. Installing in /usr/bin.."$ENDCOLOR;
 sudo chmod +x /usr/local/bin/screenfetch
 echo ""
+
 echo -e $GREEN"Screenfetch Setup Successfully!"$ENDCOLOR;
 sleep 1
 echo ""
-echo -e $YELLOW"Add Screenfetch to bashrc? "$ENDCOLOR;
-read SCREENFETCHBASHRC
-
-if [[ $SCREENFETCHBASHRC = 'y' || $SCREENFETCHBASHRC = 'Y' ]] ; then
-
-sudo echo "screenfetch" >> ~/.bashrc
-sleep 1
-echo ""
-echo -e $GREEN"Screenfetch has been added to bashrc!"$ENDCOLOR;
-echo ""
-sleep 1
-
-else
-
-echo -e $BLUE"###############################################################"$ENDCOLOR;
-echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
-echo -e $BLUE"###############################################################"$ENDCOLOR
-exit 0
-fi
-
-echo -e $YELLOW"Source bashrc now?"$ENDCOLOR;
-read SOURCEBASHRC
-
-if [[ $SOURCEBASHRC = 'y' || $SOURCEBASHRC = 'Y' ]] ; then
-
-clear && source ~/.bashrc
 
 echo -e $BLUE"###############################################################"$ENDCOLOR;
 echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
 echo -e $BLUE"###############################################################"$ENDCOLOR
 exit 0
 
-else 
-
-echo ""
-echo -e $BLUE"Okay. Maybe some other time.  Goodbye."$ENDCOLOR;
-echo ""
-echo -e $BLUE"###############################################################"$ENDCOLOR;
-echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
-echo -e $BLUE"###############################################################"$ENDCOLOR
-exit 0
-fi
