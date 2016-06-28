@@ -61,12 +61,12 @@ sleep 1
 echo -e $BLUE"New key created."$ENDCOLOR;
 echo ""
 sleep 1
-cat /root/.ssh/id_rsa.pub 
+cat ~/.ssh/id_rsa.pub 
 echo ""
 sleep 1
 echo -e $YELLOW"Copying this key to clipboard.."$ENDCOLOR;
 
-echo /root/.ssh/id_rsa.pub | xclip 
+echo ~/.ssh/id_rsa.pub | xclip 
 echo ""
 echo -e $YELLOW"Now add it to https://github.com/settings/ssh as a new key. "$ENDCOLOR;
 $BROWSER $gitlogin > /dev/null 2>&1 &
@@ -103,7 +103,7 @@ exit
 else
 
 sleep 0.5
-echo -e $YELLOW"SUCCESS! You are now setup and ready to start using git!"$ENDCOLOiR;
+echo -e $YELLOW"SUCCESS! You are now setup and ready to start using git!"$ENDCOLOR;
 sleep 1
 exit
 fi
