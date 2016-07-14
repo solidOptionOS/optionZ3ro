@@ -1,7 +1,0 @@
-#!/bin/bash
-/etc/init.d/network-manager restart
-sleep 1
-/etc/init.d/networking restart
-sleep 1
-/etc/init.d/network-manager restart
-sleep 1
