@@ -1,7 +1,6 @@
 #!/bin/bash
-clear
-#Colors
-
+clear:
+# color vars
 dgrey="\033[0;34m"
 port="\033[0;33m"
 RED="\033[1;31m"

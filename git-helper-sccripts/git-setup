@@ -1,18 +1,30 @@
 #!/bin/bash
-clear
-#Colors
-
-dgrey="\033[0;34m"
-port="\033[0;33m"
+#
+# title: git-setup
+# author:  Christopher Earnhart 
+# author_email: chris@christopherearnhart.com
+# author_website: http://christopherearnhart.com
+#
+# color vars
 RED="\033[1;31m"
 GREEN="\033[2;32m"
 YELLOW="\033[1;33m"
 BLUE="\033[1;34m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
-BROWSER=iceweasel
-alias xclip='xclip -selection -c'
-gitlogin=https://github.com/login
+# end color vars
+
+# browser vars
+BROWSER=firefox
+# end browser vars
+
+# git vars
+gitPersonalAccessToken=https://github.com/settings/tokens
+gitSSHKeys=https://github.com/settings/keys
+gitCredPath=$HOME
+gitCredFile='git.store'
+# end git vars
+clear
 echo -e $BLUE"#################################################################"$ENDCOLOR; 
 echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
 echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
@@ -20,91 +32,161 @@ echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$
 echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
 echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
 echo -e $BLUE"#################################################################"$ENDCOLOR;
-echo -e $YELLOW"Let's setup your github config"$ENDCOLOR
-sleep 1
 echo ""
+
+echo -e $YELLOW"Let's setup your github config"$ENDCOLOR;
+echo ""
+
 echo -e $YELLOW"Enter your github username: "$ENDCOLOR;
 read githubusername
 echo ""
+
 echo -e $BLUE"Registering global user.name.."$ENDCOLOR;
 git config --global user.name $githubusername
 echo ""
+
 echo -e $YELLOW"Enter your github email address: "$ENDCOLOR;
 read githubemailaddress
 echo ""
+
 echo -e $BLUE"Registering global email.address.."$ENDCOLOR;
 git config --global user.email $githubemailaddress
 echo ""
-echo -e $BLUE"Select push.default {'simple' or 'matching'}"$ENDCOLOR;
-read defaultpush
-echo ""
-echo -e $YELLOW"Registering push.default $defaultpush."$ENDCOLOR;
-git config --global push.default $defaultpush
-sleep 1
-echo -e $YELLOW"Checking for SSH keys"$ENDCOLOR;
-ls -al ~/.ssh
-## Lists the files in your .ssh directory, if they exist
-sleep 1
-echo -e $BLUE"Now we will generate a public/private rsa key pair"$ENDCOLOR;
-sleep 0.2
-ssh-keygen -t rsa -b 4096 -C "$githubemailaddress"
-## Creates a new ssh key, using the email as a label
-sleep 1 
-echo -e $BLUE"Starting ssh-agent"$ENDCOLOR;
-eval "$(ssh-agent -s)"
-sleep 2
-echo -e $BLUE"Adding new SSH key to the ssh-agent"$ENDCOLOR;
-sleep 1
-ssh-add ~/.ssh/id_rsa
-echo ""
-sleep 1
-echo -e $BLUE"New key created."$ENDCOLOR;
-echo ""
-sleep 1
-cat ~/.ssh/id_rsa.pub 
-echo ""
-sleep 1
-echo -e $YELLOW"Copying this key to clipboard.."$ENDCOLOR;
 
-echo ~/.ssh/id_rsa.pub | xclip 
-echo ""
-echo -e $YELLOW"Now add it to https://github.com/settings/ssh as a new key. "$ENDCOLOR;
-$BROWSER $gitlogin > /dev/null 2>&1 &
+echo -e $YELLOW"Would you like to create a credentials file for git? [Y/n] "$ENDCOLOR;
+read createGitCreds
 
-echo -e $YELLOW"When you have added the key, enter 'y' here:  "$ENDCOLOR;
-read readytogo
+if [[ $createGitCreds = 'y' || $createGitCreds = 'Y' ]]; then
 
-if [[ $readytogo = y || $readytogo = Y ]] ; then
-sleep 1
+  echo ""
+  echo -e $BLUE"Creating '$gitCredFile in $gitCredPath'.."$ENDCOLOR;
+  echo ""
 
-echo -e $BLUE"Okay, let's test the connection. "$ENDCOLOR;
-sleep 1
-echo ""
-ssh -vT $githubusername@github.com
-sleep 1
-fi
-echo -e $BLUE"If you have authenticated, and the username in the message is yours,  then you have successfully set up your SSH Key!;"$ENDCOLOR;
-echo -e $YELLOW"If you had any problems with your setup, we can try another route. "$ENDCOLOR;
-echo -e $YELLOW"Did you have a problem? { y/n }"$ENDCOLOR;
-read problemorsuccess
+  echo -e $YELLOW"Enter your github host: [e.g. github.com/solidOptionOS] "$ENDCOLOR;
+  read mygithost
+  echo ""
 
-if [[ $problemorsuccess = y || $problemorsuccess = Y ]] ; then
+  gitCredUsername=$githubusername
 
-echo -e $BLUE"That's ok.  Let's try a different method. Login to Github and create a personal access token via -> Profile -> Settings -> Personal Access tokens"$ENDCOLOR;
-sleep 1
-echo -e $YELLOW"Enter the token here: "$ENDCOLOR;
-read privategithubtoken
-echo -e $BLUE"Ok, got it. Let's import that token."$ENDCOLOR;
-sleep 1
-curl -u $githubusername:$privategithubtoken https://api.github.com/user
-sleep 1
-echo -e $YELLOW"SUCCESS! You are now setup and ready to start using git!"$ENDCOLOR;
-exit
+  echo -e $YELLOW"Enter your github password: "$ENDCOLOR;
+  read gitCredPass
+  echo ""
+  
+  echo -e $BLUE"Creating $gitCredFile with username $gitCredUsername and password $gitCredPass to be stored in $gitCredPath.."$ENDCOLOR;
+  echo ""
+  
+  echo -e "git config --global credential.helper 'store --file "$gitCredPath/$gitCredFile"'"
+  
+  echo -e 'git credential-store --file '"$gitCredPath"'/'"$gitCredFile"' store\n'
+  echo -e 'protocol=https \nhost='"$mygithost"' \nusername='"$gitCredUsername"' \npassword='"$gitCredPass"' \n\n' 
+
+  echo ""
+  echo -e $BLUE"Checking credentials.."$ENDCOLOR;
+  echo -e 'git credential-store --file '"$HOME"'/'"$gitCredFile"' get\n'
+  echo -e '\n'
+  
+  echo -e $BLUE"Your github credentials are stored."$ENDCOLOR;
+  echo ""
+
 else
 
-sleep 0.5
-echo -e $YELLOW"SUCCESS! You are now setup and ready to start using git!"$ENDCOLOR;
+  echo ""
+  echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+  echo ""
+
+fi
+  
+echo -e $BLUE"Select push.default ['simple' or 'matching']"$ENDCOLOR;
+read defaultpush
+echo ""
+
+echo -e $YELLOW"Registering push.default $defaultpush."$ENDCOLOR;
+git config --global push.default $defaultpush
+echo ""
+
+echo -e $YELLOW"Checking for SSH keys.."$ENDCOLOR;
+echo ""
+ls -al ~/.ssh
+echo ""
+
+echo -e $BLUE"Generating a public/private rsa key pair.."$ENDCOLOR;
+echo ""
+ssh-keygen -t rsa -b 4096 -C "$githubemailaddress"
+echo "" 
+
+echo -e $BLUE"Starting ssh-agent"$ENDCOLOR;
+echo ""
 sleep 1
-exit
+eval "$(ssh-agent -s)"
+echo ""
+
+echo -e $BLUE"Adding new SSH key to the ssh-agent"$ENDCOLOR;
+echo ""
+ssh-add ~/.ssh/id_rsa
+echo ""
+
+echo -e $BLUE"New key created."$ENDCOLOR;
+echo ""
+cat ~/.ssh/id_rsa.pub
+echo ""
+
+echo -e $YELLOW"Copying to clipboard.."$ENDCOLOR;
+cat ~/.ssh/id_rsa.pub | xclip -selection clipboard       
+
+echo ""
+
+#echo -e $YELLOW "Using $gitCredFile to login to github.." $ENDCOLOR;
+#echo ""
+
+echo -e $YELLOW "When github appears in the browser, ADD A NEW SSH KEY, name it, and paste the contents of the clipboard into the key text-area." $ENDCOLOR;
+echo ""
+ 
+$BROWSER $gitSSHKeys > /dev/null 2>&1 &
+
+echo -e $YELLOW "When you have added the key, enter 'done' here: " $ENDCOLOR;
+read readytogo
+
+if [[ $readytogo = 'done' ]] ; then
+
+  echo ""
+  echo -e $BLUE "Okay, let us test the connection." $ENDCOLOR;
+  echo ""
+  sleep 1
+  
+  ssh -vT $githubusername@github.com
+  echo ""
+
 fi
 
+echo -e $BLUE "If you have authenticated, and the username in the message is yours,  then you have successfully set up your SSH Key!" $ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $YELLOW "Fail to authenticate? [y/N] " $ENDCOLOR;
+read problemorsuccess
+
+if [[ $problemorsuccess = 'y' || $problemorsuccess = 'Y' ]]; then
+
+  echo ""
+  echo -e $BLUE "No problem.  Let us try a different method." $ENDCOLOR;
+  echo "" 
+  
+  echo -e $YELLOW "We are going to create a personal access token." $ENDCOLOR;
+  echo ""
+
+  $BROWSER '$gitPersonalAccessToken' > /dev/null 2>&1 & 
+  
+  echo -e $YELLOW "When you have generated the token, enter it here: " $ENDCOLOR;
+  read privategithubtoken
+  echo ""
+  
+  echo -e $BLUE "Got it. Importing the token." $ENDCOLOR;
+  echo ""
+  
+  curl -u $githubusername:$privategithubtoken https://api.github.com/user
+  echo ""
+
+fi
+
+echo ""
+echo -e $YELLOW "SUCCESS! You are now setup and ready to start using git!" $ENDCOLOR;
