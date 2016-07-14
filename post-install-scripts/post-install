@@ -56,7 +56,7 @@ if [[ $ADDALIASES = 'y' || $ADDALIASES = 'Y' ]] ; then
 	echo "alias ll='ls -Al'" >> ~/.bashrc
 	echo "alias lz='ls -Zla'" >> ~/.bashrc
 	echo "alias xclip='xclip -selection c'" >> ~/.bashrc
-	echo "alias goto-scripts='cd /root/optionZ3ro/scripts'" >> ~/.bashrc
+	echo "alias goto-scripts='cd /home/h3x/optionZ3ro/scripts'" >> ~/.bashrc
 	sleep 1
 
 else
@@ -112,12 +112,12 @@ if [[ $KALIROLLING = 'y' || $KALIROLLING = 'Y' ]] ; then
 	echo ""
 	sleep 1
 	
-	echo -e $BLUE"Backing up original sources.list file in /root/backup.."$ENDCOLOR;
+	echo -e $BLUE"Backing up original sources.list file in /home/h3x/backup.."$ENDCOLOR;
 	echo ""
 	sleep 1
-	sudo mkdir -p /root/backup/sources
-	sudo cp -rf /etc/apt/ /root/backup/sources/
-	echo -e $GREEN"The entire /etc/apt folder has been backed up to /root/backup/sources/"$ENDCOLOR;
+	sudo mkdir -p /home/h3x/backup/sources
+	sudo cp -rf /etc/apt/ /home/h3x/backup/sources/
+	echo -e $GREEN"The entire /etc/apt folder has been backed up to /home/h3x/backup/sources/"$ENDCOLOR;
 	echo ""
 	
 	echo -e $BLUE"Updating sources.list.."$ENDCOLOR;
@@ -214,7 +214,7 @@ if [[ $EXTRAS = 'y' || $EXTRAS = 'Y' ]] ; then
  
 	echo -e $BLUE"Listing preferred extras.."$ENDCOLOR;
 	sleep 1
-	echo -e $YELLOW"xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker linux-headers-$(uname -r) tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek bash-completion monodevelop"$ENDCOLOR;
+	echo -e $YELLOW"xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker linux-headers-$(uname -r) tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-realtek bash-completion monodevelop"$ENDCOLOR;
 	echo ""
 	sleep 1
 
@@ -222,7 +222,7 @@ if [[ $EXTRAS = 'y' || $EXTRAS = 'Y' ]] ; then
 	echo ""
 	sudo apt-get install linux-headers-$(uname -r)
 	echo ""
-	sudo apt-get install xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek bash-completion monodevelop
+	sudo apt-get install --reinstall xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-realtek bash-completion monodevelop
 	echo ""
 	sleep 1
 	echo -e $GREEN"Complete."$ENDCOLOR;
@@ -354,9 +354,9 @@ echo -e $BLUE"Using apt-file search to find add-apt-repository.."$ENDCOLOR;
 sudo apt-file search add-apt-repository
 echo ""
 
-echo -e $BLUE"Modifying add-apt-repository with /root/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
+echo -e $BLUE"Modifying add-apt-repository with /home/h3x/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
 echo ""
-sudo cp ~/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
+sudo cp /home/h3x/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
 sudo chmod o+x /usr/sbin/add-apt-repository
 sudo chown root:root /usr/sbin/add-apt-repository
 echo ""
@@ -419,7 +419,7 @@ if [[ $CONFAIRMON = 'y' || $CONFAIRMON = 'Y' ]] ; then
 		echo -e $BLUE"Modifying airmon-ng.."$ENDCOLOR;
 		sleep 1
 		echo ""
-		sudo cp ~/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+		sudo cp /home/h3x/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
 		sudo chown root:root /usr/sbin/airmon-ng
 		sudo chmod +x /usr/sbin/airmon-ng
 		echo -e $GREEN"Done."$ENDCOLOR;
@@ -571,8 +571,8 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 	sleep 1
 	echo ""
 
-	if [[ ! -e ~/backup ]] ; then
-                mkdir ~/backup
+	if [[ ! -e /home/h3x/backup ]] ; then
+                mkdir /home/h3x/backup
         fi
 
 	echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
@@ -620,7 +620,7 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 
 	echo -e $BLUE"Installing pixiewps.."$ENDCOLOR;
 	echo ""
-	cd ~/backup/pixiewps/src/
+	cd /home/h3x/backup/pixiewps/src/
 	make
 	echo ""
 	sudo make install
@@ -629,7 +629,7 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 
 	echo -e $BLUE"Installing reaver-wps-fork-t6x.."$ENDCOLOR;
 	echo ""
-	cd ~/backup/reaver-wps-fork-t6x/src/
+	cd /home/h3x/backup/reaver-wps-fork-t6x/src/
 	echo ""
 	echo -e $BLUE"Configuring.."$ENDCOLOR;
 	sleep 1
@@ -678,9 +678,9 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 	echo -e $BLUE"Creating Solid-Art folder in ~/Pictures.."$ENDCOLOR;
 	sleep 1
 	echo ""
-	if [[ ! -e ~/Pictures/Solid-Art ]] ; then
-		mkdir ~/Pictures/Solid-Art
-                cd ~/Pictures/Solid-Art
+	if [[ ! -e /home/h3x/Pictures/Solid-Art ]] ; then
+		mkdir /home/h3x/Pictures/Solid-Art
+                cd /home/h3x/Pictures/Solid-Art
                 echo -e $GREEN"Done."$ENDCOLOR;
                 echo ""
                 sleep 0.5
@@ -688,7 +688,7 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 		echo -e $BLUE"Downloading artwork for SolidOptionOS server.."$ENDCOLOR;
 		sleep 1
 
-		if [[ ! -e ~/Pictures/Solid-Art/archive.zip ]] ; then		
+		if [[ ! -e /home/h3x/Pictures/Solid-Art/archive.zip ]] ; then		
 			wget http://solidoptionos.com/pics/archive.zip
 			echo -e $GREEN"Done."$ENDCOLOR;
 			echo ""
@@ -731,9 +731,9 @@ if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
 		read OVERWRITEART
 
 		if [[ $OVERWRITEART = 'y' || $OVERWRITEART = 'Y' ]] ; then
-			sudo rm -rf ~/Pictures/Solid-Art/archive.zip
-			mkdir -p ~/Pictures/Solid-Art
-			cd ~/Pictures/Solid-Art
+			sudo rm -rf /home/h3x/Pictures/Solid-Art/archive.zip
+			mkdir -p /home/h3x/Pictures/Solid-Art
+			cd /home/h3x/Pictures/Solid-Art
 			wget http://solidoptionos.com/pics/archive.zip
 			echo -e $GREEN"Done."$ENDCOLOR;
 			echo ""
@@ -779,12 +779,12 @@ read HTOPUPGRADE
 if [[ $HTOPUPGRADE = 'y' || $HTOPUPGRADE = 'Y' ]] ; then
 
 	echo -e $BLUE"Upgrading htop style.."$ENDCOLOR;
-	sudo mkdir -p ~/.config/htop	
-	if [[ ! -e ~/.config/htop ]] ; then
-		mkdir ~/.config/htop
+	sudo mkdir -p /home/h3x/.config/htop	
+	if [[ ! -e /home/h3x/.config/htop ]] ; then
+		mkdir /home/h3x/.config/htop
 	fi
 
-	cp ~/optionZ3ro/configs/htoprc ~/.config/htop/htoprc
+	cp /home/h3x/optionZ3ro/configs/htoprc /home/h3x/.config/htop/htoprc
 	echo ""
 	echo -e $GREEN"Success! Htop style upgraded."$ENDCOLOR;
 	echo ""
