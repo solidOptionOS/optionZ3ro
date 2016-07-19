@@ -164,7 +164,7 @@ if [[ $continue = "$continue_default" ]] ; then
   echo ""
   sleep 1
   
-  ssh -vT $gitCredUsername@$mygithost
+  ssh -vT $gitCredUsername@github.com
   echo ""
 
 fi
