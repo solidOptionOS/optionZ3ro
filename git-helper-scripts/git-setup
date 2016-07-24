@@ -16,19 +16,20 @@ BROWSER=firefox
 # end browser vars
 
 # git vars
+gitToken="https://github.com/settings/tokens"
+gitSSHKeys="https://github.com/settings/keys"
 gitEmail_default="user@domain.com"
-gitPersonalAccessToken='https://github.com/settings/tokens'
-gitSSHKeys='https://github.com/settings/keys'
-gitCredUsername_default="default_email"
+gitCredUsername_default='github_username'
 gitCredPass_default='password'
-mygithost_default='mygithost'
-gitCredFile=".git-credentials"
-gitCredTimeout_default="3000"
-continue_default="continue"
-fail_default="no"
-createGitCreds_default="y"
-str1="[credential] \n\thelper = store --file $HOME/$gitCredFile \n\thelper = cache --timeout $gitCredTimeout \n "
-str3="https://$gitCredUsername:$gitCredPass@$mygithost"
+defaultPush_default='simple'
+mygithost_default='github.com'
+gitCredFile_default='.git-credentials'
+gitCredTimeout_default='3000'
+continue_default='continue'
+fail_default='no'
+createGitCreds_default='y'
+BROWSER="firefox"
+xclip="xclip -selection clipboard"
 # end git vars
 
 clear
@@ -46,46 +47,63 @@ echo ""
 
 read -p "Enter your github username: [$gitCredUsername_default] " gitCredUsername_default
 gitCredUsername=${gitCredUsername:-$gitCredUsername_default}
-echo ""
+echo -e $gitCredUsername
 
 echo -e "Registering global user.name.."
-git config --global user.name "$gitCredUsername"
+git config --global user.name $gitCredUsername
 echo ""
 
 read -p "Enter your github email address: [$gitEmail_default] " gitEmail_default
 gitEmail=${gitEmail:-$gitEmail_default} 
-echo ""
+echo -e $gitEmail
 
 echo -e "Registering global email.address.."
-git config --global user.email "$gitEmail"
+git config --global user.email $gitEmail
+echo ""
+
+read -p "Select push.default [$defaultPush_default] " defaultPush_default
+defaultPush=${defaultPush:-$defaultPush_default}
+echo -e $defaultPush
+
+echo -e "Registering push.default $defaultpush."
+git config --global push.default $defaultpush
 echo ""
 
 read -p "Would you like to create a credentials file for git? [$createGitCreds_default /n] " createGitCreds_default
 createGitCreds=${createGitCreds:-$createGitCreds_default}
+echo -e $CreateGitCreds
 
 if [[ $createGitCreds = "$createGitCreds_default" || $createGitCreds = 'Y' ]]; then
 
   echo ""
-  echo -e "Creating $gitCredFile in $HOME.."
-  echo ""
+  read -p "Enter the name of the credentials file to create [$gitCredFile_default] " gitCredFile
+  gitCredFile=${gitCredFile:-$gitCredFile_default}
+  echo -e  $gitCredFile
 
   read -p "Enter your github host: [$mygithost_default] " mygithost_default
   mygithost=${mygithost:-$mygithost_default}
-  echo ""
+  echo -e $mygithost
 
   read -p "Enter your github password: [$gitCredPass_default] " gitCredPass_default
   gitCredPass=${gitCredPass:-$gitCredPass_default}
-  echo ""
+  echo -e $gitCredPass
   
   read -p "Enter cache timeout for credential-store: [$gitCredTimeout_default] " gitCredTimeout_default
   gitCredTimeout=${gitCredTimeout:-$gitCredTimeout_default}
+  echo -e $gitCredTimeout
+
+  echo -e "Creating $gitCredFile with username $gitCredUsername and password $gitCredPass to be stored in $HOME/$gitCredFile"
   echo ""
 
-  echo -e "Creating $gitCredFile with username $gitCredUsername and password $gitCredPass to be stored in $HOME.."
-  echo ""
+  str1="[credential]"
+  str2="\thelper = store --file $HOME/$gitCredFile"
+  str3="\thelper = cache --timeout $gitCredTimeout"
+  str4="https://$gitCredUsername:$gitCredPass@$mygithost"
   
-  echo "$str1" >> "$HOME/.gitconfig"
-  echo "$str3" >> "$HOME/$gitCredFile"
+  echo -e $str1 >> "$HOME/.gitconfig"
+  echo -e $str2 >> "$HOME/.gitconfig"
+  echo -e $str3 >> "$HOME/.gitconfig"
+  echo -e $str4 >> "$HOME/$gitCredFile"
 
   echo ""
   echo -e "Checking credentials.."
@@ -102,17 +120,9 @@ else
 
 fi
   
-read -p "Select push.default [$defaultpush_default] " defaultpush_default
-defaultpush=${defaultpush:-$defaultpush_default}
-echo ""
-
-echo -e "Registering push.default $defaultpush."
-git config --global push.default "$defaultpush"
-echo ""
-
 echo -e "Checking for SSH keys.."
 echo ""
-ls -al ~/.ssh
+ls -al $HOME/.ssh
 echo ""
 
 echo -e "Generating a public/private rsa key pair.."
@@ -123,39 +133,38 @@ echo ""
 echo -e "Starting ssh-agent"
 echo ""
 sleep 1
-eval "$ssh-agent -s"
+eval ssh-agent -s
 echo ""
 
 echo -e "Adding new SSH key to the ssh-agent.."
 echo ""
-ssh-add ~/.ssh/id_rsa
+ssh-add $HOME/.ssh/id_rsa
 echo ""
 
 echo -e "New key created."
 echo ""
-cat ~/.ssh/id_rsa.pub
+cat $HOME/.ssh/id_rsa.pub
 echo ""
 
 echo -e "Copying to clipboard.."
-cmd ~/.ssh/id_rsa.pub | xclip -selection clipboard       
+cat $HOME/.ssh/id_rsa.pub | $xclip 
 echo ""
 
 echo -e "When github appears in the browser, ADD A NEW SSH KEY, name it, and paste the contents of the clipboard into the key text-area."
 echo ""
  
-$BROWSER $gitSSHKeys > /dev/null 2>&1 &
+$BROWSER $gitSSHKeys >/dev/null 2>&1 &
 
 read -p "When you have added the key [$continue_default] here " continue_default
 continue=${continue:-$continue_default}
-echo  ""
 
-if [[ $continue = 'continue' ]] ; then
+if [[ $continue = "$continue_default" ]] ; then
 
   echo -e "Okay, let us test the connection."
   echo ""
   sleep 1
   
-  ssh -vT "$gitCredUsername@github.com"
+  ssh -vT $gitCredUsername@github.com
   echo ""
 
 fi
@@ -176,7 +185,7 @@ if [[ $fail = 'y' || $fail = 'Y' ]]; then
   echo -e "We are going to create a personal access token."
   echo ""
 
-  $BROWSER $gitPersonalAccessToken > /dev/null 2>&1 & 
+  $BROWSER $gitToken >/dev/null 2>&1 &
   
   echo -e "When you have generated the token, enter it here: "
   read -r gitToken
@@ -185,7 +194,7 @@ if [[ $fail = 'y' || $fail = 'Y' ]]; then
   echo -e "Got it. Importing the token."
   echo ""
   
-  curl -u "$gitCredUsername":"$gitToken" https://api.github.com/user
+  curl -u $gitCredUsername:$gitToken https://api.github.com/user
   echo ""
 
 fi
