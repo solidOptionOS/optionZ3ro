@@ -148,13 +148,13 @@ echo ""
 
 echo -e "Generating a public/private rsa key pair.."
 echo ""
-ssh-keygen -t rsa -b 4096 -C "$gitCredUsername@github.com"
+ssh-keygen -t rsa -b 4096 -C "$gitEmail"
 echo "" 
 
 echo -e "Starting ssh-agent"
 echo ""
 sleep 1
-eval ssh-agent -s
+eval "$(ssh-agent -s)"
 echo ""
 
 echo -e "Adding new SSH key to the ssh-agent.."
@@ -185,7 +185,7 @@ if [[ $continue = "$continue_default" ]] ; then
   echo ""
   sleep 1
   
-  ssh -vT $gitCredUsername@$mygithost
+  ssh -vT git@github.com
   echo ""
 
 fi
