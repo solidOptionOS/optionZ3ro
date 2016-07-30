@@ -12,9 +12,9 @@ RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
 ## Paths
-PERSISTENCEPATH="/root"
-SCRIPTSPATH="/root/scripts"
-CAPTUREPATH="/root/captures"
+PERSISTENCEPATH="/"
+SCRIPTSPATH="/home/h3x/optionZ3ro"
+CAPTUREPATH="/captures"
 
 ## Preferred Options
 SETOPTIONS=" --showack --band abg --wps -aMU --cswitch 1"
@@ -34,111 +34,133 @@ echo -e $YELLOW"# Created by h3x at SolidOptionOS.  All rights reserved. 2015   
 echo -e $BLUE"#################################################################"$ENDCOLOR;
 
 echo ""
-sleep 0.5
-echo -e $BLUE"Checking for root access.. "$ENDCOLOR
-sleep 0.5
-if [ $USER != root ]; then
-echo -e $RED"[h3x]:Error: must be root"$ENDCOLOR
-echo -e $BLUE"[h3x]:Exiting..."$ENDCOLOR
-exit 0
-fi
-sleep 1
-
-echo -e $BLUE"Let's get started. "$ENDCOLOR;
-sleep 1
-
-echo -e $BLUE"First, Let's create a captures folder in /root "$ENDCOLOR;
-mkdir /root/captures
-sleep 0.5
-
+echo -e $BLUE"Creating a captures and captures/hs folder in / "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo mkdir -p /captures/hs]"$ENDCOLOR;
+echo ""
+mkdir -p /captures/hs
+echo ""
 echo -e $BLUE"Next, let's prepare our interface. "$ENDCOLOR;
-sleep 0.5
-iwconfig
-sleep 0.5
+echo ""
+echo -e $BLUE"[sudo ifconfig]"$ENDCOLOR;
+echo ""
+sudo ifconfig
+echo ""
+echo -e $BLUE"[sudo iwconfig]"$ENDCOLOR;
+echo ""
+sudo iwconfig
 echo ""
 echo -e $YELLOW"Select the interface you wish to use: [ex. wlan0] "$ENDCOLOR;
 read INTERFACE
-sleep 1
 
-echo -e $BLUE"Checking to see if Airmon-ng is good to go "$ENDCOLOR;
-sleep 0.5
+echo -e $BLUE"Running airmon-ng check.. "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo rfkill unblock all]"$ENDCOLOR;
+echo ""
+sudo rfkill unblock all
+echo ""
+echo -e $BLUE"[sudo airmon-ng]"$ENDCOLOR;
+echo ""
+sudo airmon-ng
+echo ""
+echo -e $BLUE"[sudo airmon-ng check kill]"$ENDCOLOR;
+echo ""
+sudo airmon-ng check kill
+echo ""
 
-airmon-ng
-sleep 1
+echo -e $BLUE"Would you like to update ieee-data? [y/n] "$ENDCOLOR;
+read UPDATEOUI
 
-airmon-ng check kill
-sleep 1
+if [[ $UPDATEOUI = 'Y' || $UPDATEOUI = 'y' ]] ; then
 
-## Uncomment to enable.
-# echo -e $BLUE"Updating Airodump-ng IEEE Data "$ENDCOLOR;
-# airodump-ng-oui-update
-# sleep 0.5
+  sudo update-ieee-data
+
+else 
+
+  echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+
+fi 
 
 echo -e $BLUE"Complete.  Good to go. "$ENDCOLOR;
-sleep 1
+echo ""
 
 echo -e $BLUE"Starting Airmon-ng for $INTERFACE "$ENDCOLOR;
-sleep 0.5
-
-airmon-ng start $INTERFACE
-sleep 2
-
+echo ""
+echo -e $BLUE"[sudo airmon-ng start $INTERFACE]"$ENDCOLOR;
+echo ""
+sudo airmon-ng start $INTERFACE
+echo ""
 echo -e $YELLOW"Enter the name of the interface created: [ex. mon0] "$ENDCOLOR;
 read MON0
-sleep 0.5
 
 echo -e $BLUE"Let's stay anonymous.  Configuring $MON0 "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo ifconfig $MON0 down]"$ENDCOLOR;
+echo ""
 sudo ifconfig $MON0 down
-sleep 1
-
+echo ""
 echo -e $BLUE"Setting new MAC Address "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo macchanger $MON0 -bra]"$ENDCOLOR;
+echo ""
 sudo macchanger $MON0 -bra
-sleep 1
-
+echo ""
 echo -e $BLUE"Configuring $MON0 for iw compatibility "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo iw dev $MON0 set type monitor]"$ENDCOLOR;
+echo ""
 sudo iw dev $MON0 set type monitor
-sleep 1
+echo ""
 
 echo -e $BLUE"Setting $MON0 to promisc mode "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo ifconfig $MON0 promisc]"$ENDCOLOR;
+echo ""
 sudo ifconfig $MON0 promisc
-sleep 1
-
+echo ""
 echo -e $BLUE"Okay.  We are ready to bring $MON0 back up "$ENDCOLOR;
+echo ""
+echo -e $BLUE"[sudo ifconfig $MON0 up]"$ENDCOLOR;
+echo ""
 sudo ifconfig $MON0 up
-sleep 1
-
+echo ""
 echo -e $BLUE"Configuration for $MON0 complete. "$ENDCOLOR;
-
+echo ""
+echo -e $BLUE"[sudo iw $MON0 info]"$ENDCOLOR;
+echo ""
 sudo iw $MON0 info
-sleep 3
-
+sleep 1
+echo ""
 echo -e $BLUE"Initializing $MON0 for capture "$ENDCOLOR;
-sleep 2
-
-echo -e $YELLOW"Specify channel(s)? [y | n] "$ENDCOLOR
+echo ""
+echo -e $YELLOW"Specify channel(s)? [y/n] "$ENDCOLOR
 read specchannel
 
 if [[ $specchannel = Y || $specchannel = y ]] ; then
 
-echo -e $YELLOW"Use Preferred Channel(s): y/n [channels 1,6,11] "$ENDCOLOR;
-read prefchan
+  echo -e $YELLOW"Use Preferred Channel(s): y/n [channels 1,3,6,9,11] "$ENDCOLOR;
+  read prefchan
 
-if [[ $prefchan = y || $prefchan = Y ]] ; then
+  if [[ $prefchan = y || $prefchan = Y ]] ; then
 
-echo -e $BLUE"Selecting Preferred Channels: 1,6,9,11 "$ENCOLOR;
-attachan="1,6,11"
+    echo -e $BLUE"Selecting Preferred Channels: 1,3,6,9,11 "$ENCOLOR;
+    attachan="1,3,6,9,11"
+
+  else
+
+    echo -e $YELLOW"Specify Channel(s): "$ENDCOLOR;
+    read specchan
+    CHANOPT="-c $specchan"
+    echo ""
+
+  fi
 
 else
-echo -e $YELLOW"Specify Channel(s): "$ENDCOLOR;
-read specchan
-CHANOPT="-c $specchan"
-sleep 1
-fi
 
-else
-echo -e $BLUE"Selecting all channels "$ENDCOLOR;
-CHANOPTS=" "
-sleep 0.5
+  echo -e $BLUE"Selecting all channels "$ENDCOLOR;
+  CHANOPTS=" "
+  sleep 0.5
+
 fi
 
 echo -e $YELLOW"Specify Options: [enter '-p' for preferred or '--help'] "$ENDCOLOR;
@@ -202,18 +224,17 @@ while [ -n "$OPTIONS" ] ; do
                 -p)
                         echo -e $BLUE"Options received: $SETOPTIONS "$ENDCOLOR;
                         sleep 2
+			echo ""
 
                         echo -e $BLUE"REC:LOG > Saving capture to $CAPTUREPAH/$now.dump "$ENDCOLOR;
                         sleep 2
+			echo ""
 
-                        echo -e $BLUE"Compiling sequence... "$ENDCOLOR;
-                        sleep 0.5
-
-                        echo -e $RED"Running sequence: airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
+                        echo -e $YELLOW"Running sequence: airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
                         sleep 2
 
                         airodump-ng $SETOPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
-                        sleep 3
+                        
 
                         ## todo
                         ## echo -e $YELLOW"Would you like to decrypt the capture with Airdecap? "$ENDCOLOR;
@@ -229,19 +250,18 @@ while [ -n "$OPTIONS" ] ; do
                         ;;
 
                 *)      echo -e $BLUE"Options received: $OPTIONS "$ENDCOLOR;
-                        sleep 2
+                        echo ""
+			sleep 2
 
                         echo -e $BLUE"REC:LOG > Saving capture to $CAPTUREPATH/$now.dump "$ENDCOLOR;
-                        sleep 2
+                        echo ""
+			sleep 2
 
-                        echo -e $BLUE"Compiling sequence... "$ENDCOLOR;
-                        sleep 0.5
-
-                        echo -e $RED"Running sequence: airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
+                        echo -e $YELLOW"Running sequence: airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump "$ENDCOLOR;
                         sleep 2
+                        echo ""
+                        sudo airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
                         
-                        airodump-ng $OPTIONS $CHANOPT $MON0 -w $CAPTUREPATH/$now.dump
-                        sleep 3
 
                         echo -e $BLUE"###############################################"$ENDCOLOR
                         echo -e $YELLOW"#              Operation complete.            #"$ENDCOLOR
