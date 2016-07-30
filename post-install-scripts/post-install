@@ -285,6 +285,8 @@ if [[ $EXTRAS = 'y' || $EXTRAS = 'Y' ]] ; then
   echo ""
   echo -e $YELLOW"Then the following will be installed next:  firmware-ralink firmware-atheros firmware-realtek bash-completion monodevelop"$ENDCOLOR;
   echo ""
+  echo -e $YELLOW"Then finally the following will be installed: flashplugin-nonfree"$ENDCOLOR;
+  echo ""
   sleep 3
   echo ""
 
@@ -299,6 +301,8 @@ if [[ $EXTRAS = 'y' || $EXTRAS = 'Y' ]] ; then
   echo ""
   sudo apt-get install firmware-ralink firmware-atheros firmware-realtek bash-completion monodevelop
   echo ""
+  sudo apt-get install flashplugin-nonfree
+  sudo update-flashplugin-nonfree --install
   echo ""
   echo -e $GREEN"Complete."$ENDCOLOR;
   echo ""
