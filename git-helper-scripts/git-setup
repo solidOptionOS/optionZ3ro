@@ -39,7 +39,11 @@ echo -e $BLUE"#################################################################"
 echo ""
 echo -e $YELLOW"This script will configure git for $USER." $ENDCOLOR;
 echo ""
-
+echo -e $YELLOW"Please set your home path: [e.g. $HOME] "$ENDCOLOR;
+read HOMEPATH
+echo -e $BLUE"Your home path is set to $HOMEPATH."$ENDCOLOR;
+echo ""
+ 
 configit_default="Y"
 read -p "Would you like to configure your github config? [$configit_default,n] " configit_default
 configit=${configit:-$configit_default}
