@@ -1,1 +1,1 @@
-alias xclip='xargs echo -n | xclip -selection clipboard'
+alias xclip='xargs echo -n | xclip -selection clipboard -c'

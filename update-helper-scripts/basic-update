@@ -25,10 +25,11 @@ echo ""
 echo -e $CYAN"Solid-Update"$ENDCOLOR;
 sleep 1
 echo ""
-echo -e $CYAN"Would you like to clean and purge first? [y/n]"$ENDCOLOR;
-read CLEANPURGE
+CLEANPURGE_DEFAULT="Y"
+read -p "Would you like to clean and purge first? [$CLEANPURGE_DEFAULT/n] " CLEANPURGE_DEFAULT
+CLEANPURGE=${CLEANPURGE:-$CLEANPURGE_DEFAULT}
 
-if [[ $CLEANPURGE = 'y' || $CLEANPURGE = 'Y' ]] ; then
+if [[ $CLEANPURGE = 'y' || $CLEANPURGE = "$CLEANPURGE_DEFAULT" ]] ; then
 
 	echo ""
 	echo -e $YELLOW"Running Clean and Purge.. "$ENDCOLOR;

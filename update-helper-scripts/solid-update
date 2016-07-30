@@ -25,10 +25,11 @@ echo ""
 echo -e $CYAN"Solid-Update"$ENDCOLOR;
 sleep 1
 echo ""
-echo -e $CYAN"Would you like to clean and purge first? [y/n]"$ENDCOLOR;
-read CLEANPURGE
+CLEANPURGE_DEFAULT="Y"
+read -p "Would you like to clean and purge first? [y/n] " CLEANPURGE_DEFAULT
+CLEANPURGE=${CLEANPURGE:-$CLEANPURGE_DEFAULT}
 
-if [[ $CLEANPURGE = 'y' || $CLEANPURGE = 'Y' ]] ; then
+if [[ $CLEANPURGE = 'y' || $CLEANPURGE = "$CLEANPURGE_DEFAULT" ]] ; then
 
 	echo ""
 	echo -e $YELLOW"Running Clean and Purge.. "$ENDCOLOR;
@@ -130,10 +131,11 @@ sudo apt-get autoclean
 echo ""
 clear
 
-echo -e $CYAN"Would you like to try and repair any broken packages? [Y/n] " y $ENDCOLOR;
-read fixornot
+fixornot_default="Y"
+read -p "Would you like to try and repair any broken packages? [$fixornot_default/n] " fixornot_defualt
+fixornot=${fixornot:-$fixornot_default}
 
-if [[ $fixornot = 'y' || $fixornot = 'Y' ]] ; then
+if [[ $fixornot = 'y' || $fixornot = "$fixornot_default" ]] ; then
 
 	echo ""
 	echo -e $CYAN"OK. Attempting to repair broken packages.. "$ENDCOLOR;
@@ -157,12 +159,12 @@ if [[ $fixornot = 'y' || $fixornot = 'Y' ]] ; then
         echo ""
 	sudo apt-get -f install
 	echo ""
-	
- 	echo -e $CYAN"Run aptitude -f install --full-resolver? [Y/n]" y $ENDCOLOR;
-	read moproblems
 
-	if [[ $moproblems = 'y' || $moproblems = 'Y' ]] ; then
-	
+	moproblems_default="Y"
+        read -p "Run aptitude -f install --full-resolver? [$moproblems_default/n]" moproblems_default
+        moproblems=${moproblems:-$moproblems_default}
+
+        if [[ $moproblems = 'y' || $moproblems = "$moproblems_default" ]] ; then	
 		echo ""
 		echo -e $CYAN"Attempting fix with full-resolver.."$ENDCOLOR;
 		echo ""
@@ -191,10 +193,11 @@ fi
 
 clear
 
-echo -e $CYAN"Would you like to install and update apt-file? [Y/n] " y $ENDCOLOR;
-read APTFILE
+APTFILE_DEFAULT="Y"
+read -p "Would you like to install and update apt-file? [$APTFILE_DEFAULT/n] " APTFILE_DEFAULT
+APTFILE=${APTFILE:-$APTFILE_DEFAULT}
 
-if [[ $APTFILE = 'y' || $APTFILE = 'Y' ]] ; then
+if [[ $APTFILE = 'y' || $APTFILE = "$APTFILE_DEFAULT" ]] ; then
 
         echo ""
         echo -e $CYAN"Installing and/or updating apt-file"$ENDCOLOR;
@@ -217,9 +220,14 @@ else
 
 fi
 
-clear
+echo -e $CYAN"Updating database, menus, USB and PCI IDs."$ENDCOLOR;
+echo ""
 
-echo -e $CYAN"Updating database, USB and PCI IDs."$ENDCOLOR;
+echo -e $CYAN"Updating menus.."$ENDCOLOR;
+echo ""
+echo -e $BLUE"[update-menus]"$ENDCOLOR;
+echo ""
+sudo update-menus
 echo ""
 
 echo -e $CYAN"Updating database.."$ENDCOLOR;
@@ -243,10 +251,11 @@ echo ""
 sudo update-pciids
 
 clear
-echo -e $CYAN"Would you like to update-oui? [Y/n]" y $ENDCOLOR;
-read updateOui
+updateOui_default="Y"
+read -p "Would you like to update-oui? [$updateOui_default/n] " updateOui_default
+updateOui=${updateOui:-$updateOui_default}
 
-if [[ $updateOui = 'y' || $updateOui = 'Y' ]] ; then
+if [[ $updateOui = 'y' || $updateOui = "$updateOui_Default" ]] ; then
 
 	echo ""
 	echo -e $CYAN"Updating ieee-data.."$ENDCOLOR;
@@ -257,7 +266,7 @@ if [[ $updateOui = 'y' || $updateOui = 'Y' ]] ; then
 	echo ""
 	echo -e $BLUE"This may take a while depending on your system."$ENDCOLOR;
 	echo ""
-	update-oui
+	sudo update-ieee-data
 	echo ""
 
 else
