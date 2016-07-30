@@ -78,7 +78,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias ls='ls --color=auto'
     alias ll='ls -Al --color=auto'
     alias lz='ls -Zla --color=auto'
-    alias goto-scripts='cd /home/h3x/optionZ3ro/scripts --color=auto'
+    alias goto-scripts='cd ~/optionZ3ro --color=auto'
 
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
@@ -115,4 +115,4 @@ fi
 screenfetch
 
 # some more ls aliases
-alias goto-artwork='cd /home/h3x/Pictures/Solid_Art'
+alias goto-artwork='cd ~/Pictures/Solid_Art'
