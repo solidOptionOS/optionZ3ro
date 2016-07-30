@@ -38,12 +38,13 @@ echo ""
 echo -e $YELLOW"Setup Screenfetch"$ENDCOLOR
 sleep 1
 echo ""
-
-cd ~/
+mkdir -p $HOME/backup
+cd $HOME/backup
 echo -e $BLUE"Cloning screenfetch repository .. "$ENDCOLOR;
 sleep 0.5
 git clone https://github.com/KittyKatt/screenFetch.git
 echo ""
+sudo mkdir -p /usr/local/bin
 sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
 echo ""
 sleep 0.5

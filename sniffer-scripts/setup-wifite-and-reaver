@@ -27,6 +27,7 @@ echo -e $BLUE"Homepath set to $HOMEPATH."$ENDCOLOR;
 echo ""
 echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
 mkdir -p $HOMEPATH/backup && cd $HOMEPATH/backup
+mkdir /captures
 echo ""
 pwd
 echo ""
@@ -99,10 +100,16 @@ sudo cp /usr/bin/wifite-ng /usr/bin/wifite-ng.bak
 echo -e $GREEN"Done. Wifite-ng backed up to /usr/bin/wifite-ng.bak"$ENDCOLOR;
 echo ""
 sleep 1
-echo -e $BLUE"Patching wifite-ng.."$ENDCOLOR;
+echo -e $BLUE"Patching wfite-ng.."$ENDCOLOR;
 echo ""
 sudo cp $HOMEPATH/optionZ3ro/sniffer-scripts/assets/wifite-ng-patch /usr/bin/wifite-ng
+sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite
+sudo set -i 's/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g' /usr/bin/wifite
+sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite-ng
+sudo set -i 's/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g' /usr/bin/wifite-ng
 sudo chmod 755 /usr/bin/wifite-ng
+
+
 sleep 1
 echo ""
 echo -e $BLUE"#################################"$ENDCOLOR;
