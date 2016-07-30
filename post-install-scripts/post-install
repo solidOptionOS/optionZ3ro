@@ -448,9 +448,9 @@ if [[ $ADDAPTREPO = 'Y' || $ADDAPTREPO = 'y' ]] ; then
   sudo apt-file search add-apt-repository
   echo ""
 
-  echo -e $BLUE"Modifying add-apt-repository with $HOMEPATH/optionZ3ro/post-install-scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
+  echo -e $BLUE"Modifying add-apt-repository with $HOMEPATH/optionZ3ro/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
   echo ""
-  sudo cp $HOMEPATH/optionZ3ro/post-install-scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
+  sudo cp $HOMEPATH/optionZ3ro/assets/add-apt-repository /usr/sbin/add-apt-repository
   sudo chmod o+x /usr/sbin/add-apt-repository
   sudo chown root:root /usr/sbin/add-apt-repository
   echo ""
@@ -522,7 +522,7 @@ if [[ $CONFAIRMON = 'y' || $CONFAIRMON = 'Y' ]] ; then
     echo -e $BLUE"Modifying airmon-ng.."$ENDCOLOR;
     echo ""
     echo ""
-    sudo cp $HOMEPATH/optionZ3ro/sniffer-scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+    sudo cp $HOMEPATH/optionZ3ro/assets/airmon-ng-old /usr/sbin/airmon-ng
     sudo chown root:root /usr/sbin/airmon-ng
     sudo chmod +x /usr/sbin/airmon-ng
     echo -e $GREEN"Done."$ENDCOLOR;
@@ -807,7 +807,7 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
  
   echo -e $BLUE"Patching wfite-ng.."$ENDCOLOR;
   echo ""
-  sudo cp $HOMEPATH/optionZ3ro/sniffer-scripts/assets/wifite-ng-patch /usr/bin/wifite-ng
+  sudo cp $HOMEPATH/optionZ3ro/assets/wifite-ng-patch /usr/bin/wifite-ng
   sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite
   sudo sed -i "s/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g" /usr/bin/wifite
   sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite-ng
@@ -947,7 +947,7 @@ if [[ $HTOPUPGRADE = 'y' || $HTOPUPGRADE = 'Y' ]] ; then
 	
   fi
 
-  sudo cp $HOMEPATH/optionZ3ro/post-install-scripts/assets/htoprc $HOMEPATH/.config/htop/htoprc
+  sudo cp $HOMEPATH/optionZ3ro/assets/htoprc $HOMEPATH/.config/htop/htoprc
   echo ""
   echo -e $GREEN"Success! Htop style upgraded."$ENDCOLOR;
   echo ""
