@@ -327,7 +327,7 @@ if [[ $NEWUSER = 'y' || $NEWUSER = 'y' ]] ; then
   echo -e $BLUE"Creating standard user, $USERNAME.."$ENDCOLOR;
   echo ""
   echo ""
-  sudo useradd -h $USERNAME
+  sudo useradd -m $USERNAME
   echo -e $GREEN"Complete."$ENDCOLOR;
   echo ""
 
