@@ -739,7 +739,7 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
 	
   else
 
-    echo -e $YELLOW"Okay. maybe later."$ENDCOLOR;
+    echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
     echo ""
 
   fi
@@ -809,9 +809,9 @@ if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
   echo ""
   sudo cp $HOMEPATH/optionZ3ro/sniffer-scripts/assets/wifite-ng-patch /usr/bin/wifite-ng
   sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite
-  sudo set -i 's/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g' /usr/bin/wifite
+  sudo sed -i "s/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g" /usr/bin/wifite
   sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite-ng
-  sudo set -i 's/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g' /usr/bin/wifite-ng
+  sudo sed -i "s/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g" /usr/bin/wifite-ng
   echo ""
   echo -e $BLUE"Adding wordlists.."$ENDCOLOR;
   cd /usr/share/
@@ -929,7 +929,7 @@ else
 
 fi
 
-echo -e $YELLOW"Would you like to upgrade your htop style? [y/n]"$ENDCOLOR;
+echo -e $YELLOW"Would you like to upgrade your htop style? [y/n] "$ENDCOLOR;
 read HTOPUPGRADE
 
 if [[ $HTOPUPGRADE = 'y' || $HTOPUPGRADE = 'Y' ]] ; then

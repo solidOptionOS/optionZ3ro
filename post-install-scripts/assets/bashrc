@@ -110,9 +110,14 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+# Browser default
+BROWSER=firefox
 
 # screenFetch
 screenfetch
 
 # some more ls aliases
-alias goto-artwork='cd ~/Pictures/Solid_Art'
+alias goto-artwork='cd ~/Pictures/'
+alias goto-captures='cd /captures'
+alias goto-optionZ3ro='cd ~/optionZ3ro'
+alias xclip='xclip -selection clipboard -c'
