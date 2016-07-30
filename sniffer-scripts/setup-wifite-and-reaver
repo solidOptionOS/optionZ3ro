@@ -20,14 +20,14 @@ echo -e $RED"#################################################################"$
 echo ""
 echo -e $YELLOW"Patching Wifite with Reaver and Pixiewps"$ENDCOLOR;
 echo ""
-echo -e $YELLOW"Please set home path. Do not leave any trailing /s. "$ENDCOLOR;
+echo -e $YELLOW"Please set home path. Do not leave any trailing \'/\'s. "$ENDCOLOR;
 read HOMEPATH
 echo ""
 echo -e $BLUE"Homepath set to $HOMEPATH."$ENDCOLOR;
 echo ""
 echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
 mkdir -p $HOMEPATH/backup && cd $HOMEPATH/backup
-mkdir /captures
+mkdir -p /captures/hs
 echo ""
 pwd
 echo ""
@@ -102,14 +102,12 @@ echo ""
 sleep 1
 echo -e $BLUE"Patching wfite-ng.."$ENDCOLOR;
 echo ""
-sudo cp $HOMEPATH/optionZ3ro/sniffer-scripts/assets/wifite-ng-patch /usr/bin/wifite-ng
+sudo cp $HOMEPATH/optionZ3ro/assets/wifite-ng-patch /usr/bin/wifite-ng
 sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite
-sudo set -i 's/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g' /usr/bin/wifite
+sudo sed -i "s/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g" /usr/bin/wifite
 sudo sed -i 's/usr\/share\/wfuzz\/wordlist\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/usr\/share\/fuzzdb\/wordlists-user-passwd\/passwds\/phpbb.txt/g' /usr/bin/wifite-ng
-sudo set -i 's/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g' /usr/bin/wifite-ng
+sudo sed -i "s/self.WPA_HANDSHAKE_DIR \= \'hs\'/self.WPA_HANDSHAKE_DIR \= \'\/captures\/hs\'/g" /usr/bin/wifite-ng
 sudo chmod 755 /usr/bin/wifite-ng
-
-
 sleep 1
 echo ""
 echo -e $BLUE"#################################"$ENDCOLOR;
