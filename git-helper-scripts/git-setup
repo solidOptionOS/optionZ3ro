@@ -23,7 +23,7 @@ gitCredFile_default='.git-credentials'
 gitCredTimeout_default='3000'
 continue_default='continue'
 fail_default='no'
-createGitCreds_default='y'
+createGitCreds_default='Y'
 xclip="xclip -selection clipboard"
 BROWSER="firefox"
 # end git vars
@@ -89,9 +89,8 @@ fi
 
 read -p "Would you like to create a credentials file for git? [$createGitCreds_default /n] " createGitCreds_default
 createGitCreds=${createGitCreds:-$createGitCreds_default}
-echo -e $CreateGitCreds
 
-if [[ $createGitCreds = "$createGitCreds_default" || $createGitCreds = 'Y' ]]; then
+if [[ $createGitCreds = "$createGitCreds_default" || $createGitCreds = 'y' ]]; then
 
   echo ""
   read -p "Enter the name of the credentials file to create [$gitCredFile_default] " gitCredFile
@@ -140,7 +139,7 @@ fi
   
 echo -e "Checking for SSH keys.."
 echo ""
-ls -al $HOMEPATH/.ssh
+ls -Al $HOMEPATH/.ssh
 echo ""
 
 echo -e "Generating a public/private rsa key pair.."
