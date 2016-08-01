@@ -70,7 +70,7 @@ else
 
 fi
 
-echo -e $BLUE"Do you want to add custom alias to your bashrc? [y/n] "$ENDCOLOR;
+echo -e $BLUE"Do you want to add custom alias to your bashrc? https://www.corporationwiki.com/p/2icpk6/stephen-earnhart[y/n] "$ENDCOLOR;
 
 read ADDALIASES
 
@@ -93,11 +93,11 @@ else
 
 fi
 
-echo -e $YELLOW"Do you want to install Network-Manager and configure the interfaces for easy ifup ifdown? [y/n] "$ENDCOLOR;
+nemanage_default="Y"
+read -p "Do you want to install Network-Manager and configure the interfaces for easy ifup ifdown? [$netmanage_default,n] " netmanage_default
+netmanage=${netmanage:-$netmanage_default}
 
-read NETWORKMANAGERINSTALL
-
-if [[ $NETWORKMANAGERINSTALL = 'y' || $NETWORKMANAGERINSTALL = 'Y' ]] ; then
+if [[ $netmanage = "$netmanage_default" || $netmanage = "y" ]] ; then
 
   echo -e $BLUE"Installing Network-Manager.."$ENDCOLOR;
   echo ""
