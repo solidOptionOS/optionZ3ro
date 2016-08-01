@@ -1,0 +1,36 @@
+#!/bin/bash
+base-path_default="N"
+base-path_option_default="pub/"
+base-path_option-run="--script-args http-enum.basepath='"$base-path_option"'
+
+echo -e "Nmap HTTP Recon Scan"
+echo ""
+sleep 1
+
+echo -e "Enter IP [e.g. 198.168.10.55] "
+read ip
+echo ""
+
+read -p "Additional option - Would you like to specify a base path? [$base-path_default,y] " base-path_default
+base-path=${base-path:-$base-path_default}
+echo ""
+
+if [[ $base-path = "Y" || $base-path = "y ]] ; then
+
+  read -p "Enter base path: [default /$base-path_option_default] " base-path_option_default]
+  base-path_option=${base-path_option:-$base-path_option_default}
+  echo ""
+
+  echo -e "Running [nmap --script http-enum $base-path_option-run $ip].."
+  echo ""
+  sleep 1
+
+else
+
+  echo -e "Okay. Running [nmap --script http-enum $ip].."
+  echo ""
+  sleep 1
+
+  nmap --script http-enum $ip
+
+fi
