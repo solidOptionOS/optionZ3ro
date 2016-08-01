@@ -1,0 +1,15 @@
+#!/bin/bash
+echo -e "Nmap HTTP Title Scan"
+echo ""
+sleep 1
+
+echo -e "Enter IP [e.g. 192.168.1.0/24] "
+read ip
+echo ""
+
+echo -e "Running [nmap --script http-title -sV -p 80 $ip].."
+echo ""
+sleep 1
+
+nmap --script http-title -sV -p 80 $ip
+
