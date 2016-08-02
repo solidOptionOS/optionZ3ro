@@ -7,9 +7,25 @@ echo -e "Enter IP [e.g. 192.168.1.0/24] "
 read ip
 echo ""
 
-echo -e "Running [nmap --script http-title -sV -p 80 $ip].."
+verbosity_default="Y"
+read -p "Would you like to add verbosity? [$verbosity_default,n] " verbosity_default
+verbosity=${verbosity:-$verbosity_default}
 echo ""
-sleep 1
 
-nmap --script http-title -sV -p 80 $ip
+if [[ $verbosity = "y" || $verbosity = "$verbosity_default" ]] ; then
+ 
+  echo -e "Running [name --script http-title -sV -p 80 $ip -v].."
+  echo ""
+  sleep 1
+  
+  nmap --script http-title -sV -p 80 $ip -v
 
+else
+
+  echo -e "Running [nmap --script http-title -sV -p 80 $ip].."
+  echo ""
+  sleep 1
+
+  nmap --script http-title -sV -p 80 $ip
+
+fi

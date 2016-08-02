@@ -1,7 +1,6 @@
 #!/bin/bash
-base-path_default="N"
-base-path_option_default="pub/"
-base-path_option-run="--script-args http-enum.basepath='"$base-path_option"'
+
+
 
 echo -e "Nmap HTTP Recon Scan"
 echo ""
@@ -11,26 +10,51 @@ echo -e "Enter IP [e.g. 198.168.10.55] "
 read ip
 echo ""
 
-read -p "Additional option - Would you like to specify a base path? [$base-path_default,y] " base-path_default
-base-path=${base-path:-$base-path_default}
+echo -e "Additional option - Would you like to specify a base path? [y,n] "
+read basePath
 echo ""
 
-if [[ $base-path = "Y" || $base-path = "y ]] ; then
+verbosity_default="Y"
+read -p "Additional option - Would you like to add verbosity [$verbosity_default,n] " verbosity_default 
+verbosity=${verbosity:-$verbosity_default}
 
-  read -p "Enter base path: [default /$base-path_option_default] " base-path_option_default]
-  base-path_option=${base-path_option:-$base-path_option_default}
+if ([[ $basePath = "Y" || $basePath = "y" ]] && [[ $verbosity = "y" || $verosity = "$verbosity_default" ]]) ; then
+
+  basePathOption_default="pub"
+  read -p "Enter base path: [default $basePathOption_default] " basePathOption_default
+  basePath_option=${basePath_option:-$basePathOption_default}
   echo ""
-
-  echo -e "Running [nmap --script http-enum $base-path_option-run $ip].."
+  
+  echo -e "Running [nmap --script http-enum --script-args http-enum.basepath=$basePath_option $ip -v].."
   echo ""
   sleep 1
 
-else
-
-  echo -e "Okay. Running [nmap --script http-enum $ip].."
-  echo ""
-  sleep 1
-
-  nmap --script http-enum $ip
+  nmap --script http-enum --script-args http-enum.basepath=$basePath_option $ip -v
 
 fi
+
+if ([[ $basePath = "N" || $basePath = "n" ]] && [[ $verbosity = "y" || $verbosity = "$verbosity_default" ]]) ; then
+
+  echo -e "Running [nmap --script http-enum $ip -v].."
+  echo ""
+  sleep 1
+
+  nmap --script http-enum $ip -v
+
+fi
+
+if ([[ $basePath = "Y" || $basePath = "y" ]] && [[ $verbosity = "N" || $verbosity = "n" ]]) ; then
+
+  basePathOption_default="pub"
+  read -p "Enter base path: [default $basePathOption_default] " basePathOption_default
+  basePath_option=${basePath_option:-$basePathOption_default}
+  echo ""
+
+  echo -e "Running [nmap --script http-enum --script-args http-enum.basepath=$basePath_option $ip].."
+  echo ""
+  sleep 1
+
+  nmap --script http-enum --script-args http-enum.basepath=$basePath_option $ip
+
+fi
+
