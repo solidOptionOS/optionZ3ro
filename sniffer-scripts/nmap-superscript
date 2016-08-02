@@ -83,15 +83,17 @@ nmap $fast_option $ipmask $debugv $IPProtocalScan_option $open
 echo ""
 sleep 1
 
-read -p "Number of ports to scan: [default: $portNumber_default] " portNumber_default
-portNumber=${portNumber:-$portNumber_default}
+echo -e "Number of ports to scan: [e.g. 100] "
+read portNumber
+#read -p "Number of ports to scan: [default: $portNumber_default] " portNumber_default
+#portNumber=${portNumber:-$portNumber_default}
 echo ""
 
-echo -e "Enumerating active hosts OS [$osDetection_option] TCP SYN [$TCPSYN_option] and ports [$topPorts_run] .. "
+echo -e "Enumerating active hosts OS [$osDetection_option] TCP SYN [$TCPSYN_option] and ports [$topPorts_option] .. "
 echo ""
 sleep 1
 
-nmap $osDetection_option $TCPSYN_option $aggressiveOS_option $topPorts_run $ipmask
+nmap $osDetection_option $TCPSYN_option $aggressiveOS_option $topPorts_option $portNumber $ipmask
 echo ""
 sleep 1
 
