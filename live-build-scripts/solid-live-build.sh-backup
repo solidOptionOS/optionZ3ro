@@ -26,7 +26,7 @@ mkdir /var/tmp/soos/
 cd /var/tmp/soos
 apt-get remove --purge libdebian-installer4
 wget http://ftp.debian.org/debian/pool/main/libd/libdebian-installer/libdebian-installer_0.99.tar.xz
-mkdir /var/tmp/soos/live-build-config/ && mv libdebian-installer_0.99.tar.xz /var/tmp/soos/live-build-config/
+mv libdebian-installer_0.99.tar.xz /var/tmp/soos/live-build-config/
 cd /var/tmp/soos/live-build-config/
 tar xvf libdebian-installer_0.99.tar.xz
 cd libdebian-installer-0.99
@@ -39,7 +39,7 @@ make install
 sleep 1
 cd /var/tmp/soos/live-build-config/
 git clone git://git.kali.org/live-build-config.git
-cp -r live-build-config/* .
+cp -rf live-build-config/ .
 rm -rf live-build-config/
 sleep 1
 lb clean --purge
@@ -53,7 +53,7 @@ echo -e $BLUE"Skipping lb config for now."$ENDCOLOR;
 echo ""
 sleep 1
 fi
-echo -e $BLUE"Configuring SolidOptionOS Image ISO"$ENDCOLOR;
+echo -e $BLUE"Configure Kali Image .ISO"$ENDCOLOR;
 sleep 1
 echo -e $BLUE"Adding kali packages to chroot.."$ENDCOLOR;
 sleep 1
@@ -63,107 +63,12 @@ kali-defaults
 kali-menu
 kali-debtags
 kali-archive-keyring
-kali-linux-top10
-build-essential
-kbuild
-make
-cmake
-gcc
-g++
-wireless-tools
-kali-linux-wireless-tools
-bc
-scrot
-lsb-release
-git
-vim
-kali-linux-web
-kali-linux-pwtools
-usbutils
-lsof
-iw
-tightvncserver
-libc6-dev
-firmware-brcm80211
-firmware-iwlwifi
-firmware-realtek
-firmware-ath9k-htc
-firmware-ralink
-firmware-atheros
-firmware-linux
-linux-headers-4.17.0-kali3amd64
-multiarch-support
-bluetooth
+kali-linux-full
 debian-installer-launcher
 alsa-tools
 locales-all
 dconf-tools
 openssh-server
-lshw
-bash-completion
-xclip
-arduino
-rtl-sdr
-rtlsdr-scanner
-pixiewps
-reaver
-wireshark
-adb
-fern-wifi-cracker
-tor
-cowpatty
-pyrit
-live-build
-metasploit-framework
-ipsec-tools
-ghc
-cabal-install
-cabal-debian
-shellcheck
-ettercap-common
-ettercap-graphical
-nmap
-thc-ipv6
-thc-pptp-bruter
-thc-ssl-dos
-putty
-putty-tools
-putty-doc
-netcat
-kismet
-ieee-data
-unrar
-p7zip
-zip
-unzip
-p7zip-full
-p7zip-rar
-file-roller
-remmina
-htop
-tor
-nethogs
-gdebi
-gpart
-gparted
-e2fsprogs
-f2fs-tools
-dosfstools
-mtools
-hfsplus
-hfsutils
-hfsprogs
-jfsutils
-util-linux
-dmsetup
-lvm2
-nilfs-tools
-ntfs-3g
-ntfs-3g-dev
-reiser4progs
-udftools
-xfsprogs
-xfsdump
 EOF
 sleep 1
 echo -e $BLUE"Creating an automated installation option for unattended installation."$ENDCOLOR;
@@ -192,7 +97,7 @@ mkdir config/packages
 mv Nessus-*amd64.deb config/packages/
 echo ""
 sleep 1
-echo -e $BLUE"Adding Linux Kernel 4.17 image and headers packages to build.."$ENDCOLOR;
+echo -e $BLUE"Adding Linux Kernel 4.2.3 image and headers packages to build.."$ENDCOLOR;
 sleep 1
 cp -rf /var/tmp/live-build-config/config/packages/* config/packages/
 echo ""
@@ -242,7 +147,6 @@ read ADDAMD
 if [[ $ADDAMD = Y || $ADDAMD = y ]] ; then
 
 dpkg --add-architecture amd64
-dpkg --add-architecture i386
 
 else
 
