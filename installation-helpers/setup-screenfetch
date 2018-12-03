@@ -1,0 +1,123 @@
+#!/bin/bash
+clear
+
+## Colors
+dgrey="\033[0;34m"
+port="\033[0;33m"
+RED="\033[1;31m"
+GREEN="\033[2;32m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
+RED="\033[0;31m"
+ENDCOLOR="\033[0m"
+
+
+echo -e $RED"#################################################################"$ENDCOLOR;
+echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
+echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
+echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
+echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
+echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
+echo -e $RED"#################################################################"$ENDCOLOR;
+echo -e $BLUE"#                                 ||"$ENDCOLOR;
+echo -e $BLUE"#                                 ||_________________________/'|"$ENDCOLOR;
+echo -e $BLUE"#                                _| O======/                   |"$ENDCOLOR;
+echo -e $BLUE"# +-+-+-+-+-+-+-+ +-+ +-+ +-+   |_|              ============  |"$ENDCOLOR;
+echo -e $BLUE"# |f|u|c|k| |e|m| |.| |.| |.|    |  __   ______________________|"$ENDCOLOR;
+echo -e $BLUE"# +-+-+-+-+-+-+-+ +-+-+-+-+-+    |_/  )  (     |___||     O-   /"$ENDCOLOR;
+echo -e $BLUE"# |T|A|K|E| |I|T| |A|L|L|!|           (  )    /  / |_________/"$ENDCOLOR;
+echo -e $BLUE"# +-+-+-+-+ +-+-+ +-+-+-+-+           (  )   /  /    | ) |   |"$ENDCOLOR;
+echo -e $BLUE"#                                     (__)  /  /     \___|__("$ENDCOLOR;
+echo -e $BLUE"#                                          /  /          )   \ "$ENDCOLOR;
+echo -e $BLUE"#                                         /  /            )   \ "$ENDCOLOR;
+echo -e $BLUE"#                                        /  /              )___\ "$ENDCOLOR;
+echo -e $BLUE"#                                       /  / "$ENDCOLOR;
+echo -e $BLUE"#                                      /__/"$ENDCOLOR;
+echo -e $BLUE"#                                "$ENDCOLOR;
+echo ""
+<<<<<<< HEAD
+echo -e $YELLOW"Setup Screenfetch"$ENDCOLOR
+sleep 1
+echo ""
+
+cd ~/
+echo -e $BLUE"Cloning screenfetch repository .. "$ENDCOLOR;
+sleep 0.5
+git clone https://github.com/KittyKatt/screenFetch.git
+echo ""
+sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
+echo ""
+sleep 0.5
+echo -e $YELLOW"Setting screenfetch as executable. Installing in /usr/bin.."$ENDCOLOR;
+sudo chmod +x /usr/local/bin/screenfetch
+echo ""
+
+echo -e $GREEN"Screenfetch Setup Successfully!"$ENDCOLOR;
+sleep 1
+echo ""
+
+=======
+
+echo -e $YELLOW"Setup Screenfetch"$ENDCOLOR
+sleep 1
+echo ""
+cd ~/ 
+echo -e $BLUE"Cloning screenfetch repository .. "$ENDCOLOR;
+sleep 0.5
+git clone https://github.com/KittyKatt/screenFetch.git  && sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
+echo ""
+sleep 0.5
+echo -e $YELLOW"Setting Katoolin as executable. Installing in /usr/bin.."$ENDCOLOR;
+chmod +x /usr/local/bin/screenfetch
+echo ""
+echo -e $GREEN"Screenfetch Setup Successfully!"$ENDCOLOR;
+sleep 1
+echo ""
+echo -e $YELLOW"Add Screenfetch to bashrc? "$ENDCOLOR;
+read SCREENFETCHBASHRC
+
+if [[ $SCREENFETCHBASHRC = 'y' || $SCREENFETCHBASHRC = 'Y' ]] ; then
+
+echo "screenfetch" >> ~/.bashrc
+sleep 1
+echo ""
+echo -e $GREEN"Screenfetch has been added to bashrc!"$ENDCOLOR;
+echo ""
+sleep 1
+
+else
+
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR
+exit 0
+fi
+
+echo -e $YELLOW"Source bashrc now?"$ENDCOLOR;
+read SOURCEBASHRC
+
+if [[ $SOURCEBASHRC = 'y' || $SOURCEBASHRC = 'Y' ]] ; then
+
+clear
+sleep 1
+source ~/.bashrc
+sleep 1
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR
+exit 0
+
+<<<<<<< HEAD
+=======
+else 
+
+echo ""
+echo -e $BLUE"Okay. Maybe some other time.  Goodbye."$ENDCOLOR;
+echo ""
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR
+exit 0
+fi
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e

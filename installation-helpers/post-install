@@ -1,0 +1,884 @@
+#!/bin/bash
+clear
+#Colors
+dgrey="\033[0;34m"
+port="\033[0;33m"
+RED="\033[1;31m"
+GREEN="\033[2;32m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
+RED="\033[0;31m"
+ENDCOLOR="\033[0m"
+
+echo -e $RED"#################################################################"$ENDCOLOR;
+echo -e $YELLOW"   ____     ___    __  ____       __  _             ____  ____"$ENDCOLOR;
+echo -e $YELLOW"  / __/__  / (_)__/ / / __ \___  / /_(_)__  ___    / __ \/ __/"$ENDCOLOR;
+echo -e $YELLOW" _\ \/ _ \/ / / _  / / /_/ / _ \/ __/ / _ \/ _ \  / /_/ /\ \  "$ENDCOLOR;
+echo -e $YELLOW"/___/\___/_/_/\_,_/  \____/ .__/\__/_/\___/_//_/  \____/___/  "$ENDCOLOR;
+echo -e $YELLOW"                         /_/                                  "$ENDCOLOR;
+echo -e $RED"#################################################################"$ENDCOLOR;
+echo -e $BLUE"#                                 ||"$ENDCOLOR;
+echo -e $BLUE"#                                 ||_________________________/'|"$ENDCOLOR;
+echo -e $BLUE"#                               _| O======/                    |"$ENDCOLOR;
+echo -e $BLUE"#                              |_|               ============  |"$ENDCOLOR;
+echo -e $BLUE"#                                |  __   ______________________|"$ENDCOLOR;
+echo -e $BLUE"#                                |_/  )  (    |___||     O-   /"$ENDCOLOR;
+echo -e $BLUE"#  C a r p e   O m n i o u s          (  )    /  / |_________/"$ENDCOLOR;
+echo -e $BLUE"#                                     (  )   /  /    | ) |   |"$ENDCOLOR;
+echo -e $BLUE"#                                     (__)  /  /     \___|__("$ENDCOLOR;
+echo -e $BLUE"#                                          /  /          )   \ "$ENDCOLOR;
+echo -e $BLUE"#                                         /  /            )   \ "$ENDCOLOR;
+echo -e $BLUE"#                                        /  /              )___\ "$ENDCOLOR;
+echo -e $BLUE"#                                       /  / "$ENDCOLOR;
+echo -e $BLUE"#                                      /__/"$ENDCOLOR;
+echo -e $BLUE"#                                "$ENDCOLOR;
+echo ""
+echo -e $YELLOW"Thank you for choosing SolidOptionOS!"$ENDCOLOR;
+sleep 2
+echo ""
+echo -e $YELLOW"This is a post installation script designed for the optionZ3ro drive or downloaded OS"$ENDCOLOR;
+echo -e $YELLOW" you either purchased or downloaded online to give you a simpler, more robust user experience with the OS and its tools."$ENDCOLOR;
+
+echo -e $YELLOW"Let's get started"$ENDCOLOR;
+sleep 1
+echo ""
+
+echo -e $BLUE"Do you want to add custom alias to your bashrc? [y/n] "$ENDCOLOR;
+
+read ADDALIASES
+
+if [[ $ADDALIASES = 'y' || $ADDALIASES = 'Y' ]] ; then
+	
+	echo ""
+	echo -e $BLUE"Adding aliases to .bashrc.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	echo "alias ll='ls -Al'" >> ~/.bashrc
+	echo "alias lz='ls -Zla'" >> ~/.bashrc
+	echo "alias xclip='xclip -selection c'" >> ~/.bashrc
+	echo "alias goto-scripts='cd /root/optionZ3ro/scripts'" >> ~/.bashrc
+	sleep 1
+
+else
+
+	echo -e $YELLO"Okay. Maybe later."$ENDCOLOR;
+	sleep 1
+
+fi
+
+echo -e $YELLOW"Do you want to install Network-Manager and configure the interfaces for easy ifup ifdown? [y/n] "$ENDCOLOR;
+
+read NETWORKMANAGERINSTALL
+
+if [[ $NETWORKMANAGERINSTALL = 'y' || $NETWORKMANAGERINSTALL = 'Y' ]] ; then
+
+	echo -e $BLUE"Installing Network-Manager.."$ENDCOLOR;
+	echo ""
+	sudo apt-get install network-manager -y
+	sleep 1
+	echo -e $GREEN"Complete."$ENDCOLOR;
+	echo ""
+	sleep 1
+	
+	echo -e $BLUE"Modifying NetworkManager.conf to allow for managed interfaces.."$ENDCOLOR;
+	echo ""
+	sleep 1
+	sed -i 's/false/true/g' /etc/NetworkManager/NetworkManager.conf
+	echo ""
+	
+	cat /etc/NetworkManager/NetworkManager.conf
+	echo ""
+	sleep 1
+
+else
+
+	echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+fi
+
+echo -e $YELLOW"Do you want to add Kali-Rolling to your sources? [y/n]"$ENDCOLOR;
+
+read KALIROLLING
+
+if [[ $KALIROLLING = 'y' || $KALIROLLING = 'Y' ]] ; then
+
+	echo ""
+	echo -e $BLUE"Checking sources.list.."$ENDCOLOR;
+	sleep 1 
+	echo ""
+	cat /etc/apt/sources.list
+	echo ""
+	sleep 1
+	
+	echo -e $BLUE"Backing up original sources.list file in /root/backup.."$ENDCOLOR;
+	echo ""
+	sleep 1
+	sudo mkdir -p /root/backup/sources
+	sudo cp -rf /etc/apt/ /root/backup/sources/
+	echo -e $GREEN"The entire /etc/apt folder has been backed up to /root/backup/sources/"$ENDCOLOR;
+	echo ""
+	
+	echo -e $BLUE"Updating sources.list.."$ENDCOLOR;
+	sleep 1
+	echo ""
+cat << EOF > /etc/apt/sources.list
+deb http://http.kali.org/kali kali-rolling main non-free contrib
+EOF
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Adding PGP keys.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	gpg –keyserver pgpkeys.mit.edu –recv-key ED444FF07D8D0BF6
+	gpg -a –export ED444FF07D8D0BF6| sudo apt-key add –
+	echo ""
+	echo -e $GREEN"PGP Keys successfully added."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+else
+
+	echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+fi
+
+echo -e $BLUE"Installing openssh-server.."$ENDCOLOR;
+sleep 1
+echo ""
+sudo apt-get install openssh-server -y
+echo -e $GREEN"Complete."$ENDCOLOR;
+echo ""
+
+echo -e $BLUE"Backing up original ssh tokens.."$ENDCOLOR;
+sleep 1
+
+if [[ ! -e /etc/ssh/oldies ]] ; then
+
+	sudo mkdir /etc/ssh/oldies
+
+fi
+
+sudo mv /etc/ssh/ssh_host* /etc/ssh/oldies
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"Reconfiguring openssh-server.."$ENDCOLOR;
+sleep 1
+echo ""
+sudo dpkg-reconfigure openssh-server
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 1
+echo -e $GREEN"Success! Default ssh keys backed-up and regenerated."$ENDCOLOR;
+sleep 1
+echo ""
+
+echo -e $BLUE"Adding multiarch-support.."$ENDCOLOR;
+echo ""
+sudo apt-get install multiarch-support -y
+echo ""
+
+echo -e $BLUE"Adding i386 and amd64 architectures.."$ENDCOLOR;
+echo ""
+sleep 1
+sudo dpkg --add-architecture i386
+sudo dpkg --add-architecture amd64
+echo -e $GREEN"Complete."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"Updating and upgrading.."$ENDCOLOR;
+echo ""
+sudo dpkg --configure -a
+sudo apt-get update
+sudo apt-get -f install -y
+sudo apt-get autoremove -y
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade
+echo ""
+echo -e $GREEN"Success! Your system is now up-to-date."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $YELLOW"Would you like to install some preferred extras? WARNING: IF YOU ARE NOT RUNNING KALI 2.0, THIS IS NOT RECOMMENDED. [y/n]"$ENDCOLOR;
+
+read EXTRAS
+
+if [[ $EXTRAS = 'y' || $EXTRAS = 'Y' ]] ; then
+ 
+	echo -e $BLUE"Listing preferred extras.."$ENDCOLOR;
+	sleep 1
+	echo -e $YELLOW"xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker linux-headers-$(uname -r) tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek bash-completion monodevelop"$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Installing..."$ENDCOLOR;
+	echo ""
+	sudo apt-get install linux-headers-$(uname -r)
+	echo ""
+	sudo apt-get install xclip arduino android-sdk android-libadb android-sdk-build-tools lsof usbutils alsa-utils rtl-sdr rtlsdr-scanner pixiewps reaver wireshark aircrack-ng-dbgsym adb fern-wifi-cracker tor cowpatty pyrit live-build metasploit-framework ipsec-tools ghc cabal-install cabal-debian shellcheck ettercap-common ettercap-graphical nmap thc-ipv6 thc-pptp-bruter thc-ssl-dos putty putty-tools putty-doc netcat kismet ieee-data unrar unace p7zip zip unzip p7zip-full p7zip-rar file-roller filezilla filezilla-common gtk-recordmydesktop recordmydesktop remmina htop tor nethogs gdebi gpart gparted scrot lsb-release gcc g++ build-essential kbuild cmake make firmware-ralink firmware-atheros firmware-linux firmware-realtek bash-completion monodevelop
+	echo ""
+	sleep 1
+	echo -e $GREEN"Complete."$ENDCOLOR;
+	echo ""
+
+else
+
+	echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+fi 
+
+echo -e $YELLOW"Would you like to create a standard user? [y/n] "$ENDCOLOR;
+read NEWUSER
+
+if [[ $NEWUSER = 'y' || $NEWUSER = 'y' ]] ; then 
+
+	echo -e $YELLOW"Username: [enter username] "$ENDCOLOR;
+	read USERNAME
+	echo ""
+	
+	echo -e $BLUE"Creating standard user, $USERNAME.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	sudo useradd $USERNAME
+	echo -e $GREEN"Complete."$ENDCOLOR;
+	echo ""
+
+	echo -e $BLUE"Creating home directories for $USERNAME..."$ENDCOLOR;
+	echo ""
+	sudo mkdir -p /home/$USERNAME/Downloads
+        sudo mkdir -p /home/$USERNAME/Pictures
+        sudo mkdir -p /home/$USERNAME/Documents
+        sudo mkdir -p /home/$USERNAME/Desktop
+	sudo chown -R $USERNAME:$USERNAME /home/$USERNAME
+	sudo chmod -R 777 /home/$USERNAME
+	echo ""
+
+	echo -e $BLUE"Adding $USERNAME to sudo group."$ENDCOLOR;
+	sudo usermod -aG sudo $USERNAME
+	echo ""
+	
+	echo -e $BLUE"Adding $USERNAME to adm group."$ENDCOLOR;
+	sudo usermod -aG adm $USERNAME
+	echo ""
+        
+	echo -e $BLUE"Adding $USERNAME to kismet group."$ENDCOLOR;
+        sudo usermod -aG kismet $USERNAME
+        echo ""
+	
+	echo -e $BLUE"Adding $USERNAME to netdev group."$ENDCOLOR;
+	sudo usermod -aG netdev $USERNAME
+	echo ""
+	
+	echo -e $BLUE"Adding $USERNAME to root group."$ENDCOLOR;
+	sudo usermod -aG root $USERNAME
+	echo ""
+	
+	echo -e $BLUE"Updating $USERNAME shell to /bin/bash.."$ENDCOLOR;
+	sudo usermod -s /bin/bash $USERNAME
+	echo ""
+	sleep 1
+	
+	echo -e $YELLOW"Do you want to clone root .bashrc to $USERNAME .bashrc? [y/n] "$ENDCOLOR;
+	read CLONEBASHRC
+
+	if [[ $CLONEBASHRC = 'y' || $CLONEBASHRC = 'Y' ]] ; then 
+	
+		echo -e $BLUE"Cloning /root/.bashrc to /home/$USERNAME/.bashrc.."$ENDCOLOR;
+		echo ""
+		echo -e $BLUE"Backing up first.."$ENDCOLOR; 
+		echo ""
+		sudo mkdir -p /home/$USERNAME
+		echo ""
+		sudo cp /home/$USERNAME/.bashrc /home/$USERNAME/.bashrc.bak
+		sleep 1
+		echo -e $GREEN"Complete."$ENDCOLOR;
+		echo ""
+		echo -e $BLUE"Cloning.."$ENDCOLOR;
+		echo ""
+		sudo cp /root/.bashrc /home/$USERNAME/.bashrc
+		sudo chown $USERNAME:$USERNAME /home/$USERNAME/.bashrc
+		sudo chmod 777 /home/$USERNAME/.bashrc 
+		echo -e $GREEN"Complete."$ENDCOLOR;
+		echo ""
+		echo -e $GREEN"$USERNAME Setup Complete."$ENDCOLOR;
+		sleep 1
+
+	else
+
+		echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+		echo ""
+		sleep 1
+	
+	fi
+
+else
+
+	echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+        echo ""
+        sleep 1
+
+fi
+
+echo -e $BLUE"Installing and configuring add-apt-repository"$ENDCOLOR;
+sleep 1
+echo ""
+
+echo -e $BLUE"Installing software-properties-common and apt-file.."$ENDCOLOR;
+sleep 1
+echo ""
+sudo apt-get install software-properties-common apt-file -y
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"Running apt-file update (This may take a while depending on your system.)"$ENDCOLOR;
+sleep 1
+echo ""
+sudo apt-file update
+sleep 1
+
+echo -e $GREEN"Apt-file is now up to date."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"Using apt-file search to find add-apt-repository.."$ENDCOLOR;
+sudo apt-file search add-apt-repository
+echo ""
+
+echo -e $BLUE"Modifying add-apt-repository with /root/optionZ3ro/scripts/assets/add-apt-repository in /usr/sbin.."$ENDCOLOR;
+echo ""
+sudo cp ~/optionZ3ro/scripts/assets/add-apt-repository /usr/sbin/add-apt-repository
+sudo chmod o+x /usr/sbin/add-apt-repository
+sudo chown root:root /usr/sbin/add-apt-repository
+echo ""
+echo -e $GREEN"Success! Add-Apt-Repository installed."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $YELLOW"Would you like to install custom themes and icons? [y/n]"$ENDCOLOR;
+
+read CUSTOMTHEMES
+
+if [[ $CUSTOMTHEMES = 'y' || $CUSTOMTHEMES = 'Y' ]] ; then
+
+	echo -e $BLUE"Adding ppa:noobslab/themes.."$ENDCOLOR;
+	sleep 1
+	/usr/sbin/add-apt-repository ppa:noobslab/themes
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5
+
+	echo -e $BLUE"Adding ppa:alecive/antigone.."$ENDCOLOR;
+	sleep 1
+	/usr/sbin/add-apt-repository ppa:alecive/antigone
+	echo ""
+	sleep 0.5
+
+	echo -e $GREEN"Success! New themes and icons are now available."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+else
+
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
+fi
+
+echo -e $YELLOW"Would you like to modify airmon-ng to create the classic monitor interfaces like mon0 instead of the new style like wlan0mon? [y/n]"$ENDCOLOR;
+
+read CONFAIRMON
+
+if [[ $CONFAIRMON = 'y' || $CONFAIRMON = 'Y' ]] ; then
+
+	echo ""
+	echo -e $BLUE"Modifying airmon-ng.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	sudo apt-get install --reinstall aircrack-ng
+	echo ""
+	sleep 1
+	echo -e $BLUE"Backing up airmon-ng.."$ENDCOLOR;
+	sleep 1
+
+	if [[ ! -e /usr/sbin/airmon-ng-bak ]] ; then 
+		sudo mv /usr/sbin/airmon-ng /usr/sbin/airmon-ng-bak 
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 1
+
+		echo -e $BLUE"Modifying airmon-ng.."$ENDCOLOR;
+		sleep 1
+		echo ""
+		sudo cp ~/optionZ3ro/scripts/assets/airmon-ng-old /usr/sbin/airmon-ng
+		sudo chown root:root /usr/sbin/airmon-ng
+		sudo chmod +x /usr/sbin/airmon-ng
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 0.5	
+
+		echo -e $GREEN"Airmon-ng successfully configured!"$ENDCOLOR;
+		echo ""
+		sleep 1
+	else
+
+		echo -e $YELLOW"Maybe later."$ENDCOLOR;
+		echo ""
+		sleep 1
+
+	fi
+
+else
+
+        echo -e $YELLOW"Maybe later."$ENDCOLOR;
+        echo ""
+        sleep 1
+
+fi
+
+echo ""
+echo -e $YELLOW"Would you like to install screenfetch? "$ENDCOLOR;
+read INSTALLSCREENFETCH
+
+if [[ $INSTALLSCREENFETCH = 'y' || $INSTALLSCREENFETCH = 'Y' ]] ; then
+
+	echo -e $YELLOW"Installing and setting up screenfetch.."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+	if [[ ! -e /tmp ]] ; then
+		mkdir /tmp
+	fi 
+
+	cd /tmp
+	echo -e $BLUE"Cloning screenFetch repository .. "$ENDCOLOR;
+	sleep 1
+	git clone https://github.com/KittyKatt/screenFetch.git  
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Adding screenfetch to /usr/local/bin.."$ENDCOLOR;
+	sleep 1
+
+	if [[ ! -e /usr/local/bin/screenfetch ]] ; then 
+		
+		sudo cp /tmp/screenFetch/screenfetch-dev /usr/local/bin/screenfetch
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 0.5
+
+		echo -e $YELLOW"Setting as executable in /usr/bin.."$ENDCOLOR;
+		sleep 1
+		sudo chmod +x /usr/local/bin/screenfetch
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 1
+	fi
+
+	echo -e $GREEN"Screenfetch setup successfully!"$ENDCOLOR;
+	sleep 1
+	echo ""
+else
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
+fi
+
+echo -e $YELLOW"Woud you like to install Java SE? "$ENDCOLOR;
+read INSTALLJAVA
+echo ""
+
+if [[ $INSTALLJAVA = 'y' || $INSTALLJAVA = 'Y' ]] ; then
+
+	echo -e $BLUE"Downloading the Java SE JDK from SolidOptionOS server.. "$ENDCOLOR;
+	sleep 1
+
+	if [[ ! -e ~/Downloads/jdk-7u79-linux-x64.tar.gz ]] ; then
+		
+		cd ~/Downloads
+		wget http://solidoptionos.com/packages/jdk-7u79-linux-x64.tar.gz
+		echo -e $GREEN"Download complete."$ENDCOLOR;
+		echo ""
+		sleep 1
+
+	else
+		echo -e $BLUE"jdk-7u79-linux-x64.tar.gz already exists; skipping download."$ENDCOLOR;
+		sleep 1
+		echo ""
+	fi
+	
+	echo -e $BLUE"Extracting into /opt folder.."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	if [[ ! -e /opt/jdk1.7.0_79/ ]] ; then
+		sudo tar -xzvf jdk-7u79-linux-x64.tar.gz -C /opt
+		cd /opt/jdk1.7.0_79
+		echo -e $GREEN"Done."$ENDCOLOR;
+		echo ""
+		sleep 1
+	else
+		echo -e $BLUE"/opt/jdk1.7.0_79/ already exists; skipping extraction."$ENDCOLOR;
+		sleep 1
+	fi
+
+	echo -e $BLUE"Cleaning up afer installation.."$ENDCOLOR;
+	sleep 1
+	sudo rm ~/Downloads/jdk-7u79-linux-x64.tar.gz*
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Updating Java alternatives.."$ENDCOLOR;
+	sleep 1
+	sudo update-alternatives --install /usr/bin/java java /opt/jdk1.7.0_79/bin/java 1
+	sudo update-alternatives --install /usr/bin/javac javac /opt/jdk1.7.0_79/bin/javac 1
+	sudo update-alternatives --install /usr/lib/mozilla/plugins/libjavaplugin.so mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so 1
+	sudo update-alternatives --set java /opt/jdk1.7.0_79/bin/java
+	sudo update-alternatives --set javac /opt/jdk1.7.0_79/bin/javac
+	sudo update-alternatives --set mozilla-javaplugin.so /opt/jdk1.7.0_79/jre/lib/amd64/libnpjp2.so
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+	sleep 0.5
+	echo -e $GREEN"Success! Java SE JDK Installed."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+else
+
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	sleep 1
+	echo ""
+
+fi
+
+echo -e $YELLOW"Would you like to patch wifite with reaver and pixiewps? [y/n]"$ENDCOLOR;
+read PATCHWIFITE
+
+if [[ $PATCHWIFITE = 'y' || $PATCHWIFITE = 'Y' ]] ; then
+
+	echo -e $YELLOW"Patching Wifite with Reaver and Pixiewps"$ENDCOLOR;
+	sleep 1
+	echo ""
+
+	if [[ ! -e ~/backup ]] ; then
+                mkdir ~/backup
+        fi
+
+	echo -e $BLUE"Creating backup directory.."$ENDCOLOR;
+	echo ""
+	cd ~/backup
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Cloning wifite repository"$ENDCOLOR;
+	echo ""
+	git clone https://github.com/derv82/wifite.git
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Cloning wifite-mod-pixiewps repository"$ENDCOLOR;
+	echo ""
+	git clone https://github.com/aanarchyy/wifite-mod-pixiewps.git
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Cloning reaver-wps-fork-t6x repository"$ENDCOLOR;
+	echo ""
+	git clone https://github.com/t6x/reaver-wps-fork-t6x.git
+	echo ""
+	
+	echo -e $BLUE"Cloning pixiewps repository"$ENDCOLOR;
+	git clone https://github.com/wiire/pixiewps.git
+	echo ""
+	sleep 1
+	
+	echo -e $BLUE"Updating and upgrading before installation.."$ENDCOLOR;
+	echo ""
+	sudo apt-get update
+	sudo apt-get upgrade
+	sudo apt-get dist-upgrade
+	sudo apt-get -f install
+	echo ""
+	sleep 1
+	
+	echo -e $BLUE"Installing prerequisites.."$ENDCOLOR;
+	echo ""
+	sudo apt-get install libpcap-dev aircrack-ng sqlite3 libsqlite3-dev libssl-dev -y
+	echo ""
+	sleep 1	
+
+	echo -e $BLUE"Installing pixiewps.."$ENDCOLOR;
+	echo ""
+	cd ~/backup/pixiewps/src/
+	make
+	echo ""
+	sudo make install
+	echo ""
+	sleep 1
+
+	echo -e $BLUE"Installing reaver-wps-fork-t6x.."$ENDCOLOR;
+	echo ""
+	cd ~/backup/reaver-wps-fork-t6x/src/
+	echo ""
+	echo -e $BLUE"Configuring.."$ENDCOLOR;
+	sleep 1
+	./configure
+	sleep 1
+	echo -e $GREEN"Done"$ENDCOLOR;
+	echo ""
+
+	echo -e $BLUE"Compiling.."$ENDCOLOR;
+	sleep 1
+	echo "" 
+	make 
+	sleep 1
+        echo -e $GREEN"Done"$ENDCOLOR;
+        echo ""
+	echo -e $BLUE"Installing .."$ENDCOLOR;
+	sleep 1
+	echo ""
+	sudo make install
+	sleep 1
+	echo -e $GREEN"Done."$ENDCOLOR;
+	echo ""
+
+	echo -e $BLUE"Adding modified wifite and wifite-ng to /usr/bin.."$ENDCOLOR;
+	sleep 1	
+	sudo cp ~/backup/wifite/wifite.py /usr/bin/wifite
+	sudo chmod +x /usr/bin/wifite
+	sudo cp ~/backup/wifite-mod-pixiewps/wifite-ng /usr/bin/wifite-ng
+	sudo chmod +x /usr/bin/wifite-ng
+	echo ""
+ 
+else
+
+	echo -e $BLUE"Okay, maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+fi
+
+echo -e $YELLOW"Would you like to download SolidOptionOS artwork - Solid-Art? [y/n]"$ENDCOLOR;
+
+read ARTWORK
+
+if [[ $ARTWORK = 'y' || $ARTWORK = 'Y' ]] ; then
+	
+	echo -e $BLUE"Creating Solid-Art folder in ~/Pictures.."$ENDCOLOR;
+	sleep 1
+	echo ""
+	if [[ ! -e ~/Pictures/Solid-Art ]] ; then
+		mkdir ~/Pictures/Solid-Art
+                cd ~/Pictures/Solid-Art
+                echo -e $GREEN"Done."$ENDCOLOR;
+                echo ""
+                sleep 0.5
+	
+		echo -e $BLUE"Downloading artwork for SolidOptionOS server.."$ENDCOLOR;
+		sleep 1
+
+		if [[ ! -e ~/Pictures/Solid-Art/archive.zip ]] ; then		
+			wget http://solidoptionos.com/pics/archive.zip
+			echo -e $GREEN"Done."$ENDCOLOR;
+			echo ""
+			sleep 0.5
+		else 
+			echo -e $BLUE"Solid-Art download archive already exists."$ENDCOLOR;
+			sleep 1
+		fi
+                        
+                echo -e $GREEN"Download Complete."$ENDCOLOR;
+		echo ""
+		sleep 1
+
+                echo -e $BLUE"Extracting.."$ENDCOLOR;
+                sleep 1
+		unzip archive.zip
+                echo -e $GREEN"Done."$ENDCOLOR;
+                echo ""
+                sleep 0.5
+
+                #echo -e $BLUE"Cleaning up.."$ENDCOLOR;
+                #sleep 1
+		#rm -rf __MACOSX/
+                #cp -rf hacker_wallpaper/ .
+                #rm -rf hacker_wallpaper/
+                #cp -rf epic-grunge-wall-texture-by-GR/ .
+                #rm -rf epic-grunge-wall-texture-by-GR/
+                #rm *.psd
+                #rm *.pdf
+                #rm *.ai
+                rm archive.zip*
+		chmod -R 777 *
+		echo -e $GREEN"Success! Solid-Art is now available in ~/Pictures/Solid-Art. "$ENDCOLOR;
+		sleep 1
+		echo ""
+ 
+	else
+
+		echo -e $BLUE"A Solid-Art folder already exists in ~/Pictures. Do you want to overwrite/merge it with a new download? "$ENDCOLOR;
+		read OVERWRITEART
+
+		if [[ $OVERWRITEART = 'y' || $OVERWRITEART = 'Y' ]] ; then
+			sudo rm -rf ~/Pictures/Solid-Art/archive.zip
+			mkdir -p ~/Pictures/Solid-Art
+			cd ~/Pictures/Solid-Art
+			wget http://solidoptionos.com/pics/archive.zip
+			echo -e $GREEN"Done."$ENDCOLOR;
+			echo ""
+			sleep 0.5
+
+			echo -e $BLUE"Extracting.."$ENDCOLOR;
+			sleep 1
+			unzip archive.zip
+			echo -e $GREEN"Done."$ENDCOLOR;
+			echo ""
+			sleep 0.5
+
+			#echo -e $BLUE"Cleaning up.."$ENDCOLOR;
+			#sleep 1
+			#rm -rf __MACOSX/
+			#cp -rf hacker_wallpaper/ .
+			#rm -rf hacker_wallpaper/
+			#cp -rf epic-grunge-wall-texture-by-GR/ .
+			#rm -rf epic-grunge-wall-texture-by-GR/
+			#rm *.psd
+			#rm *.pdf
+			#rm *.ai
+			rm archive.zip
+			chmod -R 777 *
+			echo ""
+			echo -e $GREEN"Success! Solid-Art has been updated to the latest version. "$ENDCOLOR;
+			sleep 1
+		else
+			echo -e $BLUE"Okay. Skipping."$ENDCOLOR;
+			echo ""
+			sleep 1
+		fi
+        fi
+else
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+fi
+
+
+echo -e $YELLOW"Would you like to upgrade your htop style? [y/n]"$ENDCOLOR;
+read HTOPUPGRADE
+
+if [[ $HTOPUPGRADE = 'y' || $HTOPUPGRADE = 'Y' ]] ; then
+
+	echo -e $BLUE"Upgrading htop style.."$ENDCOLOR;
+	sudo mkdir -p ~/.config/htop	
+	if [[ ! -e ~/.config/htop ]] ; then
+		mkdir ~/.config/htop
+	fi
+
+	cp ~/optionZ3ro/configs/htoprc ~/.config/htop/htoprc
+	echo ""
+	echo -e $GREEN"Success! Htop style upgraded."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+else
+
+	echo -e $BLUE"Okay. Maybe later."$ENDCOLOR; 
+	echo ""
+
+fi
+
+echo -e $BLUE"Would you like to update airodump-ng manufacturer data? (This may take a long time depeding on your system.) [y/n]"$ENDCOLOR;
+
+read OUIUPDATE
+
+if [[ $OUIUPDATE = 'y' || $OUIUPDATE = 'Y' ]] ; then
+
+	echo -e $BLUE"Updating.."$ENDCOLOR;
+	echo ""
+	sudo airodump-ng-oui-update
+	echo -e $GREEN"Airodump-ng manufacturer data updated."$ENDCOLOR;
+	echo ""
+
+else
+
+	echo -e $YELLOW"Okay. Maybe later."$ENDCOLOR;
+	echo ""
+	sleep 1
+
+fi
+
+echo -e $BLUE"Wrapping up the post install with necessary updates.."$ENDCOLOR;
+echo ""
+sleep 1
+
+echo -e $BLUE"[updatedb]"$ENDCOLOR;
+sleep 0.5
+sudo updatedb
+
+echo -e $BLUE"[update-usbids]"$ENDCOLOR;
+sleep 0.5
+sudo update-usbids
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-pciids]"$ENDCOLOR;
+sleep 0.5
+sudo update-pciids
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-menus]"$ENDCOLOR;
+sleep 0.5
+sudo update-menus
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-initramfs -uv]"$ENDCOLOR;
+sleep 0.5
+sudo update-initramfs -uv
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-grub]"$ENDCOLOR;
+sleep 0.5
+sudo update-grub
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+echo -e $BLUE"[update-grub2]"$ENDCOLOR;
+sleep 0.5
+sudo update-grub2
+echo -e $GREEN"Done."$ENDCOLOR;
+echo "" 
+sleep 0.5
+
+echo -e $BLUE"Syncing.."$ENDCOLOR;
+sleep 0.5
+sync
+echo -e $GREEN"Done."$ENDCOLOR;
+echo ""
+sleep 0.5
+
+sleep 0.5
+echo -e $GREEN"Wrap up complete."$ENDCOLOR;
+echo ""
+sleep 1
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo -e $YELLOW"#      Operation Complete.       #"$ENDCOLOR;
+echo -e $BLUE"#################################"$ENDCOLOR;
+echo ""
