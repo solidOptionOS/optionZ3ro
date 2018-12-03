@@ -1,0 +1,6 @@
+*.xz
+*.zip
+*.rar
+scripts*
+assets/main-9d*
+nvidia-*
