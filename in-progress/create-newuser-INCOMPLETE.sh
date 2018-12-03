@@ -1,7 +1,12 @@
 #!/bin/bash
+<<<<<<< HEAD
 clear
 #Colors
 
+=======
+clear:
+# color vars
+>>>>>>> 73d259c94f5585f104e82d17a87d808b34c885aa
 dgrey="\033[0;34m"
 port="\033[0;33m"
 RED="\033[1;31m"
