@@ -96,14 +96,14 @@ WPA_DISABLE          = False  # Flag to skip WPA handshake capture
 WPA_STRIP_HANDSHAKE  = True  # Use pyrit or tshark (if applicable) to strip handshake
 WPA_DEAUTH_TIMEOUT   = 10    # Time to wait between deauthentication bursts (in seconds)
 WPA_ATTACK_TIMEOUT   = 500   # Total time to allow for a handshake attack (in seconds)
-WPA_HANDSHAKE_DIR    = 'hs'  # Directory in which handshakes .cap files are stored
+WPA_HANDSHAKE_DIR    = '/captures'  # Directory in which handshakes .cap files are stored
 # Strip file path separator if needed
 if WPA_HANDSHAKE_DIR != '' and WPA_HANDSHAKE_DIR[-1] == os.sep: 
 	WPA_HANDSHAKE_DIR = WPA_HANDSHAKE_DIR[:-1]
 
 WPA_FINDINGS         = []    # List of strings containing info on successful WPA attacks
 WPA_DONT_CRACK       = False # Flag to skip cracking of handshakes
-WPA_DICTIONARY       = '/pentest/web/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/phpbb.txt'
+WPA_DICTIONARY       = '/usr/share/fuzzdb/wordlists-user-passwd/passwds/phpbb.txt'
 if not os.path.exists(WPA_DICTIONARY): WPA_DICTIONARY = ''
 
 # Various programs to use when checking for a four-way handshake.
@@ -151,7 +151,7 @@ DO_NOT_CHANGE_MAC  = True  # Flag for disabling MAC anonymizer
 TARGETS_REMAINING  = 0     # Number of access points remaining to attack
 WPA_CAPS_TO_CRACK  = []    # list of .cap files to crack (full of CapFile objects)
 THIS_MAC           = ''    # The interfaces current MAC address.
-SHOW_MAC_IN_SCAN   = False # Display MACs of the SSIDs in the list of targets
+SHOW_MAC_IN_SCAN   = True # Display MACs of the SSIDs in the list of targets
 CRACKED_TARGETS    = []    # List of targets we have already cracked
 ATTACK_ALL_TARGETS = False # Flag for when we want to attack *everyone*
 ATTACK_MIN_POWER   = 0     # Minimum power (dB) for access point to be considered a target
