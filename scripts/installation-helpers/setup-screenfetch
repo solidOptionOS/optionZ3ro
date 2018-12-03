@@ -35,6 +35,7 @@ echo -e $BLUE"#                                       /  / "$ENDCOLOR;
 echo -e $BLUE"#                                      /__/"$ENDCOLOR;
 echo -e $BLUE"#                                "$ENDCOLOR;
 echo ""
+<<<<<<< HEAD
 echo -e $YELLOW"Setup Screenfetch"$ENDCOLOR
 sleep 1
 echo ""
@@ -55,8 +56,68 @@ echo -e $GREEN"Screenfetch Setup Successfully!"$ENDCOLOR;
 sleep 1
 echo ""
 
+=======
+
+echo -e $YELLOW"Setup Screenfetch"$ENDCOLOR
+sleep 1
+echo ""
+cd ~/ 
+echo -e $BLUE"Cloning screenfetch repository .. "$ENDCOLOR;
+sleep 0.5
+git clone https://github.com/KittyKatt/screenFetch.git  && sudo cp screenFetch/screenfetch-dev /usr/local/bin/screenfetch
+echo ""
+sleep 0.5
+echo -e $YELLOW"Setting Katoolin as executable. Installing in /usr/bin.."$ENDCOLOR;
+chmod +x /usr/local/bin/screenfetch
+echo ""
+echo -e $GREEN"Screenfetch Setup Successfully!"$ENDCOLOR;
+sleep 1
+echo ""
+echo -e $YELLOW"Add Screenfetch to bashrc? "$ENDCOLOR;
+read SCREENFETCHBASHRC
+
+if [[ $SCREENFETCHBASHRC = 'y' || $SCREENFETCHBASHRC = 'Y' ]] ; then
+
+echo "screenfetch" >> ~/.bashrc
+sleep 1
+echo ""
+echo -e $GREEN"Screenfetch has been added to bashrc!"$ENDCOLOR;
+echo ""
+sleep 1
+
+else
+
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR
+exit 0
+fi
+
+echo -e $YELLOW"Source bashrc now?"$ENDCOLOR;
+read SOURCEBASHRC
+
+if [[ $SOURCEBASHRC = 'y' || $SOURCEBASHRC = 'Y' ]] ; then
+
+clear
+sleep 1
+source ~/.bashrc
+sleep 1
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 echo -e $BLUE"###############################################################"$ENDCOLOR;
 echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
 echo -e $BLUE"###############################################################"$ENDCOLOR
 exit 0
 
+<<<<<<< HEAD
+=======
+else 
+
+echo ""
+echo -e $BLUE"Okay. Maybe some other time.  Goodbye."$ENDCOLOR;
+echo ""
+echo -e $BLUE"###############################################################"$ENDCOLOR;
+echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
+echo -e $BLUE"###############################################################"$ENDCOLOR
+exit 0
+fi
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
