@@ -29,23 +29,48 @@ if [[ $COPYBASHRC = 'y' || $COPYBASHRC = 'Y' ]] ; then
 echo -e $BLUE"Making a backup first. "$ENDCOLOR;
 echo ""
 sleep 1
+<<<<<<< HEAD
 echo cp ~/.bashrc ~/.bashrc.bak
+=======
+cp ~/.bashrc ~/.bashrc.bak
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 sleep 1
 echo ""
 echo -e $BLUE"Copying.. "$ENDCOLOR;
 echo ""
 sleep 1
+<<<<<<< HEAD
 echo cp ../configs/bashrc ~/.bashrc
 sleep 1
 echo -e $GREEN"Bashrc copied successfully!"$ENDCOLOR;
 echo ""
+=======
+cp ../configs/bashrc ~/.bashrc
+sleep 1
+echo -e $GREEN"Bashrc copied successfully!"$ENDCOLOR;
+echo ""
+
+else
+
+echo -e $BLUE"Okay. Maybe some other time."$ENDCOLOR;
+sleep 1
+fi
+
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 sleep 1
 echo -e $YELLOW"Source bashrc now?"$ENDCOLOR;
 read SOURCEBASHRC
 
 if [[ $SOURCEBASHRC = 'y' || $SOURCEBASHRC = 'Y' ]] ; then
 
+<<<<<<< HEAD
 clear && source ~/.bashrc
+=======
+clear
+sleep 1
+source ~/.bashrc
+sleep 1
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 
 else
 
@@ -63,13 +88,21 @@ if [[ $COPYHTOPRC = 'y' || $COPYHTOPRC = 'Y' ]] ; then
 echo -e $BLUE"Making a backup first."$ENDCOLOR;
 echo ""
 sleep 1
+<<<<<<< HEAD
 echo cp ~/.config/htop/htoprc ~/.config/htop/htoprc.bak
+=======
+cp ~/.config/htop/htoprc ~/.config/htop/htoprc.bak
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 sleep 1
 echo ""
 echo -e $BLUE"Copying.."$ENDCOLOR;
 echo ""
 sleep 1
+<<<<<<< HEAD
 echo cp ../configs/htoprc ~/.config/htop/htoprc
+=======
+cp ../configs/htoprc ~/.config/htop/htoprc
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 sleep 1
 echo -e $GREEN"Htoprc copied successfully!"$ENDCOLOR;
 echo ""
@@ -80,6 +113,10 @@ else
 echo -e $BLUE"Okay. Maybe some other time. "$ENDCOLOR;
 sleep 1
 fi
+<<<<<<< HEAD
+=======
+
+>>>>>>> d3dc561b35091f8e405a8036924277349918857e
 echo ""
 echo -e $BLUE"###############################################################"$ENDCOLOR;
 echo -e $YELLOW"                      Operation Complete                   "$ENDCOLOR;
